@@ -2,7 +2,10 @@
   "name": "avisynth",
   "version": "0.0.1",
   "description": "Avisynth non-linear audio/video scripting facilities for Node",
+  "author": "Camilo Martin <herzschaltung@yahoo.com.ar> (http://camilo.is/)",
   "main": "main.js",
+  "os" : [ "win32" ],
+  "cpu" : [ "x64", "ia32" ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,7 +23,6 @@
     "nonlinear",
     "non-linear"
   ],
-  "author": "Camilo Martin <herzschaltung@yahoo.com.ar> (http://camilo.is/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/CamiloMM/avisynth/issues"
