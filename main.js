@@ -4,11 +4,18 @@
 // If not, file an issue on GitHub :)
 
 // Currently it's an object. In the future it may be a function-object or something.
-var avisynth = {}
+var avisynth = {};
 
-// Script constructor, required as necessary.
+// "Loads" a plugin/script globally. It actually stores a reference, that will be loaded
+// when running each script.
+avisynth.load = require('./code/loader.js').load;
+
+// Replacement for the lack of an autoloading system (because we're portable).
+avisynth.autoload = require('./code/autoload.js');
+
+// Script constructor, note you can safely forget "new".
 avisynth.Script = function() {
     return new require('./code/script')();
-}
+};
 
 module.exports = avisynth;
