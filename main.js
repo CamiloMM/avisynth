@@ -1,3 +1,4 @@
+var path = require('path');
 
 // The idea is not only to make the API simple, but also extending this module.
 // Ideally, it will be clear to any newcomer how to go about adding features.
@@ -12,6 +13,9 @@ avisynth.load = require('./code/loader.js').load;
 
 // Replacement for the lack of an autoloading system (because we're portable).
 avisynth.autoload = require('./code/autoload.js');
+
+// Autoload all the plugins we bundle.
+avisynth.autoload(path.resolve(__dirname, 'bin/plugins'));
 
 // Script constructor, note you can safely forget "new".
 avisynth.Script = function() {

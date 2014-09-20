@@ -13,9 +13,9 @@ exports.load = function(file) {
     // if path does not exist or is not a file, throw.
     if (!fs.lstatSync(file).isFile()) throw new Error(file + ' is not a file!');
 
-    if (/^\.avsi?$/i.test(path.extname(file)) {
+    if (/^\.avsi?$/i.test(path.extname(file))) {
         references[file] = 'script';
-    } else if (/^\.dll$/i.test(path.extname(file)) {
+    } else if (/^\.dll$/i.test(path.extname(file))) {
         references[file] = 'plugin';
     }
 };
