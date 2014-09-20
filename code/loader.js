@@ -7,17 +7,24 @@ var references = {};
 // Loads a plugin or script globally.
 // What this means is that it creates a reference to this plugin/script and loads it
 // for all scripts ran in the future (even ones created in the past).
-exports.load = function(file) {
+exports.load = function(file, ignoreErrors) {
     file = path.resolve(file);
 
     // if path does not exist or is not a file, throw.
-    if (!fs.lstatSync(file).isFile()) throw new Error(file + ' is not a file!');
-
-    if (/^\.avsi?$/i.test(path.extname(file))) {
-        references[file] = 'script';
-    } else if (/^\.dll$/i.test(path.extname(file))) {
-        references[file] = 'plugin';
+    var isFile = false;
+    try {
+        if (!(isFile = fs.lstatSync(file).isFile())) {
+            if (!ignoreErrors) throw new Error(file + ' is not a file!');
+            return;
+        }
+    } catch (e) {
+        if (!ignoreErrors) throw e;
+        return;
     }
+
+    if (/^\.avsi?$/i.test(path.extname(file))) return references[file] = 'script';
+    if (/^\.dll$/i.test(path.extname(file))) return references[file] = 'plugin';
+    if (!ignoreErrors) throw new Error(file + ' is of unknown type!');
 };
 
 // Get-only accessor.

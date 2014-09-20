@@ -12,7 +12,7 @@
     "ia32"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter nyan"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
     "type": "git",
