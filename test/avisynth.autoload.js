@@ -22,15 +22,15 @@ describe('avisynth.autoload', function() {
     });
 
     it('should be used to load all the initial plugins', function() {
-        loader.getReferences().should.deep.equal(baseRefs);
+        loader.references.should.deep.equal(baseRefs);
     });
 
     it('should load plugins from a given folder', function() {
-        loader.getReferences().should.deep.equal(baseRefs);
+        loader.references.should.deep.equal(baseRefs);
         avisynth.autoload(fakePluginsDir);
         baseRefs[path.resolve(fakePluginsDir, 'colors_rgb.avsi')] = 'script';
         baseRefs[path.resolve(fakePluginsDir, 'DeDup.dll'      )] = 'plugin';
-        loader.getReferences().should.deep.equal(baseRefs);
+        loader.references.should.deep.equal(baseRefs);
     });
 
     it('should throw an error if the directory does not exist', function() {
