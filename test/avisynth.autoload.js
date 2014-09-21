@@ -25,7 +25,7 @@ describe('avisynth.autoload', function() {
         loader.references.should.deep.equal(baseRefs);
     });
 
-    it('should load plugins from a given folder', function() {
+    it('should load plugins and scripts from a given directory', function() {
         loader.references.should.deep.equal(baseRefs);
         avisynth.autoload(fakePluginsDir);
         baseRefs[path.resolve(fakePluginsDir, 'colors_rgb.avsi')] = 'script';

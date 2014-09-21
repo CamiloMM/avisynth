@@ -21,8 +21,13 @@ describe('avisynth.load', function() {
         avisynth.load.should.be.a('function');
     });
 
-    it('should be used to load all the initial plugins', function() {
-        loader.references.should.deep.include.keys(Object.keys(baseRefs));
+    it('should load plugins and scripts from given paths', function() {
+        var scriptPath = path.resolve(fakePluginsDir, 'colors_rgb.avsi');
+        var pluginPath = path.resolve(fakePluginsDir, 'DeDup.dll');
+        avisynth.load(scriptPath);
+        avisynth.load(pluginPath);
+        loader.references[scriptPath].should.equal('script');
+        loader.references[pluginPath].should.equal('plugin');
     });
 
     it('should throw an error for an invalid path', function() {
@@ -41,12 +46,5 @@ describe('avisynth.load', function() {
         avisynth.load.bind(avisynth,  textFile, true).should.not.throw();
         avisynth.load.bind(avisynth,   missing, true).should.not.throw();
         avisynth.load.bind(avisynth, directory, true).should.not.throw();
-    });
-
-    it('should load plugins from a given folder', function() {
-        avisynth.autoload(fakePluginsDir);
-        baseRefs[path.resolve(fakePluginsDir, 'colors_rgb.avsi')] = 'script';
-        baseRefs[path.resolve(fakePluginsDir, 'DeDup.dll'      )] = 'plugin';
-        loader.references.should.deep.equal(baseRefs);
     });
 });
