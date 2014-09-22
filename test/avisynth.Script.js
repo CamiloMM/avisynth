@@ -108,5 +108,48 @@ describe('avisynth.Script', function() {
                 script.allReferences()[pluginPath].should.equal('plugin');
             });
         });
+
+        describe('.fullCode', function() {
+            it('should be a function that returns a string', function() {
+                avisynth.Script().fullCode.should.be.a('function');
+                avisynth.Script().fullCode().should.be.a('string');
+            });
+
+            it('should embed code to load all initial plugins/scripts', function() {
+                var expected = '';
+                Object.keys(baseRefs).forEach(function(v) {
+                    expected += 'LoadPlugin("' + v + '")\n';
+                });
+                avisynth.Script().fullCode().should.equal(expected);
+            });
+
+            it('should also embed code to load further plugins/scripts', function() {
+                var script = avisynth.Script();
+                script.load(scriptPath);
+                script.load(pluginPath);
+                var expected = '';
+                Object.keys(baseRefs).forEach(function(v) {
+                    expected += 'LoadPlugin("' + v + '")\n';
+                });
+                expected += 'Import("' + scriptPath + '")\n';
+                expected += 'LoadPlugin("' + pluginPath + '")\n';
+                script.fullCode().should.equal(expected);
+            });
+
+            it('should moreover include any code passed to the construtor', function() {
+                var code = 'Version()\nSubtitle("' + rand + '")';
+                var script = avisynth.Script(code);
+                script.load(scriptPath);
+                script.load(pluginPath);
+                var expected = '';
+                Object.keys(baseRefs).forEach(function(v) {
+                    expected += 'LoadPlugin("' + v + '")\n';
+                });
+                expected += 'Import("' + scriptPath + '")\n';
+                expected += 'LoadPlugin("' + pluginPath + '")\n';
+                expected += code + '\n';
+                script.fullCode().should.equal(expected);
+            });
+        });
     });
 });

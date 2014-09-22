@@ -29,4 +29,17 @@ module.exports = function Script(code) {
         for (var i in   this.references) refs[i] =   this.references[i];
         return refs;
     };
+
+    // Gets the full code, including loading of scripts/plugins and all generated code.
+    this.fullCode = function() {
+        var fullCode = '', refs = this.allReferences();
+
+        for (ref in refs) {
+            if (refs[ref] === 'script') fullCode += 'Import("' + ref + '")\n';
+            if (refs[ref] === 'plugin') fullCode += 'LoadPlugin("' + ref + '")\n';
+        }
+
+        if (this.code.trim()) fullCode += this.code + '\n';
+        return fullCode;
+    };
 }
