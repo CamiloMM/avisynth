@@ -5,16 +5,21 @@ var avisynth = require('../main');
 var loader   = require('../code/loader');
 
 describe('avisynth.autoload', function() {
-    var baseRefs;
+    var oldRefs, baseRefs;
     var pluginsDir = path.resolve(__dirname, '../bin/plugins');
     var fakePluginsDir = path.resolve(__dirname, 'plugins');
 
     beforeEach(function() {
+        oldRefs = JSON.parse(JSON.stringify(loader.references)); // Quick'n'dirty.
         baseRefs = {};
         var dlls = fs.readdirSync(pluginsDir);
         dlls.forEach(function(dll) {
             baseRefs[path.resolve(pluginsDir, dll)] = 'plugin';
         });
+    });
+
+    afterEach(function() {
+        loader.references = oldRefs;
     });
 
     it('should be a function', function() {

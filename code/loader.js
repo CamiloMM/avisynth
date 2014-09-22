@@ -2,13 +2,15 @@ var fs   = require('fs');
 var path = require('path');
 
 // This is a map of absolute filename to 'script'/'plugin'.
-var references = exports.references = {};
+exports.references = {};
 
 // Loads a plugin or script globally.
 // What this means is that it creates a reference to this plugin/script and loads it
 // for all scripts ran in the future (even ones created in the past).
-exports.load = function(file, ignoreErrors) {
+// The references parameter is for internal use only.
+exports.load = function(file, ignoreErrors, references) {
     file = path.resolve(file);
+    references = references || exports.references;
 
     // if path does not exist or is not a file, throw.
     var isFile = false;
