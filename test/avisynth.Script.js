@@ -61,6 +61,12 @@ describe('avisynth.Script', function() {
                 script.load.bind(script,   missing, true).should.not.throw;
                 script.load.bind(script, directory, true).should.not.throw;
             });
+
+            it('should throw error if the path contains an invalid character', function() {
+                var script = avisynth.Script();
+                var invalid = path.resolve(__dirname, 'zettai-ryōiki/invalid-path.avs');
+                script.load.bind(avisynth, invalid).should.throw(Error);
+            });
         });
 
         describe('.autoload', function() {
@@ -79,6 +85,12 @@ describe('avisynth.Script', function() {
                 var script = avisynth.Script();
                 var invalid = path.resolve(__dirname, 'non-existant');
                 script.autoload.bind(script, invalid).should.throw(Error);
+            });
+
+            it('should throw error if the path contains an invalid character', function() {
+                var script = avisynth.Script();
+                var invalid = path.resolve(__dirname, 'zettai-ryōiki');
+                script.autoload.bind(avisynth, invalid).should.throw(Error);
             });
         });
 

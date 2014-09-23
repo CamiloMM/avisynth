@@ -8,12 +8,15 @@ var Script = require('./code/Script');
 // Currently it's an object. In the future it may be a function-object or something.
 var avisynth = {};
 
+// Misc utilities.
+avisynth.utils = require('./code/utils');
+
 // "Loads" a plugin/script globally. It actually stores a reference, that will be loaded
 // when running each script.
-avisynth.load = require('./code/loader.js').load;
+avisynth.load = require('./code/loader').load;
 
 // Replacement for the lack of an autoloading system (because we're portable).
-avisynth.autoload = require('./code/autoload.js');
+avisynth.autoload = require('./code/autoload');
 
 // Autoload all the plugins we bundle.
 avisynth.autoload(path.resolve(__dirname, 'bin/plugins'));

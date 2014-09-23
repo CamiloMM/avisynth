@@ -1,5 +1,6 @@
-var fs     = require('fs');
-var path   = require('path');
+var fs    = require('fs');
+var path  = require('path');
+var utils = require('./utils');
 
 // Since we are using a portable version of AviSynth, we don't have
 // the benefit of magic autoloading.
@@ -7,6 +8,8 @@ var path   = require('path');
 // autoloaded, and we'll proceed to load it all whenever we run a script.
 // The loader parameter is for internal use only.
 module.exports = function autoload(dir, loader) {
+    dir = path.resolve(dir);
+    if (!utils.isValidPath(dir)) throw new Error('Path contains invalid characters!');
     loader = loader || require('./loader').load;
     var files = fs.readdirSync(dir);
     for (var i = 0; i < files.length; i++) {

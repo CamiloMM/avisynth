@@ -42,4 +42,9 @@ describe('avisynth.autoload', function() {
         var invalid = path.resolve(__dirname, 'non-existant');
         avisynth.autoload.bind(avisynth, invalid).should.throw(Error);
     });
+
+    it('should throw error if the path contains an invalid character', function() {
+        var invalid = path.resolve(__dirname, 'zettai-ryōiki');
+        avisynth.autoload.bind(avisynth, invalid).should.throw(Error);
+    });
 });

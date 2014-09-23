@@ -50,4 +50,9 @@ describe('avisynth.load', function() {
         avisynth.load.bind(avisynth,   missing, true).should.not.throw;
         avisynth.load.bind(avisynth, directory, true).should.not.throw;
     });
+
+    it('should throw error if the path contains an invalid character', function() {
+        var invalid = path.resolve(__dirname, 'zettai-ryōiki/invalid-path.avs');
+        avisynth.load.bind(avisynth, invalid).should.throw(Error);
+    });
 });

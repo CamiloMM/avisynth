@@ -1,5 +1,6 @@
-var fs   = require('fs');
-var path = require('path');
+var fs    = require('fs');
+var path  = require('path');
+var utils = require('./utils');
 
 // This is a map of absolute filename to 'script'/'plugin'.
 exports.references = {};
@@ -10,6 +11,7 @@ exports.references = {};
 // The references parameter is for internal use only.
 exports.load = function(file, ignoreErrors, references) {
     file = path.resolve(file);
+    if (!utils.isValidPath(file)) throw new Error('Path contains invalid characters!');
     references = references || exports.references;
 
     // if path does not exist or is not a file, throw.
