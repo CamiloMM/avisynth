@@ -34,10 +34,6 @@ describe('avisynth.Script', function() {
         });
 
         describe('.load', function() {
-            it('should be a function', function() {
-                avisynth.Script().load.should.be.a('function');
-            });
-
             it('should load scripts and plugins from given paths', function() {
                 var script = avisynth.Script();
                 script.load(scriptPath);
@@ -70,10 +66,6 @@ describe('avisynth.Script', function() {
         });
 
         describe('.autoload', function() {
-            it('should be a function', function() {
-                avisynth.Script().autoload.should.be.a('function');
-            });
-
             it('should load plugins and scripts from a given directory', function() {
                 var script = avisynth.Script();
                 script.autoload(fakePluginsDir);
@@ -95,10 +87,6 @@ describe('avisynth.Script', function() {
         });
 
         describe('.allReferences', function() {
-            it('should be a function', function() {
-                avisynth.Script().allReferences.should.be.a('function');
-            });
-
             it('should initially return the global references', function() {
                 avisynth.Script().allReferences().should.deep.equal(baseRefs);
             });

@@ -26,10 +26,6 @@ describe('avisynth.load', function() {
         loader.references = oldRefs;
     });
 
-    it('should be a function', function() {
-        avisynth.load.should.be.a('function');
-    });
-
     it('should load plugins and scripts from given paths', function() {
         avisynth.load(scriptPath);
         avisynth.load(pluginPath);

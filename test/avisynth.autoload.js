@@ -22,10 +22,6 @@ describe('avisynth.autoload', function() {
         loader.references = oldRefs;
     });
 
-    it('should be a function', function() {
-        avisynth.autoload.should.be.a('function');
-    });
-
     it('should be used to load all the initial plugins', function() {
         loader.references.should.deep.equal(baseRefs);
     });
