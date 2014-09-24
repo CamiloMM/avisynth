@@ -11,6 +11,9 @@ var avisynth = {};
 // Misc utilities.
 avisynth.utils = require('./code/utils');
 
+// Expose modular plugin functionality.
+avisynth.addPlugin = require('./code/plugin-system').addPlugin;
+
 // "Loads" a plugin/script globally. It actually stores a reference, that will be loaded
 // when running each script.
 avisynth.load = require('./code/loader').load;

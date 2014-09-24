@@ -1,10 +1,11 @@
-var loader   = require('./loader');
-var autoload = require('./autoload');
+var loader       = require('./loader');
+var autoload     = require('./autoload');
+var pluginSystem = require('./plugin-system');
 
 // Avisynth script constructor.
 // Note that I don't like the overhead of having getters and setters,
 // so the coding style here is "KISS". Defensive programming is for afflicted people.
-module.exports = function Script(code) {
+function Script(code) {
     // Raw copy of the code.
     this.code = code || '';
 
@@ -42,4 +43,8 @@ module.exports = function Script(code) {
         if (this.code.trim()) fullCode += this.code + '\n';
         return fullCode;
     };
-}
+};
+
+Script.prototype = pluginSystem.pluginPrototype;
+
+module.exports = Script;

@@ -1,9 +1,10 @@
-var path     = require('path');
-var should   = require('chai').should();
-var expect   = require('chai').expect;
-var avisynth = require('../main');
-var Script   = require('../code/Script');
-var loader   = require('../code/loader');
+var path         = require('path');
+var should       = require('chai').should();
+var expect       = require('chai').expect;
+var avisynth     = require('../main');
+var Script       = require('../code/Script');
+var loader       = require('../code/loader');
+var pluginSystem = require('../code/plugin-system');
 
 describe('avisynth.Script', function() {
     var baseRefs = loader.references;
@@ -31,6 +32,11 @@ describe('avisynth.Script', function() {
 
         it('should have empty code if no code was provided', function() {
             avisynth.Script().code.should.equal('');
+        });
+
+        it('should integrate with the plugins by prototypal inheritance', function() {
+            var script = new avisynth.Script();
+            Object.getPrototypeOf(script).should.equal(pluginSystem.pluginPrototype);
         });
 
         describe('.load', function() {
