@@ -26,4 +26,17 @@ describe('avisynth.utils', function() {
             zettaiRyōiki.should.not.satisfy(avisynth.utils.isValidPath); // Unfortunately.
         });
     });
+
+    describe('.isObject', function() {
+        it('should check if something is an object', function() {
+            avisynth.utils.isObject({}).should.be.true;
+            avisynth.utils.isObject([]).should.be.true;
+            avisynth.utils.isObject(function(){}).should.be.true;
+            avisynth.utils.isObject(true).should.be.false;
+            avisynth.utils.isObject(undefined).should.be.false;
+            avisynth.utils.isObject(null).should.be.false;
+            avisynth.utils.isObject(123).should.be.false;
+            avisynth.utils.isObject('abc').should.be.false;
+        });
+    });
 });

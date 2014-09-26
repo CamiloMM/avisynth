@@ -16,3 +16,20 @@ exports.isValidPath = function(p) {
     var valid = /^[ !$&'()+,-.\/0-9:=@A-Z\[\\\]\^_`a-z{}~€‚ƒ„‰Š‹ŒŽ‘’“”•–—™š›œžŸ¡¢£¤¥¦§©ª«¬®°²³´µ·¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ]+$/;
     return valid.test(absolute);
 };
+
+// Checks if something is an object, courtesy of Lo-Dash.
+exports.isObject = function(value) {
+    var objectTypes = {
+        'boolean'   : false,
+        'function'  : true,
+        'object'    : true,
+        'number'    : false,
+        'string'    : false,
+        'undefined' : false
+    };
+    // check if the value is the ECMAScript language type of Object
+    // http://es5.github.io/#x8
+    // and avoid a V8 bug
+    // http://code.google.com/p/v8/issues/detail?id=2291
+    return !!(value && objectTypes[typeof value]);
+}
