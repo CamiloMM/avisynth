@@ -4,13 +4,16 @@ var should       = require('chai').should();
 var avisynth     = require('../main');
 var pluginSystem = require('../code/plugin-system');
 
+var fakePluginsDir = path.resolve(__dirname, 'plugins');
+var mediaDir = path.resolve(__dirname, 'media');
+var scriptPath = path.resolve(fakePluginsDir, 'colors_rgb.avsi');
+var pluginPath = path.resolve(fakePluginsDir, 'DeDup.dll');
+var textFile   = path.resolve(fakePluginsDir, 'colors_rgb.txt');
+var missing    = path.resolve(fakePluginsDir, 'non-existent.dll');
+var aviFile    = path.resolve(mediaDir, 'example.avi');
+var rand = Math.random(); // Guess what, initializing it takes ~260ms for me on Win7.
+
 describe('Plugin system', function() {
-    var fakePluginsDir = path.resolve(__dirname, 'plugins');
-    var scriptPath = path.resolve(fakePluginsDir, 'colors_rgb.avsi');
-    var pluginPath = path.resolve(fakePluginsDir, 'DeDup.dll');
-    var textFile   = path.resolve(fakePluginsDir, 'colors_rgb.txt');
-    var missing    = path.resolve(fakePluginsDir, 'non-existent.dll');
-    var rand = Math.random(); // Guess what, initializing it takes ~260ms for me on Win7.
 
     it('should be exposed as an avisynth.addPlugin reference', function() {
         avisynth.addPlugin.should.equal(pluginSystem.addPlugin);
@@ -135,5 +138,47 @@ describe('Plugin system', function() {
             lines.slice(-2)[0].should.equal(code);
             lines.slice(-1)[0].should.equal('');
         });
+
+        it('should insert plugin code after previously inserted code', function() {
+            var script1 = new avisynth.Script('Version()');
+            var script2 = avisynth.Script('Version()');
+            var code = 'Subtitle("' + rand + rand + '")';
+            avisynth.addPlugin('RandomSubTwice', function() { return code; });
+            script1.randomSubTwice();
+            script2.RandomSubTwice();
+            var lines1 = script1.fullCode().split('\n');
+            var lines2 = script2.fullCode().split('\n');
+            lines1.slice(-3)[0].should.equal('Version()');
+            lines1.slice(-2)[0].should.equal(code);
+            lines1.slice(-1)[0].should.equal('');
+            lines2.slice(-3)[0].should.equal('Version()');
+            lines2.slice(-2)[0].should.equal(code);
+            lines2.slice(-1)[0].should.equal('');
+        });
     });
+});
+
+describe('Base plugin implementations (core filters)', function() {
+    // Checks a plugin. Params are optional (and, if present, an array).
+    function checkPlugin(name, params, expected) {
+        if (!expected) { expected = params; params = []; }
+        var script = new avisynth.Script('Version()');
+        script[name].apply(script, params);
+        var lines = script.fullCode().split('\n');
+        lines.slice(-3)[0].should.equal('Version()');
+        lines.slice(-2)[0].should.equal(expected);
+        lines.slice(-1)[0].should.equal('');
+    }
+
+    describe('Media file filters', function() {
+        it('AviSource', function() {
+            checkPlugin.bind(null, 'AviSource', '').should.throw();
+            checkPlugin('AviSource', [aviFile], 'AviSource("' + aviFile + '")');
+            checkPlugin('AviSource', [aviFile, aviFile, aviFile, aviFile, aviFile], 'AviSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '")');
+            checkPlugin('AviSource', [aviFile, false], 'AviSource("' + aviFile + '", false)');
+            checkPlugin('AviSource', [aviFile, false, 'foo'], 'AviSource("' + aviFile + '", false, "foo")');
+            checkPlugin('AviSource', [aviFile, false, 'foo', 'PR0N'], 'AviSource("' + aviFile + '", false, "foo", "PR0N")');
+            checkPlugin('AviSource', [aviFile, aviFile, aviFile, aviFile, aviFile, false, 'foo', 'PR0N'], 'AviSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '", false, "foo", "PR0N")');
+        });
+    })
 });
