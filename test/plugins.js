@@ -11,6 +11,7 @@ var pluginPath = path.resolve(fakePluginsDir, 'DeDup.dll');
 var textFile   = path.resolve(fakePluginsDir, 'colors_rgb.txt');
 var missing    = path.resolve(fakePluginsDir, 'non-existent.dll');
 var aviFile    = path.resolve(mediaDir, 'example.avi');
+var wavFile    = path.resolve(mediaDir, 'example.wav');
 var rand = Math.random(); // Guess what, initializing it takes ~260ms for me on Win7.
 
 describe('Plugin system', function() {
@@ -179,6 +180,33 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AviSource', [aviFile, false, 'foo'], 'AviSource("' + aviFile + '", false, "foo")');
             checkPlugin('AviSource', [aviFile, false, 'foo', 'PR0N'], 'AviSource("' + aviFile + '", false, "foo", "PR0N")');
             checkPlugin('AviSource', [aviFile, aviFile, aviFile, aviFile, aviFile, false, 'foo', 'PR0N'], 'AviSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '", false, "foo", "PR0N")');
+        });
+
+        it('OpenDMLSource', function() {
+            checkPlugin.bind(null, 'OpenDMLSource', '').should.throw();
+            checkPlugin('OpenDMLSource', [aviFile], 'OpenDMLSource("' + aviFile + '")');
+            checkPlugin('OpenDMLSource', [aviFile, aviFile, aviFile, aviFile, aviFile], 'OpenDMLSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '")');
+            checkPlugin('OpenDMLSource', [aviFile, false], 'OpenDMLSource("' + aviFile + '", false)');
+            checkPlugin('OpenDMLSource', [aviFile, false, 'foo'], 'OpenDMLSource("' + aviFile + '", false, "foo")');
+            checkPlugin('OpenDMLSource', [aviFile, false, 'foo', 'PR0N'], 'OpenDMLSource("' + aviFile + '", false, "foo", "PR0N")');
+            checkPlugin('OpenDMLSource', [aviFile, aviFile, aviFile, aviFile, aviFile, false, 'foo', 'PR0N'], 'OpenDMLSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '", false, "foo", "PR0N")');
+        });
+
+        it('AviFileSource', function() {
+            checkPlugin.bind(null, 'AviFileSource', '').should.throw();
+            checkPlugin('AviFileSource', [aviFile], 'AviFileSource("' + aviFile + '")');
+            checkPlugin('AviFileSource', [aviFile, aviFile, aviFile, aviFile, aviFile], 'AviFileSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '")');
+            checkPlugin('AviFileSource', [aviFile, false], 'AviFileSource("' + aviFile + '", false)');
+            checkPlugin('AviFileSource', [aviFile, false, 'foo'], 'AviFileSource("' + aviFile + '", false, "foo")');
+            checkPlugin('AviFileSource', [aviFile, false, 'foo', 'PR0N'], 'AviFileSource("' + aviFile + '", false, "foo", "PR0N")');
+            checkPlugin('AviFileSource', [aviFile, aviFile, aviFile, aviFile, aviFile, false, 'foo', 'PR0N'], 'AviFileSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '", false, "foo", "PR0N")');
+        });
+
+        it('WavSource', function() {
+            checkPlugin.bind(null, 'WavSource', '').should.throw();
+            checkPlugin('WavSource', [wavFile], 'WavSource("' + wavFile + '")');
+            checkPlugin('WavSource', [wavFile, wavFile, wavFile, wavFile, wavFile], 'WavSource("' + [wavFile, wavFile, wavFile, wavFile, wavFile].join('", "') + '")');
+            checkPlugin('WavSource', [wavFile, wavFile, wavFile, wavFile, wavFile, false, 'foo', 'PR0N'], 'WavSource("' + [wavFile, wavFile, wavFile, wavFile, wavFile].join('", "') + '")');
         });
     })
 });
