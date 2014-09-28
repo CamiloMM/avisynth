@@ -36,16 +36,16 @@ describe('Plugin system', function() {
     describe('naming and aliases', function() {
         it('should throw an error if adding a plugin with a name collision', function() {
             avisynth.addPlugin('Bar', function() {});
-            avisynth.addPlugin.bind(avisynth, 'baR', function() {}).should.throw();
+            avisynth.addPlugin.bind(avisynth, 'baR', function() {}).should.throw(AvisynthError);
         });
 
         it('should throw an error if adding a plugin with a reserved name', function() {
-            avisynth.addPlugin.bind(avisynth, 'code', function() {}).should.throw();
-            avisynth.addPlugin.bind(avisynth, 'references', function() {}).should.throw();
-            avisynth.addPlugin.bind(avisynth, 'load', function() {}).should.throw();
-            avisynth.addPlugin.bind(avisynth, 'autoload', function() {}).should.throw();
-            avisynth.addPlugin.bind(avisynth, 'allReferences', function() {}).should.throw();
-            avisynth.addPlugin.bind(avisynth, 'fullCode', function() {}).should.throw();
+            avisynth.addPlugin.bind(avisynth, 'code'         , function() {}).should.throw(AvisynthError);
+            avisynth.addPlugin.bind(avisynth, 'references'   , function() {}).should.throw(AvisynthError);
+            avisynth.addPlugin.bind(avisynth, 'load'         , function() {}).should.throw(AvisynthError);
+            avisynth.addPlugin.bind(avisynth, 'autoload'     , function() {}).should.throw(AvisynthError);
+            avisynth.addPlugin.bind(avisynth, 'allReferences', function() {}).should.throw(AvisynthError);
+            avisynth.addPlugin.bind(avisynth, 'fullCode'     , function() {}).should.throw(AvisynthError);
         });
 
         it('should automatically lowercase plugin names, and generate aliases', function() {
@@ -175,8 +175,8 @@ describe('Base plugin implementations (core filters)', function() {
     describe('Media file filters', function() {
         it('AviSource', function() {
             // AviSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
-            checkPlugin.bind(null, 'AviSource', [], 'AviSource("")').should.throw();
-            checkPlugin.bind(null, 'AviSource', [aviFile, true, 'PG13'], 'AviSource("' + aviFile + '", true, "PG13")').should.throw();
+            checkPlugin.bind(null, 'AviSource', [], 'AviSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'AviSource', [aviFile, true, 'PG13'], 'AviSource("' + aviFile + '", true, "PG13")').should.throw(AvisynthError);
             checkPlugin('AviSource', [aviFile], 'AviSource("' + aviFile + '")');
             checkPlugin('AviSource', [aviFile, aviFile, aviFile, aviFile, aviFile], 'AviSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '")');
             checkPlugin('AviSource', [aviFile, false], 'AviSource("' + aviFile + '", false)');
@@ -187,8 +187,8 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('OpenDMLSource', function() {
             // OpenDMLSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
-            checkPlugin.bind(null, 'OpenDMLSource', [], 'OpenDMLSource("")').should.throw();
-            checkPlugin.bind(null, 'OpenDMLSource', [aviFile, true, 'PG13'], 'OpenDMLSource("' + aviFile + '", true, "PG13")').should.throw();
+            checkPlugin.bind(null, 'OpenDMLSource', [], 'OpenDMLSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'OpenDMLSource', [aviFile, true, 'PG13'], 'OpenDMLSource("' + aviFile + '", true, "PG13")').should.throw(AvisynthError);
             checkPlugin('OpenDMLSource', [aviFile], 'OpenDMLSource("' + aviFile + '")');
             checkPlugin('OpenDMLSource', [aviFile, aviFile, aviFile, aviFile, aviFile], 'OpenDMLSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '")');
             checkPlugin('OpenDMLSource', [aviFile, false], 'OpenDMLSource("' + aviFile + '", false)');
@@ -199,8 +199,8 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('AviFileSource', function() {
             // AviFileSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
-            checkPlugin.bind(null, 'AviFileSource', [], 'AviFileSource("")').should.throw();
-            checkPlugin.bind(null, 'AviFileSource', [aviFile, true, 'PG13'], 'AviFileSource("' + aviFile + '", true, "PG13")').should.throw();
+            checkPlugin.bind(null, 'AviFileSource', [], 'AviFileSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'AviFileSource', [aviFile, true, 'PG13'], 'AviFileSource("' + aviFile + '", true, "PG13")').should.throw(AvisynthError);
             checkPlugin('AviFileSource', [aviFile], 'AviFileSource("' + aviFile + '")');
             checkPlugin('AviFileSource', [aviFile, aviFile, aviFile, aviFile, aviFile], 'AviFileSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '")');
             checkPlugin('AviFileSource', [aviFile, false], 'AviFileSource("' + aviFile + '", false)');
@@ -211,7 +211,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('WavSource', function() {
             // WavSource(string filename [, ... ])
-            checkPlugin.bind(null, 'WavSource', [], 'WavSource("")').should.throw();
+            checkPlugin.bind(null, 'WavSource', [], 'WavSource("")').should.throw(AvisynthError);
             checkPlugin('WavSource', [wavFile], 'WavSource("' + wavFile + '")');
             checkPlugin('WavSource', [wavFile, wavFile, wavFile, wavFile, wavFile], 'WavSource("' + [wavFile, wavFile, wavFile, wavFile, wavFile].join('", "') + '")');
             checkPlugin('WavSource', [wavFile, wavFile, wavFile, wavFile, wavFile, false, 'RGB24', 'PR0N'], 'WavSource("' + [wavFile, wavFile, wavFile, wavFile, wavFile].join('", "') + '")');

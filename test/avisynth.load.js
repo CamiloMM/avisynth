@@ -1,8 +1,9 @@
-var fs       = require('fs');
-var path     = require('path');
-var should   = require('chai').should();
-var avisynth = require('../main');
-var loader   = require('../code/loader');
+var fs            = require('fs');
+var path          = require('path');
+var should        = require('chai').should();
+var avisynth      = require('../main');
+var loader        = require('../code/loader');
+var AvisynthError = require('../code/errors').AvisynthError;
 
 describe('avisynth.load', function() {
     var oldRefs, baseRefs;
@@ -35,9 +36,9 @@ describe('avisynth.load', function() {
 
     it('should throw an error for an invalid path', function() {
         var directory = fakePluginsDir;
-        avisynth.load.bind(avisynth,  textFile).should.throw(Error);
-        avisynth.load.bind(avisynth,   missing).should.throw(Error);
-        avisynth.load.bind(avisynth, directory).should.throw(Error);
+        avisynth.load.bind(avisynth,  textFile).should.throw(AvisynthError);
+        avisynth.load.bind(avisynth,   missing).should.throw(AvisynthError);
+        avisynth.load.bind(avisynth, directory).should.throw(AvisynthError);
     });
 
     it('should not throw errors if told to ignore them', function() {
@@ -49,6 +50,6 @@ describe('avisynth.load', function() {
 
     it('should throw error if the path contains an invalid character', function() {
         var invalid = path.resolve(__dirname, 'zettai-ryōiki/invalid-path.avs');
-        avisynth.load.bind(avisynth, invalid).should.throw(Error);
+        avisynth.load.bind(avisynth, invalid).should.throw(AvisynthError);
     });
 });

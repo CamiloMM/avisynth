@@ -1,4 +1,5 @@
-var utils = require('./utils');
+var utils         = require('./utils');
+var AvisynthError = require('./errors').AvisynthError;
 
 // A system for adding "native avisynth functionality" to script objects.
 // In other words, calls to avisynth functions from avisynth.Script()s.
@@ -16,12 +17,12 @@ exports.addPlugin = function(name, options, code) {
 
     // Do not add a plugin twice, and avoid name collisions.
     var lowercase = name.toLowerCase();
-    if (exports.plugins[lowercase]) throw new Error('plugin already exists!');
+    if (exports.plugins[lowercase]) throw new AvisynthError('plugin already exists!');
 
     // Some names are reserved, to avoid overriding script instance methods.
     var reserved = ['code', 'references', 'load', 'autoload', 'allReferences', 'fullCode'];
     reserved.forEach(function(res) {
-        if (res.toLowerCase() === lowercase) throw new Error('reserved name!');
+        if (res.toLowerCase() === lowercase) throw new AvisynthError('reserved name!');
     });
 
     // Ensure that load and autoload are arrays ('string' -> ['string'], null -> []).

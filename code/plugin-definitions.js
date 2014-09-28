@@ -12,7 +12,7 @@ function sharedAviSource(name, disableOptions) {
     var pixelTypes = ['YV24', 'YV16', 'YV12', 'YV411', 'YUY2', 'RGB32', 'RGB24', 'Y8', 'AUTO', 'FULL'];
 
     return function(filename, audio, pixelType, fourCC) {
-        if (typeof filename !== 'string') throw new Error('filename must be a string!');
+        if (typeof filename !== 'string') throw new AvisynthError('filename must be a string!');
         var filenames = [];
         var audioArg, pixelTypeArg, fourCCArg;
         for (var i = 0; i < arguments.length; i++) {
@@ -25,7 +25,7 @@ function sharedAviSource(name, disableOptions) {
                 break;
             }
         }
-        if (pixelTypeArg && pixelTypes.indexOf(pixelTypeArg) === -1) throw new Error('bad pixel type (' + pixelTypeArg + ')!');
+        if (pixelTypeArg && pixelTypes.indexOf(pixelTypeArg) === -1) throw new AvisynthError('bad pixel type (' + pixelTypeArg + ')!');
         var clips = filenames.join('", "');
         if (!disableOptions) {
             if (typeof fourCCArg !== 'undefined') return name + '("' + clips + '", ' + !!audioArg + ', "' + pixelTypeArg + '", "' + fourCCArg + '")';

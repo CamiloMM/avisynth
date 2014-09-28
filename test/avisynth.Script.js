@@ -1,10 +1,11 @@
-var path         = require('path');
-var should       = require('chai').should();
-var expect       = require('chai').expect;
-var avisynth     = require('../main');
-var Script       = require('../code/Script');
-var loader       = require('../code/loader');
-var pluginSystem = require('../code/plugin-system');
+var path          = require('path');
+var should        = require('chai').should();
+var expect        = require('chai').expect;
+var avisynth      = require('../main');
+var Script        = require('../code/Script');
+var loader        = require('../code/loader');
+var pluginSystem  = require('../code/plugin-system');
+var AvisynthError = require('../code/errors').AvisynthError;
 
 describe('avisynth.Script', function() {
     var baseRefs = loader.references;
@@ -51,9 +52,9 @@ describe('avisynth.Script', function() {
             it('should throw an error for an invalid path', function() {
                 var script = avisynth.Script();
                 var directory = fakePluginsDir;
-                script.load.bind(script,  textFile).should.throw(Error);
-                script.load.bind(script,   missing).should.throw(Error);
-                script.load.bind(script, directory).should.throw(Error);
+                script.load.bind(script,  textFile).should.throw(AvisynthError);
+                script.load.bind(script,   missing).should.throw(AvisynthError);
+                script.load.bind(script, directory).should.throw(AvisynthError);
             });
 
             it('should not throw errors if told to ignore them', function() {
@@ -67,7 +68,7 @@ describe('avisynth.Script', function() {
             it('should throw error if the path contains an invalid character', function() {
                 var script = avisynth.Script();
                 var invalid = path.resolve(__dirname, 'zettai-ryōiki/invalid-path.avs');
-                script.load.bind(avisynth, invalid).should.throw(Error);
+                script.load.bind(avisynth, invalid).should.throw(AvisynthError);
             });
         });
 
@@ -82,13 +83,13 @@ describe('avisynth.Script', function() {
             it('should throw an error if the directory does not exist', function() {
                 var script = avisynth.Script();
                 var invalid = path.resolve(__dirname, 'non-existant');
-                script.autoload.bind(script, invalid).should.throw(Error);
+                script.autoload.bind(script, invalid).should.throw(AvisynthError);
             });
 
             it('should throw error if the path contains an invalid character', function() {
                 var script = avisynth.Script();
                 var invalid = path.resolve(__dirname, 'zettai-ryōiki');
-                script.autoload.bind(avisynth, invalid).should.throw(Error);
+                script.autoload.bind(avisynth, invalid).should.throw(AvisynthError);
             });
         });
 

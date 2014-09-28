@@ -1,8 +1,9 @@
-var fs       = require('fs');
-var path     = require('path');
-var should   = require('chai').should();
-var avisynth = require('../main');
-var loader   = require('../code/loader');
+var fs            = require('fs');
+var path          = require('path');
+var should        = require('chai').should();
+var avisynth      = require('../main');
+var loader        = require('../code/loader');
+var AvisynthError = require('../code/errors').AvisynthError;
 
 describe('avisynth.autoload', function() {
     var oldRefs, baseRefs;
@@ -36,11 +37,11 @@ describe('avisynth.autoload', function() {
 
     it('should throw an error if the directory does not exist', function() {
         var invalid = path.resolve(__dirname, 'non-existant');
-        avisynth.autoload.bind(avisynth, invalid).should.throw(Error);
+        avisynth.autoload.bind(avisynth, invalid).should.throw(AvisynthError);
     });
 
     it('should throw error if the path contains an invalid character', function() {
         var invalid = path.resolve(__dirname, 'zettai-ryōiki');
-        avisynth.autoload.bind(avisynth, invalid).should.throw(Error);
+        avisynth.autoload.bind(avisynth, invalid).should.throw(AvisynthError);
     });
 });
