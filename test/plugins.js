@@ -1,8 +1,9 @@
-var path         = require('path');
-var expect       = require('chai').expect;
-var should       = require('chai').should();
-var avisynth     = require('../main');
-var pluginSystem = require('../code/plugin-system');
+var path          = require('path');
+var expect        = require('chai').expect;
+var should        = require('chai').should();
+var avisynth      = require('../main');
+var pluginSystem  = require('../code/plugin-system');
+var AvisynthError = require('../code/errors').AvisynthError;
 
 var fakePluginsDir = path.resolve(__dirname, 'plugins');
 var mediaDir = path.resolve(__dirname, 'media');
@@ -173,6 +174,7 @@ describe('Base plugin implementations (core filters)', function() {
 
     describe('Media file filters', function() {
         it('AviSource', function() {
+            // AviSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
             checkPlugin.bind(null, 'AviSource', [], 'AviSource("")').should.throw();
             checkPlugin.bind(null, 'AviSource', [aviFile, true, 'PG13'], 'AviSource("' + aviFile + '", true, "PG13")').should.throw();
             checkPlugin('AviSource', [aviFile], 'AviSource("' + aviFile + '")');
@@ -184,6 +186,7 @@ describe('Base plugin implementations (core filters)', function() {
         });
 
         it('OpenDMLSource', function() {
+            // OpenDMLSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
             checkPlugin.bind(null, 'OpenDMLSource', [], 'OpenDMLSource("")').should.throw();
             checkPlugin.bind(null, 'OpenDMLSource', [aviFile, true, 'PG13'], 'OpenDMLSource("' + aviFile + '", true, "PG13")').should.throw();
             checkPlugin('OpenDMLSource', [aviFile], 'OpenDMLSource("' + aviFile + '")');
@@ -195,6 +198,7 @@ describe('Base plugin implementations (core filters)', function() {
         });
 
         it('AviFileSource', function() {
+            // AviFileSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
             checkPlugin.bind(null, 'AviFileSource', [], 'AviFileSource("")').should.throw();
             checkPlugin.bind(null, 'AviFileSource', [aviFile, true, 'PG13'], 'AviFileSource("' + aviFile + '", true, "PG13")').should.throw();
             checkPlugin('AviFileSource', [aviFile], 'AviFileSource("' + aviFile + '")');
@@ -206,10 +210,30 @@ describe('Base plugin implementations (core filters)', function() {
         });
 
         it('WavSource', function() {
+            // WavSource(string filename [, ... ])
             checkPlugin.bind(null, 'WavSource', [], 'WavSource("")').should.throw();
             checkPlugin('WavSource', [wavFile], 'WavSource("' + wavFile + '")');
             checkPlugin('WavSource', [wavFile, wavFile, wavFile, wavFile, wavFile], 'WavSource("' + [wavFile, wavFile, wavFile, wavFile, wavFile].join('", "') + '")');
             checkPlugin('WavSource', [wavFile, wavFile, wavFile, wavFile, wavFile, false, 'RGB24', 'PR0N'], 'WavSource("' + [wavFile, wavFile, wavFile, wavFile, wavFile].join('", "') + '")');
+        });
+
+        it('DirectShowSource', function() {
+            // DirectShowSource(string filename [, float fps, bool seek, bool audio, bool video, bool convertfps, bool seekzero, int timeout, string pixel_type, int framecount, string logfile, int logmask])
+            checkPlugin.bind(null, 'DirectShowSource', [], 'DirectShowSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'DirectShowSource', [aviFile, aviFile], 'DirectShowSource("' + aviFile + '")').should.throw(AvisynthError);
+            checkPlugin('DirectShowSource', [aviFile], 'DirectShowSource("' + aviFile + '")');
+            checkPlugin('DirectShowSource', [aviFile, 123.456], 'DirectShowSource("' + aviFile + '", fps=123.456)');
+            checkPlugin('DirectShowSource', [aviFile, 24, false], 'DirectShowSource("' + aviFile + '", fps=24, seek=false)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, true, false], 'DirectShowSource("' + aviFile + '", seek=true, audio=false)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, true, false], 'DirectShowSource("' + aviFile + '", audio=true, video=false)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, true, false], 'DirectShowSource("' + aviFile + '", video=true, convertfps=false)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, true, false], 'DirectShowSource("' + aviFile + '", convertfps=true, seekzero=false)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, true, 123456], 'DirectShowSource("' + aviFile + '", seekzero=true, timeout=123456)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, 123456, 'RGB'], 'DirectShowSource("' + aviFile + '", timeout=123456, pixel_type="RGB")');
+            checkPlugin.bind(null, 'DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'DirectShowSource("' + aviFile + '", pixel_type="PG13")').should.throw(AvisynthError);
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'YUVex', 1234567890], 'DirectShowSource("' + aviFile + '", pixel_type="YUVex", framecount=1234567890)');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1234567890, textFile], 'DirectShowSource("' + aviFile + '", framecount=1234567890, logfile="' + textFile + '")');
+            checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, textFile, 32], 'DirectShowSource("' + aviFile + '", logfile="' + textFile + '", logmask=32)');
         });
     })
 });
