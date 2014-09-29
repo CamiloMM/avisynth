@@ -1,3 +1,4 @@
+var path          = require('path');
 var AvisynthError = require('./errors').AvisynthError;
 var pluginSystem  = require('./plugin-system');
 var addPlugin     = pluginSystem.addPlugin;
@@ -17,7 +18,7 @@ function sharedAviSource(name, disableOptions) {
         var audioArg, pixelTypeArg, fourCCArg;
         for (var i = 0; i < arguments.length; i++) {
             if (typeof arguments[i] === 'string') {
-                filenames.push(arguments[i]);
+                filenames.push(path.resolve(arguments[i]));
             } else {
                 audioArg     = arguments[i];
                 pixelTypeArg = arguments[i + 1];
@@ -47,7 +48,7 @@ function directShowSource(filename, fps, seek, audio, video, convertfps, seekzer
     if (pixelType && pixelTypes.indexOf(pixelType) === -1) throw new AvisynthError('bad pixel type (' + pixelType + ')!');
 
     // Start building the parameter list.
-    var params = ['"' + filename + '"'];
+    var params = ['"' + path.resolve(filename) + '"'];
     if (typeof fps        !== 'undefined') params.push('fps='        + fps);
     if (typeof seek       !== 'undefined') params.push('seek='       + seek);
     if (typeof audio      !== 'undefined') params.push('audio='      + audio);
@@ -57,7 +58,7 @@ function directShowSource(filename, fps, seek, audio, video, convertfps, seekzer
     if (typeof timeout    !== 'undefined') params.push('timeout='    + timeout);
     if (typeof pixelType  !== 'undefined') params.push('pixel_type=' + '"' + pixelType + '"');
     if (typeof framecount !== 'undefined') params.push('framecount=' + framecount);
-    if (typeof logfile    !== 'undefined') params.push('logfile='    + '"' + logfile + '"');
+    if (typeof logfile    !== 'undefined') params.push('logfile='    + '"' + path.resolve(logfile) + '"');
     if (typeof logmask    !== 'undefined') params.push('logmask='    + logmask);
     return 'DirectShowSource(' + params.join(', ') + ')';
 }
