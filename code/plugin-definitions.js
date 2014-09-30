@@ -63,24 +63,26 @@ function directShowSource(filename, fps, seek, audio, video, convertfps, seekzer
     return 'DirectShowSource(' + params.join(', ') + ')';
 }
 
-function imageSource(file, start, end, fps, useDevIL, info, pixelType) {
-    // Perform a couple of sanity checks.
-    if (typeof file !== 'string' || !file) throw new AvisynthError('filename is a required argument!');
-    if (typeof start === 'string') throw new AvisynthError('only one filename is supported (unlike some other source filters)!');
+function sharedImageSource(name) {
+    return function(file, start, end, fps, useDevIL, info, pixelType) {
+        // Perform a couple of sanity checks.
+        if (typeof file !== 'string' || !file) throw new AvisynthError('filename is a required argument!');
+        if (typeof start === 'string') throw new AvisynthError('only one filename is supported (unlike some other source filters)!');
 
-    // Different pixel type support too.
-    var pixelTypes = ['Y8', 'RGB24', 'RGB32'];
-    if (pixelType && pixelTypes.indexOf(pixelType) === -1) throw new AvisynthError('bad pixel type (' + pixelType + ')!');
+        // Different pixel type support too.
+        var pixelTypes = ['Y8', 'RGB24', 'RGB32'];
+        if (pixelType && pixelTypes.indexOf(pixelType) === -1) throw new AvisynthError('bad pixel type (' + pixelType + ')!');
 
-    // Start building the parameter list.
-    var params = ['"' + path.resolve(file) + '"'];
-    if (typeof start     !== 'undefined') params.push('start='      + start);
-    if (typeof end       !== 'undefined') params.push('end='        + end);
-    if (typeof fps       !== 'undefined') params.push('fps='        + fps);
-    if (typeof useDevIL  !== 'undefined') params.push('use_DevIL='  + useDevIL);
-    if (typeof info      !== 'undefined') params.push('info='       + info);
-    if (typeof pixelType !== 'undefined') params.push('pixel_type=' + '"' + pixelType + '"');
-    return 'ImageSource(' + params.join(', ') + ')';
+        // Start building the parameter list.
+        var params = ['"' + path.resolve(file) + '"'];
+        if (typeof start     !== 'undefined') params.push('start='      + start);
+        if (typeof end       !== 'undefined') params.push('end='        + end);
+        if (typeof fps       !== 'undefined') params.push('fps='        + fps);
+        if (typeof useDevIL  !== 'undefined') params.push('use_DevIL='  + useDevIL);
+        if (typeof info      !== 'undefined') params.push('info='       + info);
+        if (typeof pixelType !== 'undefined') params.push('pixel_type=' + '"' + pixelType + '"');
+        return name + '(' + params.join(', ') + ')';
+    }
 }
 
 addPlugin('AviSource', sharedAviSource('AviSource'));
@@ -88,4 +90,5 @@ addPlugin('OpenDMLSource', sharedAviSource('OpenDMLSource'));
 addPlugin('AviFileSource', sharedAviSource('AviFileSource'));
 addPlugin('WavSource', sharedAviSource('WavSource', true));
 addPlugin('DirectShowSource', directShowSource);
-addPlugin('ImageSource', imageSource);
+addPlugin('ImageSource', sharedImageSource('ImageSource'));
+addPlugin('ImageReader', sharedImageSource('ImageReader'));
