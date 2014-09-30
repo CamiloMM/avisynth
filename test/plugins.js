@@ -14,6 +14,7 @@ var missing    = path.resolve(fakePluginsDir, 'non-existent.dll');
 var aviFile    = path.resolve(mediaDir, 'example.avi');
 var wavFile    = path.resolve(mediaDir, 'example.wav');
 var jpgFile    = path.resolve(mediaDir, 'example.jpg');
+var gifFile    = path.resolve(mediaDir, 'example.gif');
 var rand = Math.random(); // Guess what, initializing it takes ~260ms for me on Win7.
 
 describe('Plugin system', function() {
@@ -246,6 +247,16 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ImageSource', [jpgFile, 123, 456, 123.456, false, false], 'ImageSource("' + jpgFile + '", start=123, end=456, fps=123.456, use_DevIL=false, info=false)');
             checkPlugin('ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'Y8'], 'ImageSource("' + jpgFile + '", pixel_type="Y8")');
             checkPlugin.bind(null, 'ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'ImageSource("' + jpgFile + '", pixel_type="PG13")').should.throw(AvisynthError);
+        });
+
+        it('ImageSourceAnim', function() {
+            // ImageSourceAnim(string file, float fps = 24, bool info = false, string pixel_type = "RGB32")
+            checkPlugin.bind(null, 'ImageSourceAnim', [], 'ImageSourceAnim("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'ImageSourceAnim', [gifFile, gifFile], 'ImageSourceAnim("' + gifFile + '")').should.throw(AvisynthError);
+            checkPlugin('ImageSourceAnim', ['./fake.gif'], 'ImageSourceAnim("' + path.resolve('./fake.gif') + '")');
+            checkPlugin('ImageSourceAnim', [gifFile, 123.456, false], 'ImageSourceAnim("' + gifFile + '", fps=123.456, info=false)');
+            checkPlugin('ImageSourceAnim', [gifFile, undefined, undefined, 'Y8'], 'ImageSourceAnim("' + gifFile + '", pixel_type="Y8")');
+            checkPlugin.bind(null, 'ImageSourceAnim', [gifFile, undefined, undefined, 'PG13'], 'ImageSourceAnim("' + gifFile + '", pixel_type="PG13")').should.throw(AvisynthError);
         });
 
         it('ImageReader', function() {
