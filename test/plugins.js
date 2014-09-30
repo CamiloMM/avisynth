@@ -13,6 +13,7 @@ var textFile   = path.resolve(fakePluginsDir, 'colors_rgb.txt');
 var missing    = path.resolve(fakePluginsDir, 'non-existent.dll');
 var aviFile    = path.resolve(mediaDir, 'example.avi');
 var wavFile    = path.resolve(mediaDir, 'example.wav');
+var jpgFile    = path.resolve(mediaDir, 'example.jpg');
 var rand = Math.random(); // Guess what, initializing it takes ~260ms for me on Win7.
 
 describe('Plugin system', function() {
@@ -235,6 +236,16 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1234567890, textFile], 'DirectShowSource("' + aviFile + '", framecount=1234567890, logfile="' + textFile + '")');
             checkPlugin('DirectShowSource', ['fake.avi', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'fake.txt'], 'DirectShowSource("' + path.resolve('fake.avi') + '", logfile="' + path.resolve('fake.txt') + '")');
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, textFile, 32], 'DirectShowSource("' + aviFile + '", logfile="' + textFile + '", logmask=32)');
+        });
+
+        it('ImageSource', function() {
+            // ImageSource(string file = "c:\%06d.ebmp", int start = 0, int end = 1000, float fps = 24, bool use_DevIL = false, bool info = false, string pixel_type = "RGB24")
+            checkPlugin.bind(null, 'ImageSource', [], 'ImageSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'ImageSource', [jpgFile, jpgFile], 'ImageSource("' + jpgFile + '")').should.throw(AvisynthError);
+            checkPlugin('ImageSource', ['./fake-%06d.jpg'], 'ImageSource("' + path.resolve('./fake-%06d.jpg') + '")');
+            checkPlugin('ImageSource', [jpgFile, 123, 456, 123.456, false, false], 'ImageSource("' + jpgFile + '", start=123, end=456, fps=123.456, use_DevIL=false, info=false)');
+            checkPlugin('ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'Y8'], 'ImageSource("' + jpgFile + '", pixel_type="Y8")');
+            checkPlugin.bind(null, 'ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'ImageSource("' + jpgFile + '", pixel_type="PG13")').should.throw(AvisynthError);
         });
     })
 });
