@@ -103,6 +103,18 @@ function imageSourceAnim(file, fps, info, pixelType) {
     return 'ImageSourceAnim(' + params.join(', ') + ')';
 }
 
+function imageWriter(file, start, end, type, info) {
+    if (typeof file !== 'string' || !file) throw new AvisynthError('filename is a required argument!');
+
+    // Start building the parameter list.
+    var params = ['"' + path.resolve(file) + '"'];
+    if (typeof start     !== 'undefined') params.push('start='      + start);
+    if (typeof end       !== 'undefined') params.push('end='        + end);
+    if (typeof type      !== 'undefined') params.push('pixel_type=' + '"' + type + '"');
+    if (typeof info      !== 'undefined') params.push('info='       + info);
+    return 'ImageWriter(' + params.join(', ') + ')';
+}
+
 addPlugin('AviSource', sharedAviSource('AviSource'));
 addPlugin('OpenDMLSource', sharedAviSource('OpenDMLSource'));
 addPlugin('AviFileSource', sharedAviSource('AviFileSource'));
@@ -111,3 +123,4 @@ addPlugin('DirectShowSource', directShowSource);
 addPlugin('ImageSource', sharedImageSource('ImageSource'));
 addPlugin('ImageReader', sharedImageSource('ImageReader'));
 addPlugin('ImageSourceAnim', imageSourceAnim);
+addPlugin('ImageWriter', imageWriter);
