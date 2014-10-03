@@ -108,10 +108,10 @@ function imageWriter(file, start, end, type, info) {
 
     // Start building the parameter list.
     var params = ['"' + path.resolve(file) + '"'];
-    if (typeof start     !== 'undefined') params.push('start='      + start);
-    if (typeof end       !== 'undefined') params.push('end='        + end);
-    if (typeof type      !== 'undefined') params.push('pixel_type=' + '"' + type + '"');
-    if (typeof info      !== 'undefined') params.push('info='       + info);
+    if (typeof start     !== 'undefined') params.push('start=' + start);
+    if (typeof end       !== 'undefined') params.push('end='   + end);
+    if (typeof type      !== 'undefined') params.push('type='  + '"' + type + '"');
+    if (typeof info      !== 'undefined') params.push('info='  + info);
     return 'ImageWriter(' + params.join(', ') + ')';
 }
 

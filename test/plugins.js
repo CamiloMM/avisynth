@@ -268,5 +268,15 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ImageReader', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'Y8'], 'ImageReader("' + jpgFile + '", pixel_type="Y8")');
             checkPlugin.bind(null, 'ImageReader', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'ImageReader("' + jpgFile + '", pixel_type="PG13")').should.throw(AvisynthError);
         });
+
+        // Screw it, I'm going to be less rigid with these tests.
+        // Their implementations are similar enough that a bug would be catched anyway.
+
+        it('ImageWriter', function() {
+            // ImageWriter(clip clip, string file = "c:\", int start = 0, int end = 0, string type = "ebmp", bool info = false)
+            // ImageWriter(clip clip, string file = "c:\", int start = 0, int -num_frames, string type = "ebmp", bool info = false)
+            checkPlugin.bind(null, 'ImageWriter', [], 'ImageWriter("")').should.throw(AvisynthError);
+            checkPlugin('ImageWriter', ['./%03d', 123, -456, 'png', false], 'ImageWriter("' + path.resolve('./%03d') + '", start=123, end=-456, type="png", info=false)');
+        });
     })
 });
