@@ -30,7 +30,6 @@ function coreFilter(name, options, types) {
 
     // Lazyness taken to new heights. First parameter can succintly describe some filters.
     // If combined with defining the second parameter, that will represent the types.
-    // TODO: fix this and figure out why the hell it's not working. Tomorrow.
     if (name.indexOf('(') !== -1) {
         var matches = name.match(/([^() ]*)\s*(\((.*)\))?/);
         name = matches[1];
@@ -47,8 +46,16 @@ function coreFilter(name, options, types) {
     // If options is an array instead of object, it is treated as options.params.
     // Optionally, options.types can be inlined too, by passing a second array.
     if (options && isDefined(options.length)) {
-        return coreFilter(name, {params: options, types: types});
+        options = {params: options, types: types};
     }
+
+    // We also support shorthands for the options properties.
+    if (options.p) options.params = options.p;
+    if (options.t) options.types  = options.t;
+
+    // Similar to a cast above, but for options' properties.
+    if (typeof options.params === 'string') options.params = options.params.split(/\s*,\s*/);
+    if (typeof options.types  === 'string') options.types  =  options.types.split(/\s*,\s*/);
 
     return function() {
         // Construct parameter definitons.
@@ -90,7 +97,8 @@ function coreFilter(name, options, types) {
 
 // Utility that eases the inline creation and addition of a core filter.
 function newPlugin(name, options, types) {
-    addPlugin(name, coreFilter(name, options, types));
+    var actualName = name.indexOf('(') !== -1 ? name.match(/[^(]*/)[0] : name;
+    addPlugin(actualName, coreFilter(name, options, types));
 }
 
 // Shared implementation of a few filters to improve code re-use.
@@ -125,22 +133,18 @@ function sharedAviSource(name, disableOptions) {
     }
 }
 
-var imageSourceDefinition = {
-    params: ['f:', 'n:start', 'end', 'fps', 'use_DevIL', 'info', 't:pixel_type'],
-    types: ['Y8', 'RGB24', 'RGB32']
-};
+var imgTypes = 'Y8, RGB24, RGB32';
+var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';
 
-var directShowSourceDefinition = {
-    params: ['f:', 'n:fps', 'seek', 'audio', 'video', 'convertfps', 'seekzero', 'timeout', 't:pixel_type', 'framecount', 'p:logfile', 'logmask'],
-    types: ['YV24', 'YV16', 'YV12', 'YUY2', 'AYUV', 'Y41P', 'Y411', 'ARGB', 'RGB32', 'RGB24', 'YUV', 'YUVex', 'RGB', 'AUTO', 'FULL']
-};
+var imgParams = 'f:, n:start, end, fps, use_DevIL, info, t:pixel_type';
+var dssParams = 'f:, n:fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type, framecount, p:logfile, logmask';
 
 addPlugin('AviSource', sharedAviSource('AviSource'));
 addPlugin('OpenDMLSource', sharedAviSource('OpenDMLSource'));
 addPlugin('AviFileSource', sharedAviSource('AviFileSource'));
 addPlugin('WavSource', sharedAviSource('WavSource', true));
-newPlugin('DirectShowSource', directShowSourceDefinition);
-newPlugin('ImageSource', imageSourceDefinition);
-newPlugin('ImageReader', imageSourceDefinition);
-newPlugin('ImageSourceAnim', ['f:', 'n:fps', 'info', 't:pixel_type'], ['Y8', 'RGB24', 'RGB32']);
-newPlugin('ImageWriter', 'f:, start, end, q:type, info');
+newPlugin('DirectShowSource', dssParams, dssTypes);
+newPlugin('ImageSource', imgParams, imgTypes);
+newPlugin('ImageReader', imgParams, imgTypes);
+newPlugin('ImageSourceAnim(f:, n:fps, info, t:pixel_type)', imgTypes);
+newPlugin('ImageWriter(f:, start, end, q:type, info)');
