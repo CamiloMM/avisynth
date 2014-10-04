@@ -5,13 +5,97 @@ var addPlugin     = pluginSystem.addPlugin;
 
 // This file contains an implementation of each of the various core filters
 // bundled with AviSynth, to ease their usage in script objects.
-// Also, screw code re-use, accounting for the minimal difference between each
-// core filter and coming up with an elegant solution would take too much time.
+
+// We'll first define some methods to improve code re-use.
+
+function isDefined(value) {
+    return typeof value !== 'undefined' && value !== null;
+}
+
+function checkType(value, allowed) {
+    if (value && allowed.indexOf(value) === -1) {
+        throw new AvisynthError('bad type (' + value + ')! allowed values: ' + allowed);
+    }
+}
+
+// This attempts to be a shared implementation that covers most use-cases.
+// It returns the function for a core filter, built from a description of "how it works".
+// A quick note on modifiers:
+// q: quoted.
+// p: file path (resolved to absolute), implies q.
+// f: forced file path, implies p.
+// n: not a path (actually, not a string). Throws if a string is given.
+// t: a type, this is checked against options.types. Implies q.
+function coreFilter(name, options, types) {
+
+    // Lazyness taken to new heights. First parameter can succintly describe some filters.
+    // If combined with defining the second parameter, that will represent the types.
+    // TODO: fix this and figure out why the hell it's not working. Tomorrow.
+    if (name.indexOf('(') !== -1) {
+        var matches = name.match(/([^() ]*)\s*(\((.*)\))?/);
+        name = matches[1];
+        if (matches[3]) {
+            if (options) types = options;
+            options = matches[3];
+        }
+    }
+
+    // Conveniently cast options/types from string to array, for the condition below.
+    if (typeof options === 'string') options = options.split(/\s*,\s*/);
+    if (typeof types   === 'string') types   =   types.split(/\s*,\s*/);
+
+    // If options is an array instead of object, it is treated as options.params.
+    // Optionally, options.types can be inlined too, by passing a second array.
+    if (options && isDefined(options.length)) {
+        return coreFilter(name, {params: options, types: types});
+    }
+
+    return function() {
+        // Construct parameter definitons.
+        var definitions = [];
+        if (options.params) options.params.forEach(function(param) {
+            // Each item in options.params should follow modifier:identifier format.
+            var matches = param.match(/^((.*):)?(.*)$/);
+            definitions.push({modifier: matches[2], identifier: matches[3]});
+        });
+
+        // Construct parameter list.
+        var params = [];
+        // There are two iterators; "a" is for actual argument, "d" is for definiton.
+        // These may progress independently if a definiton accepts multiple arguments.
+        for (var a = 0, d = 0; a < arguments.length; a++, d++) {
+            var definition = definitions[d];
+            if (!definition) throw new AvisynthError('Too many arguments for ' + name);
+            var value = arguments[a];
+            if (!isDefined(value)) continue;
+            var m = definition.modifier;
+            if (m && /[t]/.test(m)) checkType(value, options.types);
+            if (m && /[fp]/.test(m)) value = path.resolve(value);
+            if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
+            if (m && /[n]/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
+            params.push((definition.identifier ? definition.identifier + '=' : '') + value);
+        }
+
+        // All filename arguments are required; ensure that.
+        for (var i = 0; i < definitions.length; i++) {
+            var def = definitions[i];
+            if (def.modifier && /[f]/.test(def.modifier) && !arguments[i]) {
+                throw new AvisynthError('filename is a required argument!')
+            }
+        }
+
+        return name + '(' + params.join(', ') + ')';
+    };
+}
+
+// Utility that eases the inline creation and addition of a core filter.
+function newPlugin(name, options, types) {
+    addPlugin(name, coreFilter(name, options, types));
+}
 
 // Shared implementation of a few filters to improve code re-use.
 function sharedAviSource(name, disableOptions) {
 
-    // Pixel types supported by this filter.
     var pixelTypes = ['YV24', 'YV16', 'YV12', 'YV411', 'YUY2', 'RGB32', 'RGB24', 'Y8', 'AUTO', 'FULL'];
 
     return function(filename, audio, pixelType, fourCC) {
@@ -28,7 +112,9 @@ function sharedAviSource(name, disableOptions) {
                 break;
             }
         }
-        if (pixelTypeArg && pixelTypes.indexOf(pixelTypeArg) === -1) throw new AvisynthError('bad pixel type (' + pixelTypeArg + ')!');
+
+        checkType(pixelTypeArg, pixelTypes);
+
         var clips = filenames.join('", "');
         if (!disableOptions) {
             if (typeof fourCCArg !== 'undefined') return name + '("' + clips + '", ' + !!audioArg + ', "' + pixelTypeArg + '", "' + fourCCArg + '")';
@@ -39,88 +125,22 @@ function sharedAviSource(name, disableOptions) {
     }
 }
 
-// DirectShowSource is significantly different from AviSource-like source filters (and more versatile).
-function directShowSource(filename, fps, seek, audio, video, convertfps, seekzero, timeout, pixelType, framecount, logfile, logmask) {
-    // Perform a couple of sanity checks.
-    if (typeof filename !== 'string' || !filename) throw new AvisynthError('filename is a required argument!');
-    if (typeof fps === 'string') throw new AvisynthError('only one filename is supported (unlike some other source filters)!');
+var imageSourceDefinition = {
+    params: ['f:', 'n:start', 'end', 'fps', 'use_DevIL', 'info', 't:pixel_type'],
+    types: ['Y8', 'RGB24', 'RGB32']
+};
 
-    // Notice how the pixel types supported differ from the AviSource family.
-    var pixelTypes = ['YV24', 'YV16', 'YV12', 'YUY2', 'AYUV', 'Y41P', 'Y411', 'ARGB', 'RGB32', 'RGB24', 'YUV', 'YUVex', 'RGB', 'AUTO', 'FULL'];
-    if (pixelType && pixelTypes.indexOf(pixelType) === -1) throw new AvisynthError('bad pixel type (' + pixelType + ')!');
-
-    // Start building the parameter list.
-    var params = ['"' + path.resolve(filename) + '"'];
-    if (typeof fps        !== 'undefined') params.push('fps='        + fps);
-    if (typeof seek       !== 'undefined') params.push('seek='       + seek);
-    if (typeof audio      !== 'undefined') params.push('audio='      + audio);
-    if (typeof video      !== 'undefined') params.push('video='      + video);
-    if (typeof convertfps !== 'undefined') params.push('convertfps=' + convertfps);
-    if (typeof seekzero   !== 'undefined') params.push('seekzero='   + seekzero);
-    if (typeof timeout    !== 'undefined') params.push('timeout='    + timeout);
-    if (typeof pixelType  !== 'undefined') params.push('pixel_type=' + '"' + pixelType + '"');
-    if (typeof framecount !== 'undefined') params.push('framecount=' + framecount);
-    if (typeof logfile    !== 'undefined') params.push('logfile='    + '"' + path.resolve(logfile) + '"');
-    if (typeof logmask    !== 'undefined') params.push('logmask='    + logmask);
-    return 'DirectShowSource(' + params.join(', ') + ')';
-}
-
-function sharedImageSource(name) {
-    return function(file, start, end, fps, useDevIL, info, pixelType) {
-        // Perform a couple of sanity checks.
-        if (typeof file !== 'string' || !file) throw new AvisynthError('filename is a required argument!');
-        if (typeof start === 'string') throw new AvisynthError('only one filename is supported (unlike some other source filters)!');
-
-        // Different pixel type support too.
-        var pixelTypes = ['Y8', 'RGB24', 'RGB32'];
-        if (pixelType && pixelTypes.indexOf(pixelType) === -1) throw new AvisynthError('bad pixel type (' + pixelType + ')!');
-
-        // Start building the parameter list.
-        var params = ['"' + path.resolve(file) + '"'];
-        if (typeof start     !== 'undefined') params.push('start='      + start);
-        if (typeof end       !== 'undefined') params.push('end='        + end);
-        if (typeof fps       !== 'undefined') params.push('fps='        + fps);
-        if (typeof useDevIL  !== 'undefined') params.push('use_DevIL='  + useDevIL);
-        if (typeof info      !== 'undefined') params.push('info='       + info);
-        if (typeof pixelType !== 'undefined') params.push('pixel_type=' + '"' + pixelType + '"');
-        return name + '(' + params.join(', ') + ')';
-    }
-}
-
-function imageSourceAnim(file, fps, info, pixelType) {
-    // Perform a couple of sanity checks.
-    if (typeof file !== 'string' || !file) throw new AvisynthError('filename is a required argument!');
-    if (typeof fps === 'string') throw new AvisynthError('only one filename is supported (unlike some other source filters)!');
-
-    var pixelTypes = ['Y8', 'RGB24', 'RGB32'];
-    if (pixelType && pixelTypes.indexOf(pixelType) === -1) throw new AvisynthError('bad pixel type (' + pixelType + ')!');
-
-    // Start building the parameter list.
-    var params = ['"' + path.resolve(file) + '"'];
-    if (typeof fps       !== 'undefined') params.push('fps='        + fps);
-    if (typeof info      !== 'undefined') params.push('info='       + info);
-    if (typeof pixelType !== 'undefined') params.push('pixel_type=' + '"' + pixelType + '"');
-    return 'ImageSourceAnim(' + params.join(', ') + ')';
-}
-
-function imageWriter(file, start, end, type, info) {
-    if (typeof file !== 'string' || !file) throw new AvisynthError('filename is a required argument!');
-
-    // Start building the parameter list.
-    var params = ['"' + path.resolve(file) + '"'];
-    if (typeof start     !== 'undefined') params.push('start=' + start);
-    if (typeof end       !== 'undefined') params.push('end='   + end);
-    if (typeof type      !== 'undefined') params.push('type='  + '"' + type + '"');
-    if (typeof info      !== 'undefined') params.push('info='  + info);
-    return 'ImageWriter(' + params.join(', ') + ')';
-}
+var directShowSourceDefinition = {
+    params: ['f:', 'n:fps', 'seek', 'audio', 'video', 'convertfps', 'seekzero', 'timeout', 't:pixel_type', 'framecount', 'p:logfile', 'logmask'],
+    types: ['YV24', 'YV16', 'YV12', 'YUY2', 'AYUV', 'Y41P', 'Y411', 'ARGB', 'RGB32', 'RGB24', 'YUV', 'YUVex', 'RGB', 'AUTO', 'FULL']
+};
 
 addPlugin('AviSource', sharedAviSource('AviSource'));
 addPlugin('OpenDMLSource', sharedAviSource('OpenDMLSource'));
 addPlugin('AviFileSource', sharedAviSource('AviFileSource'));
 addPlugin('WavSource', sharedAviSource('WavSource', true));
-addPlugin('DirectShowSource', directShowSource);
-addPlugin('ImageSource', sharedImageSource('ImageSource'));
-addPlugin('ImageReader', sharedImageSource('ImageReader'));
-addPlugin('ImageSourceAnim', imageSourceAnim);
-addPlugin('ImageWriter', imageWriter);
+newPlugin('DirectShowSource', directShowSourceDefinition);
+newPlugin('ImageSource', imageSourceDefinition);
+newPlugin('ImageReader', imageSourceDefinition);
+newPlugin('ImageSourceAnim', ['f:', 'n:fps', 'info', 't:pixel_type'], ['Y8', 'RGB24', 'RGB32']);
+newPlugin('ImageWriter', 'f:, start, end, q:type, info');
