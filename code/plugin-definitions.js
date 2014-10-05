@@ -120,9 +120,7 @@ var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL'
 // Shared parameter lists.
 var imgParams = 'f:, n:start, end, fps, use_DevIL, info, t:pixel_type';
 var dssParams = 'f:, n:fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type, framecount, p:logfile, logmask';
-
-//var aviParams = 'm:, audio, t:pixel_type, q:fourCC';
-var aviParams = 'mf:, :, t:, q:';
+var aviParams = 'mf:, audio, t:pixel_type, q:fourCC';
 
 newPlugin('AviSource', aviParams, aviTypes);
 newPlugin('OpenDMLSource', aviParams, aviTypes);
