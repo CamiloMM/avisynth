@@ -57,6 +57,7 @@ function coreFilter(name, options, types) {
     if (typeof options.params === 'string') options.params = options.params.split(/\s*,\s*/);
     if (typeof options.types  === 'string') options.types  =  options.types.split(/\s*,\s*/);
 
+    // Here begins the actual creation of the plugin.
     return function() {
         // Construct parameter definitons.
         var definitions = [];
@@ -76,11 +77,21 @@ function coreFilter(name, options, types) {
             var value = arguments[a];
             if (!isDefined(value)) continue;
             var m = definition.modifier;
-            if (m && /[t]/.test(m)) checkType(value, options.types);
-            if (m && /[fp]/.test(m)) value = path.resolve(value);
-            if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
-            if (m && /[n]/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
-            params.push((definition.identifier ? definition.identifier + '=' : '') + value);
+            if (m && /m/.test(m)) {
+                // Multiple parameter modes.
+                var multi = [value];
+                var type = typeof value;
+                while (typeof (value = arguments[++a]) === type) { multi.push(value); } a--;
+                if (/[fp]/.test(m)) multi = multi.map(function(v) { return path.resolve(v); });
+                if (/[fpqt]/.test(m)) multi = multi.map(function(v) { return '"' + v + '"'; });
+                multi.forEach(function(p) { params.push(p); });
+            } else {
+                if (m && /t/.test(m)) checkType(value, options.types);
+                if (m && /[fp]/.test(m)) value = path.resolve(value);
+                if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
+                if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
+                params.push((definition.identifier ? definition.identifier + '=' : '') + value);
+            }
         }
 
         // All filename arguments are required; ensure that.
@@ -133,15 +144,21 @@ function sharedAviSource(name, disableOptions) {
     }
 }
 
+// Shared pixel types.
 var imgTypes = 'Y8, RGB24, RGB32';
 var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';
+var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL'
 
+// Shared parameter lists.
 var imgParams = 'f:, n:start, end, fps, use_DevIL, info, t:pixel_type';
 var dssParams = 'f:, n:fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type, framecount, p:logfile, logmask';
 
-addPlugin('AviSource', sharedAviSource('AviSource'));
-addPlugin('OpenDMLSource', sharedAviSource('OpenDMLSource'));
-addPlugin('AviFileSource', sharedAviSource('AviFileSource'));
+//var aviParams = 'm:, audio, t:pixel_type, q:fourCC';
+var aviParams = 'mf:, :, t:, q:';
+
+newPlugin('AviSource', aviParams, aviTypes);
+newPlugin('OpenDMLSource', aviParams, aviTypes);
+newPlugin('AviFileSource', aviParams, aviTypes);
 addPlugin('WavSource', sharedAviSource('WavSource', true));
 newPlugin('DirectShowSource', dssParams, dssTypes);
 newPlugin('ImageSource', imgParams, imgTypes);
