@@ -112,38 +112,6 @@ function newPlugin(name, options, types) {
     addPlugin(actualName, coreFilter(name, options, types));
 }
 
-// Shared implementation of a few filters to improve code re-use.
-function sharedAviSource(name, disableOptions) {
-
-    var pixelTypes = ['YV24', 'YV16', 'YV12', 'YV411', 'YUY2', 'RGB32', 'RGB24', 'Y8', 'AUTO', 'FULL'];
-
-    return function(filename, audio, pixelType, fourCC) {
-        if (typeof filename !== 'string') throw new AvisynthError('filename must be a string!');
-        var filenames = [];
-        var audioArg, pixelTypeArg, fourCCArg;
-        for (var i = 0; i < arguments.length; i++) {
-            if (typeof arguments[i] === 'string') {
-                filenames.push(path.resolve(arguments[i]));
-            } else {
-                audioArg     = arguments[i];
-                pixelTypeArg = arguments[i + 1];
-                fourCCArg    = arguments[i + 2];
-                break;
-            }
-        }
-
-        checkType(pixelTypeArg, pixelTypes);
-
-        var clips = filenames.join('", "');
-        if (!disableOptions) {
-            if (typeof fourCCArg !== 'undefined') return name + '("' + clips + '", ' + !!audioArg + ', "' + pixelTypeArg + '", "' + fourCCArg + '")';
-            if (typeof pixelTypeArg !== 'undefined') return name + '("' + clips + '", ' + !!audioArg + ', "' + pixelTypeArg + '")';
-            if (typeof audioArg !== 'undefined') return name + '("' + clips + '", ' + !!audioArg + ')';
-        }
-        return name + '("' + clips + '")';
-    }
-}
-
 // Shared pixel types.
 var imgTypes = 'Y8, RGB24, RGB32';
 var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';
@@ -159,7 +127,7 @@ var aviParams = 'mf:, :, t:, q:';
 newPlugin('AviSource', aviParams, aviTypes);
 newPlugin('OpenDMLSource', aviParams, aviTypes);
 newPlugin('AviFileSource', aviParams, aviTypes);
-addPlugin('WavSource', sharedAviSource('WavSource', true));
+newPlugin('WavSource(mf:)');
 newPlugin('DirectShowSource', dssParams, dssTypes);
 newPlugin('ImageSource', imgParams, imgTypes);
 newPlugin('ImageReader', imgParams, imgTypes);
