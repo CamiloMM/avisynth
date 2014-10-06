@@ -1,5 +1,5 @@
 var path   = require('path');
-var Script = require('./code/Script');
+var Script = require('./code/script');
 
 // The idea is not only to make the API simple, but also extending this module.
 // Ideally, it will be clear to any newcomer how to go about adding features.
