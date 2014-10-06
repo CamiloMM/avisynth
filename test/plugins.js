@@ -98,8 +98,12 @@ describe('Plugin system', function() {
             }, function() {});
             script.requireDir();
             var code = script.fullCode().split('\n');
-            code.slice(-3)[0].should.equal('Import("' + scriptPath + '")');
-            code.slice(-2)[0].should.equal('LoadPlugin("' + pluginPath + '")');
+            // Filesystem order might screw things up, so we're sorting the relevant lines.
+            code.slice(-3, -1).sort().should.deep.equal([
+                'Import("' + scriptPath + '")',
+                'LoadPlugin("' + pluginPath + '")'
+            ]);
+            code.slice(-1)[0].should.equal('');
         });
 
         it('should allow "load" and "autoload" to be autocasted to array', function() {
@@ -118,8 +122,11 @@ describe('Plugin system', function() {
             }, function() {});
             script2.requireDir2();
             var code = script2.fullCode().split('\n');
-            code.slice(-3)[0].should.equal('Import("' + scriptPath + '")');
-            code.slice(-2)[0].should.equal('LoadPlugin("' + pluginPath + '")');
+            // Filesystem order might screw things up, so we're sorting the relevant lines.
+            code.slice(-3, -1).sort().should.deep.equal([
+                'Import("' + scriptPath + '")',
+                'LoadPlugin("' + pluginPath + '")'
+            ]);
             code.slice(-1)[0].should.equal('');
         });
     });
