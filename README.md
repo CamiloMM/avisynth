@@ -1,4 +1,4 @@
-avisynth
+avisynth ![][travis-badge]
 ========
 
 *[Avisynth] bindings for [NodeJS] with a strong focus on ease-of-use.*
@@ -20,5 +20,6 @@ script.sharpen(1); // Direct plugin and built-in calls; working on it at the mom
 // Still thinking of how the rest of the API will be.
 ```
 
-[Avisynth]:  http://avisynth.nl/
-[NodeJS]:    http://nodejs.org/
+[Avisynth]:      http://avisynth.nl/
+[NodeJS]:        http://nodejs.org/
+[travis-badge]:  http://img.shields.io/travis/CamiloMM/avisynth.svg?style=flat
