@@ -12,7 +12,7 @@
     "ia32"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,8 @@
   "homepage": "https://github.com/CamiloMM/avisynth",
   "devDependencies": {
     "chai": "^1.9.1",
+    "codeclimate-test-reporter": "0.0.4",
+    "istanbul": "^0.3.2",
     "mocha": "^1.21.4"
   }
 }
