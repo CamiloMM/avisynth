@@ -32,4 +32,12 @@ exports.isObject = function(value) {
     // and avoid a V8 bug
     // http://code.google.com/p/v8/issues/detail?id=2291
     return !!(value && objectTypes[typeof value]);
-}
+};
+
+exports.isNumeric = function(value) {
+    if (value === '') return false;
+    if (typeof value === 'object') return false;
+    if (typeof value === 'boolean') return false;
+    if (Math.abs(value) === Infinity) return false;
+    return +value == value;
+};

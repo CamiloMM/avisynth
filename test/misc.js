@@ -29,14 +29,37 @@ describe('avisynth.utils', function() {
 
     describe('.isObject', function() {
         it('should check if something is an object', function() {
-            avisynth.utils.isObject({}).should.be.true;
-            avisynth.utils.isObject([]).should.be.true;
+            avisynth.utils.isObject({}          ).should.be.true;
+            avisynth.utils.isObject([]          ).should.be.true;
             avisynth.utils.isObject(function(){}).should.be.true;
-            avisynth.utils.isObject(true).should.be.false;
-            avisynth.utils.isObject(undefined).should.be.false;
-            avisynth.utils.isObject(null).should.be.false;
-            avisynth.utils.isObject(123).should.be.false;
-            avisynth.utils.isObject('abc').should.be.false;
+            avisynth.utils.isObject(true        ).should.be.false;
+            avisynth.utils.isObject(undefined   ).should.be.false;
+            avisynth.utils.isObject(null        ).should.be.false;
+            avisynth.utils.isObject(123         ).should.be.false;
+            avisynth.utils.isObject('abc'       ).should.be.false;
+        });
+    });
+
+    describe('.isNumeric', function() {
+        it('should check if something looks like an usable number', function() {
+            avisynth.utils.isNumeric("-10"       ).should.be.true;
+            avisynth.utils.isNumeric(16          ).should.be.true;
+            avisynth.utils.isNumeric(0xFF        ).should.be.true;
+            avisynth.utils.isNumeric("0xFF"      ).should.be.true;
+            avisynth.utils.isNumeric("8e5"       ).should.be.true;
+            avisynth.utils.isNumeric(3.1415      ).should.be.true;
+            avisynth.utils.isNumeric(-10         ).should.be.true;
+            avisynth.utils.isNumeric(0144        ).should.be.true;
+            avisynth.utils.isNumeric(0           ).should.be.true;
+            avisynth.utils.isNumeric(""          ).should.be.false;
+            avisynth.utils.isNumeric({}          ).should.be.false;
+            avisynth.utils.isNumeric([]          ).should.be.false;
+            avisynth.utils.isNumeric(function(){}).should.be.false;
+            avisynth.utils.isNumeric(NaN         ).should.be.false;
+            avisynth.utils.isNumeric(null        ).should.be.false;
+            avisynth.utils.isNumeric(true        ).should.be.false;
+            avisynth.utils.isNumeric(Infinity    ).should.be.false;
+            avisynth.utils.isNumeric(undefined   ).should.be.false;
         });
     });
 });
