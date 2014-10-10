@@ -1,7 +1,7 @@
 avisynth [![Travis badge][travis-badge]][travis-link] [![CodeClimate badge][codeclimate-badge]][codeclimate-link] [![coverage badge][coverage-badge]][codeclimate-link] [![dependencies badge][dependencies-badge]][dependencies-link]
 ========
 
-<img align="right" width="160" height="256" src="logo.png">
+<img align="right" width="120" height="192" src="logo.png">
 
 *[Avisynth] bindings for [NodeJS] with a strong focus on ease-of-use.*
 
