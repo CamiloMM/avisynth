@@ -1,6 +1,8 @@
 avisynth [![Travis badge][travis-badge]][travis-link] [![CodeClimate badge][codeclimate-badge]][codeclimate-link] [![coverage badge][coverage-badge]][codeclimate-link] [![dependencies badge][dependencies-badge]][dependencies-link]
 ========
 
+<img align="right" width="160" height="256" src="logo.png">
+
 *[Avisynth] bindings for [NodeJS] with a strong focus on ease-of-use.*
 
 The idea is to have a node package that you can use to process videos, images and sound with Avisynth, in a self-contained package.
