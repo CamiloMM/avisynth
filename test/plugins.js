@@ -298,5 +298,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('SegmentedDirectShowSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'SegmentedDirectShowSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
             checkPlugin('SegmentedDirectShowSource', ['fake1.avi', aviFile, 123.456, false, true, false, true, false, 123456, 'YUVex'], 'SegmentedDirectShowSource("' + [path.resolve('fake1.avi'), aviFile].join('", "') + '", fps=123.456, seek=false, audio=true, video=false, convertfps=true, seekzero=false, timeout=123456, pixel_type="YUVex")');
         });
+
+        it('SoundOut', function() {
+            // This is a very complex function. We'll only support its most basic usage.
+            checkPlugin.bind(null, 'SoundOut', [true], 'SoundOut(true)').should.throw(AvisynthError);
+            checkPlugin('SoundOut', [], 'SoundOut()');
+        });
     })
 });

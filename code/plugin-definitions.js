@@ -33,10 +33,8 @@ function coreFilter(name, options, types) {
     if (name.indexOf('(') !== -1) {
         var matches = name.match(/([^() ]*)\s*(\((.*)\))?/);
         name = matches[1];
-        if (matches[3]) {
-            if (options) types = options;
-            options = matches[3];
-        }
+        if (options) types = options;
+        options = matches[3];
     }
 
     // Conveniently cast options/types from string to array, for the condition below.
@@ -48,6 +46,9 @@ function coreFilter(name, options, types) {
     if (options && isDefined(options.length)) {
         options = {params: options, types: types};
     }
+
+    // If options is still not defined, default it.
+    if (!isDefined(options)) options = {};
 
     // We also support shorthands for the options properties.
     if (options.p) options.params = options.p;
@@ -133,3 +134,4 @@ newPlugin('ImageSourceAnim(f:, n:fps, info, t:pixel_type)', imgTypes);
 newPlugin('ImageWriter(f:, start, end, q:type, info)');
 newPlugin('SegmentedAviSource(mf:, audio, t:pixel_type)', aviTypes);
 newPlugin('SegmentedDirectShowSource(mf:, fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type)', dssTypes);
+newPlugin('SoundOut');
