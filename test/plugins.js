@@ -291,5 +291,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('SegmentedAviSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'SegmentedAviSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
             checkPlugin('SegmentedAviSource', ['fake1.avi', aviFile, false, 'YV411'], 'SegmentedAviSource("' + [path.resolve('fake1.avi'), aviFile].join('", "') + '", audio=false, pixel_type="YV411")');
         });
+
+        it('SegmentedDirectShowSource', function() {
+            // SegmentedDirectShowSource(string base_filename [, ... ] [, float fps, bool seek, bool audio, bool video, bool convertfps, bool seekzero, int timeout, string pixel_type])
+            checkPlugin.bind(null, 'SegmentedDirectShowSource', [], 'SegmentedDirectShowSource()').should.throw(AvisynthError);
+            checkPlugin('SegmentedDirectShowSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'SegmentedDirectShowSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
+            checkPlugin('SegmentedDirectShowSource', ['fake1.avi', aviFile, 123.456, false, true, false, true, false, 123456, 'YUVex'], 'SegmentedDirectShowSource("' + [path.resolve('fake1.avi'), aviFile].join('", "') + '", fps=123.456, seek=false, audio=true, video=false, convertfps=true, seekzero=false, timeout=123456, pixel_type="YUVex")');
+        });
     })
 });

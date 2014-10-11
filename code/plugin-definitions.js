@@ -132,3 +132,4 @@ newPlugin('ImageReader', imgParams, imgTypes);
 newPlugin('ImageSourceAnim(f:, n:fps, info, t:pixel_type)', imgTypes);
 newPlugin('ImageWriter(f:, start, end, q:type, info)');
 newPlugin('SegmentedAviSource(mf:, audio, t:pixel_type)', aviTypes);
+newPlugin('SegmentedDirectShowSource(mf:, fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type)', dssTypes);
