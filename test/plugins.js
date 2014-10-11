@@ -184,7 +184,7 @@ describe('Base plugin implementations (core filters)', function() {
     describe('Media file filters', function() {
         it('AviSource', function() {
             // AviSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
-            checkPlugin.bind(null, 'AviSource', [], 'AviSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'AviSource', [], 'AviSource()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'AviSource', [aviFile, true, 'PG13'], 'AviSource("' + aviFile + '", audio=true, pixel_type="PG13")').should.throw(AvisynthError);
             checkPlugin('AviSource', ['fake.avi'], 'AviSource("' + path.resolve('fake.avi') + '")');
             checkPlugin('AviSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'AviSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
@@ -196,7 +196,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('OpenDMLSource', function() {
             // OpenDMLSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
-            checkPlugin.bind(null, 'OpenDMLSource', [], 'OpenDMLSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'OpenDMLSource', [], 'OpenDMLSource()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'OpenDMLSource', [aviFile, true, 'PG13'], 'OpenDMLSource("' + aviFile + '", audio=true, pixel_type="PG13")').should.throw(AvisynthError);
             checkPlugin('OpenDMLSource', ['fake.avi'], 'OpenDMLSource("' + path.resolve('fake.avi') + '")');
             checkPlugin('OpenDMLSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'OpenDMLSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
@@ -208,7 +208,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('AviFileSource', function() {
             // AviFileSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
-            checkPlugin.bind(null, 'AviFileSource', [], 'AviFileSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'AviFileSource', [], 'AviFileSource()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'AviFileSource', [aviFile, true, 'PG13'], 'AviFileSource("' + aviFile + '", audio=true, pixel_type="PG13")').should.throw(AvisynthError);
             checkPlugin('AviFileSource', ['fake.avi'], 'AviFileSource("' + path.resolve('fake.avi') + '")');
             checkPlugin('AviFileSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'AviFileSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
@@ -220,14 +220,14 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('WavSource', function() {
             // WavSource(string filename [, ... ])
-            checkPlugin.bind(null, 'WavSource', [], 'WavSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'WavSource', [], 'WavSource()').should.throw(AvisynthError);
             checkPlugin('WavSource', ['fake.wav'], 'WavSource("' + path.resolve('fake.wav') + '")');
             checkPlugin('WavSource', [wavFile, 'fake1.avi', aviFile, 'fake2.avi', wavFile], 'WavSource("' + [wavFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), wavFile].join('", "') + '")');
         });
 
         it('DirectShowSource', function() {
             // DirectShowSource(string filename [, float fps, bool seek, bool audio, bool video, bool convertfps, bool seekzero, int timeout, string pixel_type, int framecount, string logfile, int logmask])
-            checkPlugin.bind(null, 'DirectShowSource', [], 'DirectShowSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'DirectShowSource', [], 'DirectShowSource()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'DirectShowSource', [aviFile, aviFile], 'DirectShowSource("' + aviFile + '")').should.throw(AvisynthError);
             checkPlugin('DirectShowSource', [aviFile], 'DirectShowSource("' + aviFile + '")');
             checkPlugin('DirectShowSource', [aviFile, 123.456], 'DirectShowSource("' + aviFile + '", fps=123.456)');
@@ -247,7 +247,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('ImageSource', function() {
             // ImageSource(string file = "c:\%06d.ebmp", int start = 0, int end = 1000, float fps = 24, bool use_DevIL = false, bool info = false, string pixel_type = "RGB24")
-            checkPlugin.bind(null, 'ImageSource', [], 'ImageSource("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'ImageSource', [], 'ImageSource()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'ImageSource', [jpgFile, jpgFile], 'ImageSource("' + jpgFile + '")').should.throw(AvisynthError);
             checkPlugin('ImageSource', ['./fake-%06d.jpg'], 'ImageSource("' + path.resolve('./fake-%06d.jpg') + '")');
             checkPlugin('ImageSource', [jpgFile, 123, 456, 123.456, false, false], 'ImageSource("' + jpgFile + '", start=123, end=456, fps=123.456, use_DevIL=false, info=false)');
@@ -257,7 +257,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('ImageSourceAnim', function() {
             // ImageSourceAnim(string file, float fps = 24, bool info = false, string pixel_type = "RGB32")
-            checkPlugin.bind(null, 'ImageSourceAnim', [], 'ImageSourceAnim("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'ImageSourceAnim', [], 'ImageSourceAnim()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'ImageSourceAnim', [gifFile, gifFile], 'ImageSourceAnim("' + gifFile + '")').should.throw(AvisynthError);
             checkPlugin('ImageSourceAnim', ['./fake.gif'], 'ImageSourceAnim("' + path.resolve('./fake.gif') + '")');
             checkPlugin('ImageSourceAnim', [gifFile, 123.456, false], 'ImageSourceAnim("' + gifFile + '", fps=123.456, info=false)');
@@ -267,7 +267,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('ImageReader', function() {
             // ImageReader(string file = "c:\%06d.ebmp", int start = 0, int end = 1000, float fps = 24, bool use_DevIL = false, bool info = false, string pixel_type = "RGB24")
-            checkPlugin.bind(null, 'ImageReader', [], 'ImageReader("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'ImageReader', [], 'ImageReader()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'ImageReader', [jpgFile, jpgFile], 'ImageReader("' + jpgFile + '")').should.throw(AvisynthError);
             checkPlugin('ImageReader', ['./fake-%06d.jpg'], 'ImageReader("' + path.resolve('./fake-%06d.jpg') + '")');
             checkPlugin('ImageReader', [jpgFile, 123, 456, 123.456, false, false], 'ImageReader("' + jpgFile + '", start=123, end=456, fps=123.456, use_DevIL=false, info=false)');
@@ -281,8 +281,15 @@ describe('Base plugin implementations (core filters)', function() {
         it('ImageWriter', function() {
             // ImageWriter(clip clip, string file = "c:\", int start = 0, int end = 0, string type = "ebmp", bool info = false)
             // ImageWriter(clip clip, string file = "c:\", int start = 0, int -num_frames, string type = "ebmp", bool info = false)
-            checkPlugin.bind(null, 'ImageWriter', [], 'ImageWriter("")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'ImageWriter', [], 'ImageWriter()').should.throw(AvisynthError);
             checkPlugin('ImageWriter', ['./%03d', 123, -456, 'png', false], 'ImageWriter("' + path.resolve('./%03d') + '", start=123, end=-456, type="png", info=false)');
+        });
+
+        it('SegmentedAviSource', function() {
+            // SegmentedAviSource(string base_filename [, ... ] [, bool audio] [, string pixel_type])
+            checkPlugin.bind(null, 'SegmentedAviSource', [], 'SegmentedAviSource()').should.throw(AvisynthError);
+            checkPlugin('SegmentedAviSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'SegmentedAviSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
+            checkPlugin('SegmentedAviSource', ['fake1.avi', aviFile, false, 'YV411'], 'SegmentedAviSource("' + [path.resolve('fake1.avi'), aviFile].join('", "') + '", audio=false, pixel_type="YV411")');
         });
     })
 });
