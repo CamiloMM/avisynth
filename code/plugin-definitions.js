@@ -135,3 +135,4 @@ newPlugin('ImageWriter(f:, start, end, q:type, info)');
 newPlugin('SegmentedAviSource(mf:, audio, t:pixel_type)', aviTypes);
 newPlugin('SegmentedDirectShowSource(mf:, fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
+newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, showyuv, analyze, autowhite, autogain, conditional)');

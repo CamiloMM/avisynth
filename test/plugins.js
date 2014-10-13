@@ -301,8 +301,17 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('SoundOut', function() {
             // This is a very complex function. We'll only support its most basic usage.
+            // See http://avisynth.nl/index.php/SoundOut
             checkPlugin.bind(null, 'SoundOut', [true], 'SoundOut(true)').should.throw(AvisynthError);
             checkPlugin('SoundOut', [], 'SoundOut()');
         });
-    })
+    });
+
+    describe('Color conversion and adjustment filters', function() {
+        it('ColorYUV', function() {
+            // ColorYUV(clip [, float gain_y] [, float off_y] [, float gamma_y] [, float cont_y] [, float gain_u] [, float off_u] [, float gamma_u] [, float cont_u] [, float gain_v] [, float off_v] [, float gamma_v] [, float cont_v] [, string levels] [, string opt] [, boolean showyuv] [, boolean analyze] [, boolean autowhite] [, boolean autogain] [, boolean conditional])
+            checkPlugin('ColorYUV', [12.34, 23.45, 34.56, 45.67, 56.78, 67.89, 78.90, 89.01, 90.12, 123.456, 789, 12345.67890, 'TV->PC', 'coring', false, true, false, true, false], 'ColorYUV(gain_y=12.34, off_y=23.45, gamma_y=34.56, cont_y=45.67, gain_u=56.78, off_u=67.89, gamma_u=78.9, cont_u=89.01, gain_v=90.12, off_v=123.456, gamma_v=789, cont_v=12345.6789, levels="TV->PC", opt="coring", showyuv=false, analyze=true, autowhite=false, autogain=true, conditional=false)');
+            checkPlugin('ColorYUV', [], 'ColorYUV()');
+        });
+    });
 });
