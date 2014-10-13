@@ -21,11 +21,12 @@ function checkType(value, allowed) {
 // This attempts to be a shared implementation that covers most use-cases.
 // It returns the function for a core filter, built from a description of "how it works".
 // A quick note on modifiers:
-// q: quoted.
+// q: quoted (string).
 // p: file path (resolved to absolute), implies q.
 // f: forced file path, implies p.
 // n: not a path (actually, not a string). Throws if a string is given.
 // t: a type, this is checked against options.types. Implies q.
+// b: field is cast to boolean.
 function coreFilter(name, options, types) {
 
     // Lazyness taken to new heights. First parameter can succintly describe some filters.
@@ -91,6 +92,7 @@ function coreFilter(name, options, types) {
                 if (m && /[fp]/.test(m)) value = path.resolve(value);
                 if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
                 if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
+                if (m && /b/.test(m)) value = !!value;
                 params.push((definition.identifier ? definition.identifier + '=' : '') + value);
             }
         }
@@ -119,9 +121,9 @@ var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YU
 var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL'
 
 // Shared parameter lists.
-var imgParams = 'f:, n:start, end, fps, use_DevIL, info, t:pixel_type';
-var dssParams = 'f:, n:fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type, framecount, p:logfile, logmask';
-var aviParams = 'mf:, audio, t:pixel_type, q:fourCC';
+var imgParams = 'f:, n:start, end, fps, b:use_DevIL, b:info, t:pixel_type';
+var dssParams = 'f:, n:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type, framecount, p:logfile, logmask';
+var aviParams = 'mf:, b:audio, t:pixel_type, q:fourCC';
 
 newPlugin('AviSource', aviParams, aviTypes);
 newPlugin('OpenDMLSource', aviParams, aviTypes);
@@ -130,9 +132,9 @@ newPlugin('WavSource(mf:)');
 newPlugin('DirectShowSource', dssParams, dssTypes);
 newPlugin('ImageSource', imgParams, imgTypes);
 newPlugin('ImageReader', imgParams, imgTypes);
-newPlugin('ImageSourceAnim(f:, n:fps, info, t:pixel_type)', imgTypes);
-newPlugin('ImageWriter(f:, start, end, q:type, info)');
-newPlugin('SegmentedAviSource(mf:, audio, t:pixel_type)', aviTypes);
-newPlugin('SegmentedDirectShowSource(mf:, fps, seek, audio, video, convertfps, seekzero, timeout, t:pixel_type)', dssTypes);
+newPlugin('ImageSourceAnim(f:, n:fps, b:info, t:pixel_type)', imgTypes);
+newPlugin('ImageWriter(f:, start, end, q:type, b:info)');
+newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
+newPlugin('SegmentedDirectShowSource(mf:, fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
-newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, showyuv, analyze, autowhite, autogain, conditional)');
+newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
