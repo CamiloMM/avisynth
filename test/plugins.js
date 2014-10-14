@@ -313,5 +313,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ColorYUV', [12.34, 23.45, 34.56, 45.67, 56.78, 67.89, 78.90, 89.01, 90.12, 123.456, 789, 12345.67890, 'TV->PC', 'coring', false, true, false, true, false], 'ColorYUV(gain_y=12.34, off_y=23.45, gamma_y=34.56, cont_y=45.67, gain_u=56.78, off_u=67.89, gamma_u=78.9, cont_u=89.01, gain_v=90.12, off_v=123.456, gamma_v=789, cont_v=12345.6789, levels="TV->PC", opt="coring", showyuv=false, analyze=true, autowhite=false, autogain=true, conditional=false)');
             checkPlugin('ColorYUV', [], 'ColorYUV()');
         });
+
+        it('ConvertBackToYUY2', function() {
+            // ConvertBackToYUY2(clip [, string matrix])
+            checkPlugin.bind(null, 'ConvertBackToYUY2', ['invalid'], 'ConvertBackToYUY2(matrix="invalid")').should.throw(AvisynthError);
+            checkPlugin('ConvertBackToYUY2', [], 'ConvertBackToYUY2()');
+            checkPlugin('ConvertBackToYUY2', ['PC.709'], 'ConvertBackToYUY2(matrix="PC.709")');
+        });
     });
 });

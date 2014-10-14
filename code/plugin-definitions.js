@@ -137,4 +137,5 @@ newPlugin('ImageWriter(f:, start, end, q:type, b:info)');
 newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
 newPlugin('SegmentedDirectShowSource(mf:, fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
+newPlugin('ConvertBackToYUY2(t:matrix)', 'Rec601, PC.601, Rec709, PC.709, AVERAGE');
 newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
