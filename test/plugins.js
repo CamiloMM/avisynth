@@ -320,5 +320,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ConvertBackToYUY2', [], 'ConvertBackToYUY2()');
             checkPlugin('ConvertBackToYUY2', ['PC.709'], 'ConvertBackToYUY2(matrix="PC.709")');
         });
+
+        it('ConvertToY8', function() {
+            // ConvertToY8(clip [, string matrix])
+            checkPlugin.bind(null, 'ConvertToY8', ['invalid'], 'ConvertToY8(matrix="invalid")').should.throw(AvisynthError);
+            checkPlugin('ConvertToY8', [], 'ConvertToY8()');
+            checkPlugin('ConvertToY8', ['Rec601'], 'ConvertToY8(matrix="Rec601")');
+        });
     });
 });

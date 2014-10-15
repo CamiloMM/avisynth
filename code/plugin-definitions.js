@@ -115,10 +115,11 @@ function newPlugin(name, options, types) {
     addPlugin(actualName, coreFilter(name, options, types));
 }
 
-// Shared pixel types.
+// Shared type definitions.
 var imgTypes = 'Y8, RGB24, RGB32';
 var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';
 var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL'
+var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
 
 // Shared parameter lists.
 var imgParams = 'f:, n:start, end, fps, b:use_DevIL, b:info, t:pixel_type';
@@ -137,5 +138,6 @@ newPlugin('ImageWriter(f:, start, end, q:type, b:info)');
 newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
 newPlugin('SegmentedDirectShowSource(mf:, fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
-newPlugin('ConvertBackToYUY2(t:matrix)', 'Rec601, PC.601, Rec709, PC.709, AVERAGE');
 newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
+newPlugin('ConvertBackToYUY2(t:matrix)', matrices);
+newPlugin('ConvertToY8(t:matrix)', matrices);
