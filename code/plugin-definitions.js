@@ -141,3 +141,4 @@ newPlugin('SoundOut');
 newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
 newPlugin('ConvertBackToYUY2(t:matrix)', matrices);
 newPlugin('ConvertToY8(t:matrix)', matrices);
+newPlugin('ConvertToRGB(t:matrix, b:interlaced, q:ChromaInPlacement, q:chromaresample)', matrices);
