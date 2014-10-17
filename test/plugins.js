@@ -328,11 +328,14 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ConvertToY8', ['Rec601'], 'ConvertToY8(matrix="Rec601")');
         });
 
-        it('ConvertToRGB', function() {
-            // ConvertToRGB(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
-            checkPlugin.bind(null, 'ConvertToRGB', ['invalid'], 'ConvertToRGB(matrix="invalid")').should.throw(AvisynthError);
-            checkPlugin('ConvertToRGB', [], 'ConvertToRGB()');
-            checkPlugin('ConvertToRGB', ['AVERAGE', false, 'MPEG2', 'spline36'], 'ConvertToRGB(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="spline36")');
+        ['ConvertToRGB', 'ConvertToRGB24', 'ConvertToRGB32', 'ConvertToYUY2',
+        'ConvertToYV411', 'ConvertToYV16', 'ConvertToYV24'].forEach(function(name) {
+            it(name, function() {
+                // name(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
+                checkPlugin.bind(null, name, ['invalid'], name + '(matrix="invalid")').should.throw(AvisynthError);
+                checkPlugin(name, [], name + '()');
+                checkPlugin(name, ['AVERAGE', false, 'MPEG2', 'spline36'], name + '(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="spline36")');
+            });
         });
     });
 });
