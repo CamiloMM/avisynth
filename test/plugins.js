@@ -344,5 +344,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ConvertToYV12', [], 'ConvertToYV12()');
             checkPlugin('ConvertToYV12', ['AVERAGE', false, 'MPEG2', 'sinc', 'DV'], 'ConvertToYV12(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="sinc", ChromaOutPlacement="DV")');
         });
+
+        it('FixLuminance', function() {
+            // FixLuminance(clip clip, int intercept, int slope)
+            checkPlugin('FixLuminance', [], 'FixLuminance()');
+            checkPlugin('FixLuminance', [123, 456], 'FixLuminance(intercept=123, slope=456)');
+        });
     });
 });

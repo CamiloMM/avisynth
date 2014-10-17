@@ -153,3 +153,4 @@ newPlugin('ConvertToYV411', convertParams, matrices);
 newPlugin('ConvertToYV12', convertParams + ', q:ChromaOutPlacement', matrices);
 newPlugin('ConvertToYV16', convertParams, matrices);
 newPlugin('ConvertToYV24', convertParams, matrices);
+newPlugin('FixLuminance(intercept, slope)');
