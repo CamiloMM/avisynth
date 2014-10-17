@@ -337,5 +337,12 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, ['AVERAGE', false, 'MPEG2', 'spline36'], name + '(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="spline36")');
             });
         });
+
+        it('ConvertToYV12', function() {
+            // ConvertToYV12(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
+            checkPlugin.bind(null, 'ConvertToYV12', ['invalid'], 'ConvertToYV12(matrix="invalid")').should.throw(AvisynthError);
+            checkPlugin('ConvertToYV12', [], 'ConvertToYV12()');
+            checkPlugin('ConvertToYV12', ['AVERAGE', false, 'MPEG2', 'sinc', 'DV'], 'ConvertToYV12(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="sinc", ChromaOutPlacement="DV")');
+        });
     });
 });

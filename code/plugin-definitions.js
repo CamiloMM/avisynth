@@ -127,6 +127,7 @@ var dssParams = 'f:, n:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, 
 var aviParams = 'mf:, b:audio, t:pixel_type, q:fourCC';
 var convertParams = 't:matrix, b:interlaced, q:ChromaInPlacement, q:chromaresample';
 
+// Media file filters
 newPlugin('AviSource', aviParams, aviTypes);
 newPlugin('OpenDMLSource', aviParams, aviTypes);
 newPlugin('AviFileSource', aviParams, aviTypes);
@@ -139,13 +140,16 @@ newPlugin('ImageWriter(f:, start, end, q:type, b:info)');
 newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
 newPlugin('SegmentedDirectShowSource(mf:, fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
+
+// Color conversion and adjustment filters
 newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
 newPlugin('ConvertBackToYUY2(t:matrix)', matrices);
-newPlugin('ConvertToY8(t:matrix)', matrices);
 newPlugin('ConvertToRGB', convertParams, matrices);
 newPlugin('ConvertToRGB24', convertParams, matrices);
 newPlugin('ConvertToRGB32', convertParams, matrices);
 newPlugin('ConvertToYUY2', convertParams, matrices);
+newPlugin('ConvertToY8(t:matrix)', matrices);
 newPlugin('ConvertToYV411', convertParams, matrices);
+newPlugin('ConvertToYV12', convertParams + ', q:ChromaOutPlacement', matrices);
 newPlugin('ConvertToYV16', convertParams, matrices);
 newPlugin('ConvertToYV24', convertParams, matrices);
