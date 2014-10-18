@@ -356,5 +356,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Greyscale', [], 'Greyscale()');
             checkPlugin('Greyscale', ['rec709'], 'Greyscale(matrix="rec709")');
         });
+
+        it('Invert', function() {
+            // Invert(clip clip [, string channels])
+            checkPlugin('Invert', [], 'Invert()');
+            checkPlugin('Invert', ['BG'], 'Invert(channels="BG")');
+        });
     });
 });
