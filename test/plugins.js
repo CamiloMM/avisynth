@@ -350,5 +350,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('FixLuminance', [], 'FixLuminance()');
             checkPlugin('FixLuminance', [123, 456], 'FixLuminance(intercept=123, slope=456)');
         });
+
+        it('Greyscale', function() {
+            // Greyscale(clip clip [, string matrix])
+            checkPlugin('Greyscale', [], 'Greyscale()');
+            checkPlugin('Greyscale', ['rec709'], 'Greyscale(matrix="rec709")');
+        });
     });
 });
