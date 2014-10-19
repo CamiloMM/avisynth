@@ -370,5 +370,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Levels', [0, 1, 255, 0, 255], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255)');
             checkPlugin('Levels', [0, 1, 255, 0, 255, true, false], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255, coring=true, dither=false)');
         });
+
+        it('Limiter', function() {
+            // Limiter(clip clip [, int min_luma] [, int max_luma] [, int min_chroma] [, int max_chroma] [, string show])
+            checkPlugin('Limiter', [], 'Limiter()');
+            checkPlugin('Limiter', [1, 2, 3, 4, 'chroma_grey'], 'Limiter(min_luma=1, max_luma=2, min_chroma=3, max_chroma=4, show="chroma_grey")');
+            checkPlugin.bind(null, 'Limiter', [5, 6, 7, 8, 'bad_option'], 'Limiter(min_luma=5, max_luma=6, min_chroma=7, max_chroma=8, show="bad_option")').should.throw(AvisynthError);
+        });
     });
 });

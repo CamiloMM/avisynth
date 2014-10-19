@@ -160,4 +160,5 @@ newPlugin('ConvertToYV24', convertParams, matrices);
 newPlugin('FixLuminance(d:intercept, d:slope)');
 newPlugin('Greyscale(q:matrix)');
 newPlugin('Invert(q:channels)');
-newPlugin('Levels(rd::input_low, rd::gamma, rd::input_high, rd::output_low, rd::output_high, b:coring, b:dither)');
+newPlugin('Limiter(d:min_luma, d:max_luma, d:min_chroma, d:max_chroma, t:show)', 'luma, luma_grey, chroma, chroma_grey');
+newPlugin('Levels(rd:input_low, rd:gamma, rd:input_high, rd:output_low, rd:output_high, b:coring, b:dither)');
