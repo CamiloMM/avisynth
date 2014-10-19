@@ -28,6 +28,7 @@ function checkType(value, allowed) {
 // n: not a path (actually, not a string). Throws if a string is given.
 // t: a type, this is checked against options.types. Implies q.
 // b: field is cast to boolean.
+// d: field is cast to a decimal number (integer or float).
 function coreFilter(name, options, types) {
 
     // Lazyness taken to new heights. First parameter can succintly describe some filters.
@@ -94,6 +95,7 @@ function coreFilter(name, options, types) {
                 if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
                 if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
                 if (m && /b/.test(m)) value = !!value;
+                if (m && /d/.test(m)) value = +value;
                 params.push((definition.identifier ? definition.identifier + '=' : '') + value);
             }
         }
@@ -124,8 +126,8 @@ var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL'
 var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
 
 // Shared parameter lists.
-var imgParams = 'f:, n:start, end, fps, b:use_DevIL, b:info, t:pixel_type';
-var dssParams = 'f:, n:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type, framecount, p:logfile, logmask';
+var imgParams = 'f:, nd:start, d:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
+var dssParams = 'f:, nd:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, d:timeout, t:pixel_type, d:framecount, p:logfile, d:logmask';
 var aviParams = 'mf:, b:audio, t:pixel_type, q:fourCC';
 var convertParams = 't:matrix, b:interlaced, q:ChromaInPlacement, q:chromaresample';
 
@@ -137,14 +139,14 @@ newPlugin('WavSource(mf:)');
 newPlugin('DirectShowSource', dssParams, dssTypes);
 newPlugin('ImageSource', imgParams, imgTypes);
 newPlugin('ImageReader', imgParams, imgTypes);
-newPlugin('ImageSourceAnim(f:, n:fps, b:info, t:pixel_type)', imgTypes);
-newPlugin('ImageWriter(f:, start, end, q:type, b:info)');
+newPlugin('ImageSourceAnim(f:, nd:fps, b:info, t:pixel_type)', imgTypes);
+newPlugin('ImageWriter(f:, d:start, d:end, q:type, b:info)');
 newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
-newPlugin('SegmentedDirectShowSource(mf:, fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
+newPlugin('SegmentedDirectShowSource(mf:, d:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
 
 // Color conversion and adjustment filters
-newPlugin('ColorYUV(gain_y, off_y, gamma_y, cont_y, gain_u, off_u, gamma_u, cont_u, gain_v, off_v, gamma_v, cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
+newPlugin('ColorYUV(d:gain_y, d:off_y, d:gamma_y, d:cont_y, d:gain_u, d:off_u, d:gamma_u, d:cont_u, d:gain_v, d:off_v, d:gamma_v, d:cont_v, q:levels, q:opt, b:showyuv, b:analyze, b:autowhite, b:autogain, b:conditional)');
 newPlugin('ConvertBackToYUY2(t:matrix)', matrices);
 newPlugin('ConvertToRGB', convertParams, matrices);
 newPlugin('ConvertToRGB24', convertParams, matrices);
@@ -155,7 +157,7 @@ newPlugin('ConvertToYV411', convertParams, matrices);
 newPlugin('ConvertToYV12', convertParams + ', q:ChromaOutPlacement', matrices);
 newPlugin('ConvertToYV16', convertParams, matrices);
 newPlugin('ConvertToYV24', convertParams, matrices);
-newPlugin('FixLuminance(intercept, slope)');
+newPlugin('FixLuminance(d:intercept, d:slope)');
 newPlugin('Greyscale(q:matrix)');
 newPlugin('Invert(q:channels)');
-newPlugin('Levels(r:input_low, r:gamma, r:input_high, r:output_low, r:output_high, b:coring, b:dither)');
+newPlugin('Levels(rd::input_low, rd::gamma, rd::input_high, rd::output_low, rd::output_high, b:coring, b:dither)');
