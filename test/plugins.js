@@ -362,5 +362,13 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Invert', [], 'Invert()');
             checkPlugin('Invert', ['BG'], 'Invert(channels="BG")');
         });
+
+        it('Levels', function() {
+            // Levels(clip input, int input_low, float gamma, int input_high, int output_low, int output_high [, bool coring] [, bool dither])
+            checkPlugin.bind(null, 'Levels', [], 'Levels()').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'Levels', [0, 1, 255, 0], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0)').should.throw(AvisynthError);
+            checkPlugin('Levels', [0, 1, 255, 0, 255], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255)');
+            checkPlugin('Levels', [0, 1, 255, 0, 255, true, false], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255, coring=true, dither=false)');
+        });
     });
 });

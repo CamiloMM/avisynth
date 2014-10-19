@@ -23,7 +23,8 @@ function checkType(value, allowed) {
 // A quick note on modifiers:
 // q: quoted (string).
 // p: file path (resolved to absolute), implies q.
-// f: forced file path, implies p.
+// r: required field. Lack of it is an error.
+// f: forced file path, implies p and r.
 // n: not a path (actually, not a string). Throws if a string is given.
 // t: a type, this is checked against options.types. Implies q.
 // b: field is cast to boolean.
@@ -97,11 +98,12 @@ function coreFilter(name, options, types) {
             }
         }
 
-        // All filename arguments are required; ensure that.
+        // Ensure all required arguments are provided.
         for (var i = 0; i < definitions.length; i++) {
             var def = definitions[i];
-            if (def.modifier && /[f]/.test(def.modifier) && !arguments[i]) {
-                throw new AvisynthError('filename is a required argument!')
+            if (def.modifier && !isDefined(arguments[i])) {
+                if (/[f]/.test(def.modifier)) throw new AvisynthError('filename is a required argument!');
+                if (/[r]/.test(def.modifier)) throw new AvisynthError('a required argument is missing!');
             }
         }
 
@@ -156,3 +158,4 @@ newPlugin('ConvertToYV24', convertParams, matrices);
 newPlugin('FixLuminance(intercept, slope)');
 newPlugin('Greyscale(q:matrix)');
 newPlugin('Invert(q:channels)');
+newPlugin('Levels(r:input_low, r:gamma, r:input_high, r:output_low, r:output_high, b:coring, b:dither)');
