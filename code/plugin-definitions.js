@@ -169,3 +169,4 @@ newPlugin('Limiter(d:min_luma, d:max_luma, d:min_chroma, d:max_chroma, t:show)',
 newPlugin('Levels(rd:input_low, rd:gamma, rd:input_high, rd:output_low, rd:output_high, b:coring, b:dither)');
 newPlugin('MergeARGB(rv:clipA, rv:clipR, rv:clipG, rv:clipB)');
 newPlugin('MergeRGB(rv:clipR, rv:clipG, rv:clipB, t:pixel_type)', 'RGB24, RGB32');
+newPlugin('Merge(rv:clip1, rv:clip2, d:weight)');

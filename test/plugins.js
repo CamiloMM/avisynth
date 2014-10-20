@@ -365,7 +365,6 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Levels', function() {
             // Levels(clip input, int input_low, float gamma, int input_high, int output_low, int output_high [, bool coring] [, bool dither])
-            checkPlugin.bind(null, 'Levels', [], 'Levels()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'Levels', [0, 1, 255, 0], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0)').should.throw(AvisynthError);
             checkPlugin('Levels', [0, 1, 255, 0, 255], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255)');
             checkPlugin('Levels', [0, 1, 255, 0, 255, true, false], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255, coring=true, dither=false)');
@@ -380,18 +379,23 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('MergeARGB', function() {
             // MergeARGB(clip clipA, clip clipR, clip clipG, clip clipB)
-            checkPlugin.bind(null, 'MergeARGB', [], 'MergeARGB()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'MergeARGB', ['foo', 'bar', 'baz'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz)').should.throw(AvisynthError);
             checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz, clipB=quux)');
         });
 
         it('MergeRGB', function() {
             // MergeRGB(clip clipR, clip clipG, clip clipB [, string pixel_type])
-            checkPlugin.bind(null, 'MergeRGB', [], 'MergeRGB()').should.throw(AvisynthError);
             checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar'], 'MergeRGB(clipR=foo, clipG=bar)').should.throw(AvisynthError);
             checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz)');
             checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="RGB24")');
             checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar', 'baz', 'PG13'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="PG13")').should.throw(AvisynthError);
+        });
+
+        it('Merge', function() {
+            // Merge(clip clip1, clip clip2 [, float weight])
+            checkPlugin.bind(null, 'Merge', ['foo'], 'Merge(clip1=foo)').should.throw(AvisynthError);
+            checkPlugin('Merge', ['foo', 'bar'], 'Merge(clip1=foo, clip2=bar)');
+            checkPlugin('Merge', ['foo', 'bar', 12.34], 'Merge(clip1=foo, clip2=bar, weight=12.34)');
         });
     });
 });
