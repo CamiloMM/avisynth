@@ -29,6 +29,7 @@ function checkType(value, allowed) {
 // t: a type, this is checked against options.types. Implies q.
 // b: field is cast to boolean.
 // d: field is cast to a decimal number (integer or float).
+// v: a variable name (unquoted string), checked for syntactic validity.
 function coreFilter(name, options, types) {
 
     // Lazyness taken to new heights. First parameter can succintly describe some filters.
@@ -96,6 +97,10 @@ function coreFilter(name, options, types) {
                 if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
                 if (m && /b/.test(m)) value = !!value;
                 if (m && /d/.test(m)) value = +value;
+                if (m && /v/.test(m)) if (!/[a-z_][0-9a-z_]*/i.test(value)) {
+                    throw new AvisynthError('bad syntax for variable name "' + value + '"!');
+                }
+
                 params.push((definition.identifier ? definition.identifier + '=' : '') + value);
             }
         }
@@ -162,3 +167,4 @@ newPlugin('Greyscale(q:matrix)');
 newPlugin('Invert(q:channels)');
 newPlugin('Limiter(d:min_luma, d:max_luma, d:min_chroma, d:max_chroma, t:show)', 'luma, luma_grey, chroma, chroma_grey');
 newPlugin('Levels(rd:input_low, rd:gamma, rd:input_high, rd:output_low, rd:output_high, b:coring, b:dither)');
+newPlugin('MergeARGB(rv:clipA, rv:clipR, rv:clipG, rv:clipB)');

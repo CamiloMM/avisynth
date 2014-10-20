@@ -377,5 +377,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Limiter', [1, 2, 3, 4, 'chroma_grey'], 'Limiter(min_luma=1, max_luma=2, min_chroma=3, max_chroma=4, show="chroma_grey")');
             checkPlugin.bind(null, 'Limiter', [5, 6, 7, 8, 'bad_option'], 'Limiter(min_luma=5, max_luma=6, min_chroma=7, max_chroma=8, show="bad_option")').should.throw(AvisynthError);
         });
+
+        it('MergeARGB', function() {
+            // MergeARGB(clip clipA, clip clipR, clip clipG, clip clipB)
+            checkPlugin.bind(null, 'MergeARGB', [], 'MergeARGB()').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'MergeARGB', ['foo', 'bar', 'baz'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz)').should.throw(AvisynthError);
+            checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz, clipB=quux)');
+        });
     });
 });
