@@ -384,5 +384,14 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin.bind(null, 'MergeARGB', ['foo', 'bar', 'baz'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz)').should.throw(AvisynthError);
             checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz, clipB=quux)');
         });
+
+        it('MergeRGB', function() {
+            // MergeRGB(clip clipR, clip clipG, clip clipB [, string pixel_type])
+            checkPlugin.bind(null, 'MergeRGB', [], 'MergeRGB()').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar'], 'MergeRGB(clipR=foo, clipG=bar)').should.throw(AvisynthError);
+            checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz)');
+            checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="RGB24")');
+            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar', 'baz', 'PG13'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="PG13")').should.throw(AvisynthError);
+        });
     });
 });
