@@ -173,3 +173,4 @@ newPlugin('MergeRGB(rv:clipR, rv:clipG, rv:clipB, t:pixel_type)', 'RGB24, RGB32'
 newPlugin('Merge', mergeParams);
 newPlugin('MergeChroma', mergeParams);
 newPlugin('MergeLuma', mergeParams);
+newPlugin('RGBAdjust(d:red, d:green, d:blue, d:alpha, d:rb, d:gb, d:bb, d:ab, d:rg, d:gg, d:bg, d:ag, b:analyze, b:dither)');

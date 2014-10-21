@@ -399,5 +399,11 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, ['foo', 'bar', 12.34], name + '(clip1=foo, clip2=bar, weight=12.34)');
             });
         });
+
+        it('RGBAdjust', function() {
+            // RGBAdjust(clip clip [, float red] [, float green] [, float blue] [, float alpha] [, float rb] [, float gb] [, float bb] [, float ab] [, float rg] [, float gg] [, float bg] [, float ag] [, bool analyze] [, bool dither])
+            checkPlugin('RGBAdjust', [], 'RGBAdjust()');
+            checkPlugin('RGBAdjust', [0.1, 0.2, 0.3, 0.4, 1, -2, 3, -4, 1.2, 3.4, 5.6, 0, true, false], 'RGBAdjust(red=0.1, green=0.2, blue=0.3, alpha=0.4, rb=1, gb=-2, bb=3, ab=-4, rg=1.2, gg=3.4, bg=5.6, ag=0, analyze=true, dither=false)');
+        });
     });
 });
