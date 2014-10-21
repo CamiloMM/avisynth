@@ -124,6 +124,10 @@ function newPlugin(name, options, types) {
     addPlugin(actualName, coreFilter(name, options, types));
 }
 
+// Below here are the actual definitions of the syntax for the core filters.
+// As clarification for whoever reads this in the future: I'm using a custom ad-hoc syntax
+// that describes how they work, this allows me to define a whole filter in a single line.
+
 // Shared type definitions.
 var imgTypes = 'Y8, RGB24, RGB32';
 var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';
@@ -179,3 +183,8 @@ newPlugin('ShowAlpha(t:pixel_type)', showTypes);
 newPlugin('ShowBlue(t:pixel_type)', showTypes);
 newPlugin('ShowGreen(t:pixel_type)', showTypes);
 newPlugin('ShowRed(t:pixel_type)', showTypes);
+newPlugin('SwapUV(v:clip)');
+newPlugin('UToY(v:clip)');
+newPlugin('VToY(v:clip)');
+newPlugin('UToY8(v:clip)');
+newPlugin('VToY8(v:clip)');

@@ -414,5 +414,13 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, ['Y8'], name + '(pixel_type="Y8")');
             });
         });
+
+        ['SwapUV', 'UToY', 'VToY', 'UToY8', 'VToY8'].forEach(function(name) {
+            it(name, function() {
+                // name(clip clip)
+                checkPlugin(name, [], name + '()');
+                checkPlugin(name, ['fooBar'], name + '(clip=fooBar)');
+            });
+        });
     });
 });
