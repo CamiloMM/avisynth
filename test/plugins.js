@@ -405,5 +405,14 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('RGBAdjust', [], 'RGBAdjust()');
             checkPlugin('RGBAdjust', [0.1, 0.2, 0.3, 0.4, 1, -2, 3, -4, 1.2, 3.4, 5.6, 0, true, false], 'RGBAdjust(red=0.1, green=0.2, blue=0.3, alpha=0.4, rb=1, gb=-2, bb=3, ab=-4, rg=1.2, gg=3.4, bg=5.6, ag=0, analyze=true, dither=false)');
         });
+
+        ['ShowAlpha', 'ShowBlue', 'ShowGreen', 'ShowRed'].forEach(function(name) {
+            it(name, function() {
+                // name(clip clip, string pixel_type)
+                checkPlugin.bind(null, name, ['PG13'], name + '(pixel_type="PG13")').should.throw(AvisynthError);
+                checkPlugin(name, [], name + '()');
+                checkPlugin(name, ['Y8'], name + '(pixel_type="Y8")');
+            });
+        });
     });
 });

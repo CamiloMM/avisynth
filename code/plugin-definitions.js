@@ -127,8 +127,9 @@ function newPlugin(name, options, types) {
 // Shared type definitions.
 var imgTypes = 'Y8, RGB24, RGB32';
 var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';
-var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL'
+var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL';
 var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
+var showTypes = 'RGB24, RGB32, YUY2, YV12, Y8';
 
 // Shared parameter lists.
 var imgParams = 'f:, nd:start, d:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
@@ -174,3 +175,7 @@ newPlugin('Merge', mergeParams);
 newPlugin('MergeChroma', mergeParams);
 newPlugin('MergeLuma', mergeParams);
 newPlugin('RGBAdjust(d:red, d:green, d:blue, d:alpha, d:rb, d:gb, d:bb, d:ab, d:rg, d:gg, d:bg, d:ag, b:analyze, b:dither)');
+newPlugin('ShowAlpha(t:pixel_type)', showTypes);
+newPlugin('ShowBlue(t:pixel_type)', showTypes);
+newPlugin('ShowGreen(t:pixel_type)', showTypes);
+newPlugin('ShowRed(t:pixel_type)', showTypes);
