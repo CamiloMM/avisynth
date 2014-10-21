@@ -429,5 +429,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(clipU=foo, clipV=bar)');
             checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(clipU=foo, clipV=bar, clipY=baz)');
         });
+
+        it('Tweak', function() {
+            // Tweak(clip clip [, float hue] [, float sat] [, float bright] [, float cont] [, bool coring] [, bool sse] [, float startHue] [, float endHue] [, float maxSat] [, float minSat] [, float interp] [, bool dither])
+            checkPlugin('Tweak', [], 'Tweak()');
+            checkPlugin('Tweak', [0.1, 2.3, 4.5, 6.7, true, false, 8.9, 12.34, 56.78, 0, 123, false], 'Tweak(hue=0.1, sat=2.3, bright=4.5, cont=6.7, coring=true, sse=false, startHue=8.9, endHue=12.34, maxSat=56.78, minSat=0, interp=123, dither=false)');
+        });
     });
 });
