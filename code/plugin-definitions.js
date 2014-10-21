@@ -135,6 +135,7 @@ var imgParams = 'f:, nd:start, d:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
 var dssParams = 'f:, nd:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, d:timeout, t:pixel_type, d:framecount, p:logfile, d:logmask';
 var aviParams = 'mf:, b:audio, t:pixel_type, q:fourCC';
 var convertParams = 't:matrix, b:interlaced, q:ChromaInPlacement, q:chromaresample';
+var mergeParams = 'rv:clip1, rv:clip2, d:weight';
 
 // Media file filters
 newPlugin('AviSource', aviParams, aviTypes);
@@ -169,4 +170,6 @@ newPlugin('Limiter(d:min_luma, d:max_luma, d:min_chroma, d:max_chroma, t:show)',
 newPlugin('Levels(rd:input_low, rd:gamma, rd:input_high, rd:output_low, rd:output_high, b:coring, b:dither)');
 newPlugin('MergeARGB(rv:clipA, rv:clipR, rv:clipG, rv:clipB)');
 newPlugin('MergeRGB(rv:clipR, rv:clipG, rv:clipB, t:pixel_type)', 'RGB24, RGB32');
-newPlugin('Merge(rv:clip1, rv:clip2, d:weight)');
+newPlugin('Merge', mergeParams);
+newPlugin('MergeChroma', mergeParams);
+newPlugin('MergeLuma', mergeParams);

@@ -391,11 +391,13 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar', 'baz', 'PG13'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="PG13")').should.throw(AvisynthError);
         });
 
-        it('Merge', function() {
-            // Merge(clip clip1, clip clip2 [, float weight])
-            checkPlugin.bind(null, 'Merge', ['foo'], 'Merge(clip1=foo)').should.throw(AvisynthError);
-            checkPlugin('Merge', ['foo', 'bar'], 'Merge(clip1=foo, clip2=bar)');
-            checkPlugin('Merge', ['foo', 'bar', 12.34], 'Merge(clip1=foo, clip2=bar, weight=12.34)');
+        ['Merge', 'MergeChroma', 'MergeLuma'].forEach(function(name) {
+            it(name, function() {
+                // name(clip clip1, clip clip2 [, float weight])
+                checkPlugin.bind(null, name, ['foo'], name + '(clip1=foo)').should.throw(AvisynthError);
+                checkPlugin(name, ['foo', 'bar'], name + '(clip1=foo, clip2=bar)');
+                checkPlugin(name, ['foo', 'bar', 12.34], name + '(clip1=foo, clip2=bar, weight=12.34)');
+            });
         });
     });
 });
