@@ -188,3 +188,4 @@ newPlugin('UToY(v:clip)');
 newPlugin('VToY(v:clip)');
 newPlugin('UToY8(v:clip)');
 newPlugin('VToY8(v:clip)');
+newPlugin('YToUV(rv:clipU, rv:clipV, v:clipY)');

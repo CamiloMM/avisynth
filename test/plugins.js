@@ -422,5 +422,12 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, ['fooBar'], name + '(clip=fooBar)');
             });
         });
+
+        it('YToUV', function() {
+            // YToUV(clip clipU, clip clipV [, clip clipY])
+            checkPlugin.bind(null, 'YToUV', ['foo'], 'YToUV(clipU=foo)').should.throw(AvisynthError);
+            checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(clipU=foo, clipV=bar)');
+            checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(clipU=foo, clipV=bar, clipY=baz)');
+        });
     });
 });
