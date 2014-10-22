@@ -190,3 +190,4 @@ newPlugin('UToY8(v:clip)');
 newPlugin('VToY8(v:clip)');
 newPlugin('YToUV(rv:clipU, rv:clipV, v:clipY)');
 newPlugin('Tweak(d:hue, d:sat, d:bright, d:cont, b:coring, b:sse, d:startHue, d:endHue, d:maxSat, d:minSat, d:interp, b:dither)');
+newPlugin('Layer(rv:base_clip, rv:overlay_clip, t:op, d:level, d:x, d:y, d:threshold, b:use_chroma)', 'add, subtract, lighten, darken, fast, mul');

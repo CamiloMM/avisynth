@@ -436,4 +436,14 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Tweak', [0.1, 2.3, 4.5, 6.7, true, false, 8.9, 12.34, 56.78, 0, 123, false], 'Tweak(hue=0.1, sat=2.3, bright=4.5, cont=6.7, coring=true, sse=false, startHue=8.9, endHue=12.34, maxSat=56.78, minSat=0, interp=123, dither=false)');
         });
     });
+
+    describe('Overlay and Mask filters', function() {
+        it('Layer', function() {
+            // Layer(clip base_clip, clip overlay_clip, string op, int level, int x, int y, int threshold, bool use_chroma)
+            checkPlugin.bind(null, 'Layer', [], 'Layer()').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'Layer', ['foo', 'bar', 'overlay'], 'Layer(base_clip=foo, overlay_clip=bar, op="overlay")').should.throw(AvisynthError); // Admittedly, overlay should be allowed, it isn't in the docs so I suppose it isn't.
+            checkPlugin('Layer', ['foo', 'bar'], 'Layer(base_clip=foo, overlay_clip=bar)');
+            checkPlugin('Layer', ['foo', 'bar', 'lighten', 123, 12, -34, 42, true], 'Layer(base_clip=foo, overlay_clip=bar, op="lighten", level=123, x=12, y=-34, threshold=42, use_chroma=true)');
+        });
+    });
 });
