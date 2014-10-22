@@ -29,6 +29,7 @@ function checkType(value, allowed) {
 // t: a type, this is checked against options.types. Implies q.
 // b: field is cast to boolean.
 // d: field is cast to a decimal number (integer or float).
+// i: field is cast to integer, rounded as necessary. Implies d.
 // v: a variable name (unquoted string), checked for syntactic validity.
 function coreFilter(name, options, types) {
 
@@ -96,7 +97,8 @@ function coreFilter(name, options, types) {
                 if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
                 if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
                 if (m && /b/.test(m)) value = !!value;
-                if (m && /d/.test(m)) value = +value;
+                if (m && /di/.test(m)) value = +value;
+                if (m && /i/.test(m)) value = Math.round(value);
                 if (m && /v/.test(m)) if (!/[a-z_][0-9a-z_]*/i.test(value)) {
                     throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                 }
@@ -136,8 +138,8 @@ var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
 var showTypes = 'RGB24, RGB32, YUY2, YV12, Y8';
 
 // Shared parameter lists.
-var imgParams = 'f:, nd:start, d:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
-var dssParams = 'f:, nd:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, d:timeout, t:pixel_type, d:framecount, p:logfile, d:logmask';
+var imgParams = 'f:, ni:start, i:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
+var dssParams = 'f:, nd:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, i:timeout, t:pixel_type, i:framecount, p:logfile, i:logmask';
 var aviParams = 'mf:, b:audio, t:pixel_type, q:fourCC';
 var convertParams = 't:matrix, b:interlaced, q:ChromaInPlacement, q:chromaresample';
 var mergeParams = 'rv:clip1, rv:clip2, d:weight';
@@ -151,9 +153,9 @@ newPlugin('DirectShowSource', dssParams, dssTypes);
 newPlugin('ImageSource', imgParams, imgTypes);
 newPlugin('ImageReader', imgParams, imgTypes);
 newPlugin('ImageSourceAnim(f:, nd:fps, b:info, t:pixel_type)', imgTypes);
-newPlugin('ImageWriter(f:, d:start, d:end, q:type, b:info)');
+newPlugin('ImageWriter(f:, i:start, i:end, q:type, b:info)');
 newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
-newPlugin('SegmentedDirectShowSource(mf:, d:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, timeout, t:pixel_type)', dssTypes);
+newPlugin('SegmentedDirectShowSource(mf:, d:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, i:timeout, t:pixel_type)', dssTypes);
 newPlugin('SoundOut');
 
 // Color conversion and adjustment filters
@@ -168,11 +170,11 @@ newPlugin('ConvertToYV411', convertParams, matrices);
 newPlugin('ConvertToYV12', convertParams + ', q:ChromaOutPlacement', matrices);
 newPlugin('ConvertToYV16', convertParams, matrices);
 newPlugin('ConvertToYV24', convertParams, matrices);
-newPlugin('FixLuminance(d:intercept, d:slope)');
+newPlugin('FixLuminance(i:intercept, i:slope)');
 newPlugin('Greyscale(q:matrix)');
 newPlugin('Invert(q:channels)');
-newPlugin('Limiter(d:min_luma, d:max_luma, d:min_chroma, d:max_chroma, t:show)', 'luma, luma_grey, chroma, chroma_grey');
-newPlugin('Levels(rd:input_low, rd:gamma, rd:input_high, rd:output_low, rd:output_high, b:coring, b:dither)');
+newPlugin('Levels(ri:input_low, rd:gamma, ri:input_high, ri:output_low, ri:output_high, b:coring, b:dither)');
+newPlugin('Limiter(i:min_luma, i:max_luma, i:min_chroma, i:max_chroma, t:show)', 'luma, luma_grey, chroma, chroma_grey');
 newPlugin('MergeARGB(rv:clipA, rv:clipR, rv:clipG, rv:clipB)');
 newPlugin('MergeRGB(rv:clipR, rv:clipG, rv:clipB, t:pixel_type)', 'RGB24, RGB32');
 newPlugin('Merge', mergeParams);
@@ -190,4 +192,4 @@ newPlugin('UToY8(v:clip)');
 newPlugin('VToY8(v:clip)');
 newPlugin('YToUV(rv:clipU, rv:clipV, v:clipY)');
 newPlugin('Tweak(d:hue, d:sat, d:bright, d:cont, b:coring, b:sse, d:startHue, d:endHue, d:maxSat, d:minSat, d:interp, b:dither)');
-newPlugin('Layer(rv:base_clip, rv:overlay_clip, t:op, d:level, d:x, d:y, d:threshold, b:use_chroma)', 'add, subtract, lighten, darken, fast, mul');
+newPlugin('Layer(rv:base_clip, rv:overlay_clip, t:op, i:level, i:x, i:y, i:threshold, b:use_chroma)', 'add, subtract, lighten, darken, fast, mul');
