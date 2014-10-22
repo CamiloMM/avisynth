@@ -452,5 +452,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Mask', ['foo'], 'Mask(foo)');
             checkPlugin('Mask', ['foo', 'bar'], 'Mask(foo, mask_clip=bar)');
         });
+
+        it('ResetMask', function() {
+            // ResetMask(clip clip)
+            checkPlugin('ResetMask', [], 'ResetMask()');
+            checkPlugin('ResetMask', ['foo'], 'ResetMask(clip=foo)');
+        });
     });
 });
