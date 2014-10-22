@@ -445,5 +445,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Layer', ['foo', 'bar'], 'Layer(base_clip=foo, overlay_clip=bar)');
             checkPlugin('Layer', ['foo', 'bar', 'lighten', 123, 12, -34, 42, true], 'Layer(base_clip=foo, overlay_clip=bar, op="lighten", level=123, x=12, y=-34, threshold=42, use_chroma=true)');
         });
+
+        it('Mask', function() {
+            // Mask(clip clip, mask_clip clip)
+            checkPlugin.bind(null, 'Mask', [], 'Mask()').should.throw(AvisynthError);
+            checkPlugin('Mask', ['foo'], 'Mask(foo)');
+            checkPlugin('Mask', ['foo', 'bar'], 'Mask(foo, mask_clip=bar)');
+        });
     });
 });
