@@ -458,5 +458,14 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ResetMask', [], 'ResetMask()');
             checkPlugin('ResetMask', ['foo'], 'ResetMask(clip=foo)');
         });
+
+        it('ColorKeyMask', function() {
+            // ColorKeyMask(clip clip, int color [, int tolB, int tolG, int tolR])
+            checkPlugin('ColorKeyMask', [], 'ColorKeyMask()'); // It's actually possible.
+            checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(color=0)');
+            checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(color=16711935)');
+            checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(color=255, tolB=10, tolG=20, tolR=30)');
+            checkPlugin.bind(null, 'ColorKeyMask', [-1], 'ColorKeyMask(color=-1)').should.throw(AvisynthError);
+        });
     });
 });

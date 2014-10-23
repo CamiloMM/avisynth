@@ -1,6 +1,7 @@
 var path          = require('path');
 var AvisynthError = require('./errors').AvisynthError;
 var pluginSystem  = require('./plugin-system');
+var colors        = require('./colors');
 var addPlugin     = pluginSystem.addPlugin;
 
 // This file contains an implementation of each of the various core filters
@@ -31,6 +32,7 @@ function checkType(value, allowed) {
 // d: field is cast to a decimal number (integer or float).
 // i: field is cast to integer, rounded as necessary. Implies d.
 // v: a variable name (unquoted string), checked for syntactic validity.
+// c: a color variable, can be a number, name or string (0x123ABC, 0, 'red', 'F0F', 'FF00FF').
 function coreFilter(name, options, types) {
 
     // Lazyness taken to new heights. First parameter can succintly describe some filters.
@@ -99,6 +101,7 @@ function coreFilter(name, options, types) {
                 if (m && /b/.test(m)) value = !!value;
                 if (m && /di/.test(m)) value = +value;
                 if (m && /i/.test(m)) value = Math.round(value);
+                if (m && /c/.test(m)) value = colors.parse(value);
                 if (m && /v/.test(m)) if (!/[a-z_][0-9a-z_]*/i.test(value)) {
                     throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                 }
@@ -195,3 +198,4 @@ newPlugin('Tweak(d:hue, d:sat, d:bright, d:cont, b:coring, b:sse, d:startHue, d:
 newPlugin('Layer(rv:base_clip, rv:overlay_clip, t:op, i:level, i:x, i:y, i:threshold, b:use_chroma)', 'add, subtract, lighten, darken, fast, mul');
 newPlugin('Mask(rv:, v:mask_clip)');
 newPlugin('ResetMask(v:clip)');
+newPlugin('ColorKeyMask(c:color, i:tolB, i:tolG, i:tolR)');
