@@ -139,6 +139,7 @@ var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YU
 var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL';
 var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
 var showTypes = 'RGB24, RGB32, YUY2, YV12, Y8';
+var overlayModes = 'Blend, Add, Subtract, Multiply, Chroma, Luma, Lighten, Darken, SoftLight, HardLight, Difference, Exclusion';
 
 // Shared parameter lists.
 var imgParams = 'f:, ni:start, i:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
@@ -200,3 +201,4 @@ newPlugin('Mask(rv:, v:mask_clip)');
 newPlugin('ResetMask(v:clip)');
 newPlugin('ColorKeyMask(c:color, i:tolB, i:tolG, i:tolR)');
 newPlugin('MaskHS(i:startHue, i:endHue, i:maxSat, i:minSat, b:coring)');
+newPlugin('Overlay(rv:overlay, i:x, i:y, v:mask, d:opacity, t:mode, b:greymask, q:output, b:ignore_conditional, b:pc_range)', overlayModes);

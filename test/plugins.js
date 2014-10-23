@@ -473,5 +473,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('MaskHS', [], 'MaskHS()');
             checkPlugin('MaskHS', [10, 20, 30, 0, false], 'MaskHS(startHue=10, endHue=20, maxSat=30, minSat=0, coring=false)');
         });
+
+        it('Overlay', function() {
+            // Overlay(clip clip, clip overlay [, int x, int y, clip mask, float opacity, string mode, bool greymask, string output, bool ignore_conditional, bool pc_range])
+            checkPlugin.bind(null, 'Overlay', [], 'Overlay()').should.throw(AvisynthError);
+            checkPlugin('Overlay', ['foo'], 'Overlay(overlay=foo)');
+            checkPlugin('Overlay', ['foo', -1, 0, 'bar', 0.5, 'SoftLight', false, 'YUY2', true, false], 'Overlay(overlay=foo, x=-1, y=0, mask=bar, opacity=0.5, mode="SoftLight", greymask=false, output="YUY2", ignore_conditional=true, pc_range=false)');
+        });
     });
 });
