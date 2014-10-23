@@ -27,6 +27,12 @@ exports.parse = function(color) {
 };
 
 // The named color definitions, taken from http://avisynth.nl/index.php/Color_presets
+// All these colors are lowercase here, but in the original, four were inconsistent:
+// * darkoliveGreen -> darkolivegreen
+// * darkseaGreen   -> darkseagreen
+// * darkslateBlue  -> darkslateblue
+// * darkslateGray  -> darkslategray
+// What baffles me is that these are not even consistent with *themselves*.
 var colors = {
     aliceblue            : 0xF0F8FF,
     antiquewhite         : 0xFAEBD7,
@@ -56,14 +62,14 @@ var colors = {
     darkgreen            : 0x006400,
     darkkhaki            : 0xBDB76B,
     darkmagenta          : 0x8B008B,
-    darkoliveGreen       : 0x556B2F,
+    darkolivegreen       : 0x556B2F,
     darkorange           : 0xFF8C00,
     darkorchid           : 0x9932CC,
     darkred              : 0x8B0000,
     darksalmon           : 0xE9967A,
-    darkseaGreen         : 0x8FBC8F,
-    darkslateBlue        : 0x483D8B,
-    darkslateGray        : 0x2F4F4F,
+    darkseagreen         : 0x8FBC8F,
+    darkslateblue        : 0x483D8B,
+    darkslategray        : 0x2F4F4F,
     darkturquoise        : 0x00CED1,
     darkviolet           : 0x9400D3,
     deeppink             : 0xFF1493,

@@ -520,5 +520,12 @@ describe('Base plugin implementations (core filters)', function() {
             // FlipVertical(clip clip)
             checkPlugin('FlipVertical', [], 'FlipVertical()');
         });
+
+        it('Letterbox', function() {
+            // Letterbox(clip clip, int top, int bottom [, int x1] [, int x2] [, int color])
+            checkPlugin.bind(null, 'Letterbox', [], 'Letterbox()').should.throw(AvisynthError);
+            checkPlugin('Letterbox', [1, 2], 'Letterbox(top=1, bottom=2)');
+            checkPlugin('Letterbox', [1, 2, 3, 4, 'darkOliveGreen'], 'Letterbox(top=1, bottom=2, x1=3, x2=4, color=5597999)');
+        });
     });
 });

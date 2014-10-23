@@ -212,3 +212,4 @@ newPlugin('Crop(ri:left, ri:top, ri:width, ri:height, b:align)');
 newPlugin('CropBottom(ri:count)');
 newPlugin('FlipHorizontal');
 newPlugin('FlipVertical');
+newPlugin('Letterbox(ri:top, ri:bottom, i:x1, i:x2, c:color)');
