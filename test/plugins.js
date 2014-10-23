@@ -496,5 +496,13 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AddBorders', [1, 2, 3, 4], 'AddBorders(left=1, top=2, right=3, bottom=4)');
             checkPlugin('AddBorders', [10, 20, 30, 40, 'Chocolate'], 'AddBorders(left=10, top=20, right=30, bottom=40, color=13789470)');
         });
+
+        it('Crop', function() {
+            // Crop(clip clip, int left, int top, int width, int height, bool align)
+            // Crop(clip clip, int left, int top, int -right, int -bottom, bool align)
+            checkPlugin.bind(null, 'Crop', [1, 2, 3], 'Crop(left=1, top=2, width=3)').should.throw(AvisynthError);
+            checkPlugin('Crop', [1, 2, 3, -4], 'Crop(left=1, top=2, width=3, height=-4)');
+            checkPlugin('Crop', [5, 6, -7, 8, false], 'Crop(left=5, top=6, width=-7, height=8, align=false)');
+        });
     });
 });

@@ -196,6 +196,8 @@ newPlugin('UToY8(v:clip)');
 newPlugin('VToY8(v:clip)');
 newPlugin('YToUV(rv:clipU, rv:clipV, v:clipY)');
 newPlugin('Tweak(d:hue, d:sat, d:bright, d:cont, b:coring, b:sse, d:startHue, d:endHue, d:maxSat, d:minSat, d:interp, b:dither)');
+
+// Overlay and Mask filters
 newPlugin('Layer(rv:base_clip, rv:overlay_clip, t:op, i:level, i:x, i:y, i:threshold, b:use_chroma)', 'add, subtract, lighten, darken, fast, mul');
 newPlugin('Mask(rv:, v:mask_clip)');
 newPlugin('ResetMask(v:clip)');
@@ -203,4 +205,7 @@ newPlugin('ColorKeyMask(c:color, i:tolB, i:tolG, i:tolR)');
 newPlugin('MaskHS(i:startHue, i:endHue, i:maxSat, i:minSat, b:coring)');
 newPlugin('Overlay(rv:overlay, i:x, i:y, v:mask, d:opacity, t:mode, b:greymask, q:output, b:ignore_conditional, b:pc_range)', overlayModes);
 newPlugin('Subtract(rv:clip1, rv:clip2)');
+
+// Geometric deformation filters
 newPlugin('AddBorders(ri:left, ri:top, ri:right, ri:bottom, c:color)');
+newPlugin('Crop(ri:left, ri:top, ri:width, ri:height, b:align)');
