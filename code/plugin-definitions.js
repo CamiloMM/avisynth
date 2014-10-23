@@ -216,3 +216,4 @@ newPlugin('Letterbox(ri:top, ri:bottom, i:x1, i:x2, c:color)');
 newPlugin('HorizontalReduceBy2');
 newPlugin('VerticalReduceBy2');
 newPlugin('ReduceBy2');
+newPlugin('SkewRows(ri:skew)');

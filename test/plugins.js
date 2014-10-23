@@ -538,5 +538,11 @@ describe('Base plugin implementations (core filters)', function() {
         it.is.parameterless('VerticalReduceBy2');
 
         it.is.parameterless('ReduceBy2');
+
+        it('SkewRows', function() {
+            // SkewRows(clip clip, int skew)
+            requiresParameters('SkewRows');
+            checkPlugin('SkewRows', [123], 'SkewRows(skew=123)');
+        })
     });
 });
