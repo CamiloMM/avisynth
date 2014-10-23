@@ -527,5 +527,20 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Letterbox', [1, 2], 'Letterbox(top=1, bottom=2)');
             checkPlugin('Letterbox', [1, 2, 3, 4, 'darkOliveGreen'], 'Letterbox(top=1, bottom=2, x1=3, x2=4, color=5597999)');
         });
+
+        it('HorizontalReduceBy2', function() {
+            // HorizontalReduceBy2(clip clip)
+            checkPlugin('HorizontalReduceBy2', [], 'HorizontalReduceBy2()');
+        });
+
+        it('VerticalReduceBy2', function() {
+            // VerticalReduceBy2(clip clip)
+            checkPlugin('VerticalReduceBy2', [], 'VerticalReduceBy2()');
+        });
+
+        it('ReduceBy2', function() {
+            // ReduceBy2(clip clip)
+            checkPlugin('ReduceBy2', [], 'ReduceBy2()');
+        });
     });
 });
