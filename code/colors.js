@@ -19,8 +19,8 @@ exports.parse = function(color) {
     }
 
     // Color name.
-    if (typeof color === 'string' && color in colors) {
-        return colors[color];
+    if (typeof color === 'string' && color.toLowerCase() in colors) {
+        return colors[color.toLowerCase()];
     }
 
     throw new AvisynthError('Color format wrong: "' + color + '"');

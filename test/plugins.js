@@ -488,4 +488,13 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Subtract', ['foo', 'bar'], 'Subtract(clip1=foo, clip2=bar)');
         });
     });
+
+    describe('Geometric deformation filters', function() {
+        it('AddBorders', function() {
+            // AddBorders(clip clip, int left, int top, int right, int bottom [, int color])
+            checkPlugin.bind(null, 'AddBorders', [], 'AddBorders()').should.throw(AvisynthError);
+            checkPlugin('AddBorders', [1, 2, 3, 4], 'AddBorders(left=1, top=2, right=3, bottom=4)');
+            checkPlugin('AddBorders', [10, 20, 30, 40, 'Chocolate'], 'AddBorders(left=10, top=20, right=30, bottom=40, color=13789470)');
+        });
+    });
 });
