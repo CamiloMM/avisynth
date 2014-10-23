@@ -510,5 +510,15 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin.bind(null, 'CropBottom', [], 'CropBottom()').should.throw(AvisynthError);
             checkPlugin('CropBottom', [123], 'CropBottom(count=123)');
         });
+
+        it('FlipHorizontal', function() {
+            // FlipHorizontal(clip clip)
+            checkPlugin('FlipHorizontal', [], 'FlipHorizontal()');
+        });
+
+        it('FlipVertical', function() {
+            // FlipVertical(clip clip)
+            checkPlugin('FlipVertical', [], 'FlipVertical()');
+        });
     });
 });
