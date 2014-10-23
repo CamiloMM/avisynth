@@ -504,5 +504,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Crop', [1, 2, 3, -4], 'Crop(left=1, top=2, width=3, height=-4)');
             checkPlugin('Crop', [5, 6, -7, 8, false], 'Crop(left=5, top=6, width=-7, height=8, align=false)');
         });
+
+        it('CropBottom', function() {
+            // CropBottom(clip clip, int count)
+            checkPlugin.bind(null, 'CropBottom', [], 'CropBottom()').should.throw(AvisynthError);
+            checkPlugin('CropBottom', [123], 'CropBottom(count=123)');
+        });
     });
 });

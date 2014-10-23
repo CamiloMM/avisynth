@@ -209,3 +209,4 @@ newPlugin('Subtract(rv:clip1, rv:clip2)');
 // Geometric deformation filters
 newPlugin('AddBorders(ri:left, ri:top, ri:right, ri:bottom, c:color)');
 newPlugin('Crop(ri:left, ri:top, ri:width, ri:height, b:align)');
+newPlugin('CropBottom(ri:count)');
