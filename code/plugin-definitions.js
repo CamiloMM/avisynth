@@ -202,3 +202,4 @@ newPlugin('ResetMask(v:clip)');
 newPlugin('ColorKeyMask(c:color, i:tolB, i:tolG, i:tolR)');
 newPlugin('MaskHS(i:startHue, i:endHue, i:maxSat, i:minSat, b:coring)');
 newPlugin('Overlay(rv:overlay, i:x, i:y, v:mask, d:opacity, t:mode, b:greymask, q:output, b:ignore_conditional, b:pc_range)', overlayModes);
+newPlugin('Subtract(rv:clip1, rv:clip2)');

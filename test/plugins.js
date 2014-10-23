@@ -480,5 +480,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Overlay', ['foo'], 'Overlay(overlay=foo)');
             checkPlugin('Overlay', ['foo', -1, 0, 'bar', 0.5, 'SoftLight', false, 'YUY2', true, false], 'Overlay(overlay=foo, x=-1, y=0, mask=bar, opacity=0.5, mode="SoftLight", greymask=false, output="YUY2", ignore_conditional=true, pc_range=false)');
         });
+
+        it('Subtract', function() {
+            // Subtract(clip1 clip, clip2 clip)
+            checkPlugin.bind(null, 'Subtract', [], 'Subtract()').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'Subtract', ['foo'], 'Subtract(clip1=foo)').should.throw(AvisynthError);
+            checkPlugin('Subtract', ['foo', 'bar'], 'Subtract(clip1=foo, clip2=bar)');
+        });
     });
 });
