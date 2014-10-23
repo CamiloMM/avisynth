@@ -550,5 +550,27 @@ describe('Base plugin implementations (core filters)', function() {
         it.is.parameterless('TurnRight');
 
         it.is.parameterless('Turn180');
+
+        describe('Resizers', function() {
+            var filters = ['BicubicResize', 'BilinearResize', 'BlackmanResize', 'GaussResize', 'LanczosResize', 'Lanczos4Resize', 'PointResize', 'SincResize', 'Spline16Resize', 'Spline36Resize', 'Spline64Resize'];
+            var taps = ['BlackmanResize', 'LanczosResize', 'SincResize'];
+            filters.forEach(function(name) {
+                it(name, function() {
+                    requiresParameters(name);
+                    checkPlugin(name, [123, 456], name + '(target_width=123, target_height=456)');
+                    if (name === 'BicubicResize') {
+                        checkPlugin(name, [123, 456, 1.2, 3.4, 5.6, 7.8, -12.34, -56.78], 'BicubicResize(target_width=123, target_height=456, b=1.2, c=3.4, src_left=5.6, src_top=7.8, src_width=-12.34, src_height=-56.78)');
+                    } else {
+                        checkPlugin(name, [123, 456, 1.2, 3.4, -5.6, -7.8], name + '(target_width=123, target_height=456, src_left=1.2, src_top=3.4, src_width=-5.6, src_height=-7.8)');
+                        if (name in taps) {
+                            checkPlugin(name, [123, 456, null, null, null, null, 90], name + '(target_width=123, target_height=456, taps=90)');
+                        }
+                        if (name === 'GaussResize') {
+                            checkPlugin(name, [123, 456, null, null, null, null, 0.9], 'GaussResize(target_width=123, target_height=456, p=0.9)');
+                        }
+                    }
+                });
+            });
+        });
     });
 });
