@@ -199,3 +199,4 @@ newPlugin('Layer(rv:base_clip, rv:overlay_clip, t:op, i:level, i:x, i:y, i:thres
 newPlugin('Mask(rv:, v:mask_clip)');
 newPlugin('ResetMask(v:clip)');
 newPlugin('ColorKeyMask(c:color, i:tolB, i:tolG, i:tolR)');
+newPlugin('MaskHS(i:startHue, i:endHue, i:maxSat, i:minSat, b:coring)');

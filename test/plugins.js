@@ -467,5 +467,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(color=255, tolB=10, tolG=20, tolR=30)');
             checkPlugin.bind(null, 'ColorKeyMask', [-1], 'ColorKeyMask(color=-1)').should.throw(AvisynthError);
         });
+
+        it('MaskHS', function() {
+            // MaskHS(clip [, int startHue, int endHue, int maxSat, int minSat, bool coring])
+            checkPlugin('MaskHS', [], 'MaskHS()');
+            checkPlugin('MaskHS', [10, 20, 30, 0, false], 'MaskHS(startHue=10, endHue=20, maxSat=30, minSat=0, coring=false)');
+        });
     });
 });
