@@ -543,6 +543,12 @@ describe('Base plugin implementations (core filters)', function() {
             // SkewRows(clip clip, int skew)
             requiresParameters('SkewRows');
             checkPlugin('SkewRows', [123], 'SkewRows(skew=123)');
-        })
+        });
+
+        it.is.parameterless('TurnLeft');
+
+        it.is.parameterless('TurnRight');
+
+        it.is.parameterless('Turn180');
     });
 });

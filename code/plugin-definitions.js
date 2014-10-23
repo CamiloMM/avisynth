@@ -217,3 +217,6 @@ newPlugin('HorizontalReduceBy2');
 newPlugin('VerticalReduceBy2');
 newPlugin('ReduceBy2');
 newPlugin('SkewRows(ri:skew)');
+newPlugin('TurnLeft');
+newPlugin('TurnRight');
+newPlugin('Turn180');
