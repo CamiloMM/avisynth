@@ -573,4 +573,17 @@ describe('Base plugin implementations (core filters)', function() {
             });
         });
     });
+
+    describe('Pixel restoration filters', function() {
+        it('Blur', function() {
+            requiresParameters('Blur');
+            checkPlugin('Blur', [1.2, 3.4, 1], 'Blur(1.2, 3.4, true)');
+            checkPlugin('blur', [1], 'Blur(1)');
+        });
+
+        it('Sharpen', function() {
+            requiresParameters('Sharpen');
+            checkPlugin('Sharpen', [4.3, 2.1, 0], 'Sharpen(4.3, 2.1, false)');
+        });
+    });
 });

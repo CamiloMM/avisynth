@@ -231,3 +231,7 @@ newPlugin(    'SincResize(ri:target_width, ri:target_height, d:src_left, d:src_t
 newPlugin('Spline16Resize(ri:target_width, ri:target_height, d:src_left, d:src_top, d:src_width, d:src_height)');
 newPlugin('Spline36Resize(ri:target_width, ri:target_height, d:src_left, d:src_top, d:src_width, d:src_height)');
 newPlugin('Spline64Resize(ri:target_width, ri:target_height, d:src_left, d:src_top, d:src_width, d:src_height)');
+
+// Pixel restoration filters
+newPlugin('Blur(rd:, d:, b:)');
+newPlugin('Sharpen(rd:, d:, b:)');
