@@ -359,7 +359,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('FixLuminance', function() {
             // FixLuminance(clip clip, int intercept, int slope)
             checkPlugin('FixLuminance', [], 'FixLuminance()');
-            checkPlugin('FixLuminance', [123, 456], 'FixLuminance(intercept=123, slope=456)');
+            checkPlugin('FixLuminance', [123, 456], 'FixLuminance(123, 456)');
         });
 
         it('Greyscale', function() {
@@ -376,9 +376,9 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Levels', function() {
             // Levels(clip input, int input_low, float gamma, int input_high, int output_low, int output_high [, bool coring] [, bool dither])
-            checkPlugin.bind(null, 'Levels', [0, 1, 255, 0], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0)').should.throw(AvisynthError);
-            checkPlugin('Levels', [0, 1, 255, 0, 255], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255)');
-            checkPlugin('Levels', [0, 1, 255, 0, 255, true, false], 'Levels(input_low=0, gamma=1, input_high=255, output_low=0, output_high=255, coring=true, dither=false)');
+            checkPlugin.bind(null, 'Levels', [0, 1, 255, 0], 'Levels(0, 1, 255, 0)').should.throw(AvisynthError);
+            checkPlugin('Levels', [0, 1, 255, 0, 255], 'Levels(0, 1, 255, 0, 255)');
+            checkPlugin('Levels', [0, 1, 255, 0, 255, true, false], 'Levels(0, 1, 255, 0, 255, coring=true, dither=false)');
         });
 
         it('Limiter', function() {
@@ -390,31 +390,31 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('MergeARGB', function() {
             // MergeARGB(clip clipA, clip clipR, clip clipG, clip clipB)
-            checkPlugin.bind(null, 'MergeARGB', ['foo', 'bar', 'baz'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz)').should.throw(AvisynthError);
-            checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(clipA=foo, clipR=bar, clipG=baz, clipB=quux)');
+            checkPlugin.bind(null, 'MergeARGB', ['foo', 'bar', 'baz'], 'MergeARGB(foo, bar, baz)').should.throw(AvisynthError);
+            checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(foo, bar, baz, quux)');
         });
 
         it('MergeRGB', function() {
             // MergeRGB(clip clipR, clip clipG, clip clipB [, string pixel_type])
-            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar'], 'MergeRGB(clipR=foo, clipG=bar)').should.throw(AvisynthError);
-            checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz)');
-            checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="RGB24")');
-            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar', 'baz', 'PG13'], 'MergeRGB(clipR=foo, clipG=bar, clipB=baz, pixel_type="PG13")').should.throw(AvisynthError);
+            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar'], 'MergeRGB(foo, bar)').should.throw(AvisynthError);
+            checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(foo, bar, baz)');
+            checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(foo, bar, baz, pixel_type="RGB24")');
+            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar', 'baz', 'PG13'], 'MergeRGB(foo, bar, baz, pixel_type="PG13")').should.throw(AvisynthError);
         });
 
         ['Merge', 'MergeChroma', 'MergeLuma'].forEach(function(name) {
             it(name, function() {
                 // name(clip clip1, clip clip2 [, float weight])
-                checkPlugin.bind(null, name, ['foo'], name + '(clip1=foo)').should.throw(AvisynthError);
-                checkPlugin(name, ['foo', 'bar'], name + '(clip1=foo, clip2=bar)');
-                checkPlugin(name, ['foo', 'bar', 12.34], name + '(clip1=foo, clip2=bar, weight=12.34)');
+                checkPlugin.bind(null, name, ['foo'], name + '(foo)').should.throw(AvisynthError);
+                checkPlugin(name, ['foo', 'bar'], name + '(foo, bar)');
+                checkPlugin(name, ['foo', 'bar', 12.34], name + '(foo, bar, weight=12.34)');
             });
         });
 
         it('RGBAdjust', function() {
             // RGBAdjust(clip clip [, float red] [, float green] [, float blue] [, float alpha] [, float rb] [, float gb] [, float bb] [, float ab] [, float rg] [, float gg] [, float bg] [, float ag] [, bool analyze] [, bool dither])
             checkPlugin('RGBAdjust', [], 'RGBAdjust()');
-            checkPlugin('RGBAdjust', [0.1, 0.2, 0.3, 0.4, 1, -2, 3, -4, 1.2, 3.4, 5.6, 0, true, false], 'RGBAdjust(red=0.1, green=0.2, blue=0.3, alpha=0.4, rb=1, gb=-2, bb=3, ab=-4, rg=1.2, gg=3.4, bg=5.6, ag=0, analyze=true, dither=false)');
+            checkPlugin('RGBAdjust', [0.1, 0.2, 0.3, 0.4, 1, -2, 3, -4, 1.2, 3.4, 5.6, 1, true, false], 'RGBAdjust(0.1, 0.2, 0.3, 0.4, rb=1, gb=-2, bb=3, ab=-4, rg=1.2, gg=3.4, bg=5.6, ag=1, analyze=true, dither=false)');
         });
 
         ['ShowAlpha', 'ShowBlue', 'ShowGreen', 'ShowRed'].forEach(function(name) {
@@ -430,15 +430,15 @@ describe('Base plugin implementations (core filters)', function() {
             it(name, function() {
                 // name(clip clip)
                 checkPlugin(name, [], name + '()');
-                checkPlugin(name, ['fooBar'], name + '(clip=fooBar)');
+                checkPlugin(name, ['fooBar'], name + '(fooBar)');
             });
         });
 
         it('YToUV', function() {
             // YToUV(clip clipU, clip clipV [, clip clipY])
-            checkPlugin.bind(null, 'YToUV', ['foo'], 'YToUV(clipU=foo)').should.throw(AvisynthError);
-            checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(clipU=foo, clipV=bar)');
-            checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(clipU=foo, clipV=bar, clipY=baz)');
+            checkPlugin.bind(null, 'YToUV', ['foo'], 'YToUV(foo)').should.throw(AvisynthError);
+            checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(foo, bar)');
+            checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(foo, bar, baz)');
         });
 
         it('Tweak', function() {
@@ -452,31 +452,31 @@ describe('Base plugin implementations (core filters)', function() {
         it('Layer', function() {
             // Layer(clip base_clip, clip overlay_clip, string op, int level, int x, int y, int threshold, bool use_chroma)
             requiresParameters('Layer');
-            checkPlugin.bind(null, 'Layer', ['foo', 'bar', 'overlay'], 'Layer(base_clip=foo, overlay_clip=bar, op="overlay")').should.throw(AvisynthError); // Admittedly, overlay should be allowed, it isn't in the docs so I suppose it isn't.
-            checkPlugin('Layer', ['foo', 'bar'], 'Layer(base_clip=foo, overlay_clip=bar)');
-            checkPlugin('Layer', ['foo', 'bar', 'lighten', 123, 12, -34, 42, true], 'Layer(base_clip=foo, overlay_clip=bar, op="lighten", level=123, x=12, y=-34, threshold=42, use_chroma=true)');
+            checkPlugin.bind(null, 'Layer', ['foo', 'bar', 'overlay'], 'Layer(foo, bar, op="overlay")').should.throw(AvisynthError); // Admittedly, overlay should be allowed, it isn't in the docs so I suppose it isn't.
+            checkPlugin('Layer', ['foo', 'bar'], 'Layer(foo, bar)');
+            checkPlugin('Layer', ['foo', 'bar', 'lighten', 123, 12, -34, 42, true], 'Layer(foo, bar, op="lighten", level=123, x=12, y=-34, threshold=42, use_chroma=true)');
         });
 
         it('Mask', function() {
             // Mask(clip clip, mask_clip clip)
             requiresParameters('Mask');
             checkPlugin('Mask', ['foo'], 'Mask(foo)');
-            checkPlugin('Mask', ['foo', 'bar'], 'Mask(foo, mask_clip=bar)');
+            checkPlugin('Mask', ['foo', 'bar'], 'Mask(foo, bar)');
         });
 
         it('ResetMask', function() {
             // ResetMask(clip clip)
             checkPlugin('ResetMask', [], 'ResetMask()');
-            checkPlugin('ResetMask', ['foo'], 'ResetMask(clip=foo)');
+            checkPlugin('ResetMask', ['foo'], 'ResetMask(foo)');
         });
 
         it('ColorKeyMask', function() {
             // ColorKeyMask(clip clip, int color [, int tolB, int tolG, int tolR])
             checkPlugin('ColorKeyMask', [], 'ColorKeyMask()'); // It's actually possible.
-            checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(color=0)');
-            checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(color=16711935)');
-            checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(color=255, tolB=10, tolG=20, tolR=30)');
-            checkPlugin.bind(null, 'ColorKeyMask', [-1], 'ColorKeyMask(color=-1)').should.throw(AvisynthError);
+            checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(0)');
+            checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(16711935)');
+            checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(255, 10, 20, 30)');
+            checkPlugin.bind(null, 'ColorKeyMask', [-1], 'ColorKeyMask(-1)').should.throw(AvisynthError);
         });
 
         it('MaskHS', function() {
@@ -488,15 +488,15 @@ describe('Base plugin implementations (core filters)', function() {
         it('Overlay', function() {
             // Overlay(clip clip, clip overlay [, int x, int y, clip mask, float opacity, string mode, bool greymask, string output, bool ignore_conditional, bool pc_range])
             requiresParameters('Overlay');
-            checkPlugin('Overlay', ['foo'], 'Overlay(overlay=foo)');
-            checkPlugin('Overlay', ['foo', -1, 0, 'bar', 0.5, 'SoftLight', false, 'YUY2', true, false], 'Overlay(overlay=foo, x=-1, y=0, mask=bar, opacity=0.5, mode="SoftLight", greymask=false, output="YUY2", ignore_conditional=true, pc_range=false)');
+            checkPlugin('Overlay', ['foo'], 'Overlay(foo)');
+            checkPlugin('Overlay', ['foo', -1, 0, 'bar', 0.5, 'SoftLight', false, 'YUY2', true, false], 'Overlay(foo, x=-1, y=0, mask=bar, opacity=0.5, mode="SoftLight", greymask=false, output="YUY2", ignore_conditional=true, pc_range=false)');
         });
 
         it('Subtract', function() {
             // Subtract(clip1 clip, clip2 clip)
             requiresParameters('Subtract');
-            checkPlugin.bind(null, 'Subtract', ['foo'], 'Subtract(clip1=foo)').should.throw(AvisynthError);
-            checkPlugin('Subtract', ['foo', 'bar'], 'Subtract(clip1=foo, clip2=bar)');
+            checkPlugin.bind(null, 'Subtract', ['foo'], 'Subtract(foo)').should.throw(AvisynthError);
+            checkPlugin('Subtract', ['foo', 'bar'], 'Subtract(foo, bar)');
         });
     });
 
@@ -504,22 +504,22 @@ describe('Base plugin implementations (core filters)', function() {
         it('AddBorders', function() {
             // AddBorders(clip clip, int left, int top, int right, int bottom [, int color])
             requiresParameters('AddBorders');
-            checkPlugin('AddBorders', [1, 2, 3, 4], 'AddBorders(left=1, top=2, right=3, bottom=4)');
-            checkPlugin('AddBorders', [10, 20, 30, 40, 'Chocolate'], 'AddBorders(left=10, top=20, right=30, bottom=40, color=13789470)');
+            checkPlugin('AddBorders', [1, 2, 3, 4], 'AddBorders(1, 2, 3, 4)');
+            checkPlugin('AddBorders', [10, 20, 30, 40, 'Chocolate'], 'AddBorders(10, 20, 30, 40, color=13789470)');
         });
 
         it('Crop', function() {
             // Crop(clip clip, int left, int top, int width, int height, bool align)
             // Crop(clip clip, int left, int top, int -right, int -bottom, bool align)
-            checkPlugin.bind(null, 'Crop', [1, 2, 3], 'Crop(left=1, top=2, width=3)').should.throw(AvisynthError);
-            checkPlugin('Crop', [1, 2, 3, -4], 'Crop(left=1, top=2, width=3, height=-4)');
-            checkPlugin('Crop', [5, 6, -7, 8, false], 'Crop(left=5, top=6, width=-7, height=8, align=false)');
+            checkPlugin.bind(null, 'Crop', [1, 2, 3], 'Crop(1, 2, 3)').should.throw(AvisynthError);
+            checkPlugin('Crop', [1, 2, 3, -4], 'Crop(1, 2, 3, -4)');
+            checkPlugin('Crop', [5, 6, -7, 8, false], 'Crop(5, 6, -7, 8, align=false)');
         });
 
         it('CropBottom', function() {
             // CropBottom(clip clip, int count)
             requiresParameters('CropBottom');
-            checkPlugin('CropBottom', [123], 'CropBottom(count=123)');
+            checkPlugin('CropBottom', [123], 'CropBottom(123)');
         });
 
         it.is.parameterless('FlipHorizontal');
@@ -529,8 +529,8 @@ describe('Base plugin implementations (core filters)', function() {
         it('Letterbox', function() {
             // Letterbox(clip clip, int top, int bottom [, int x1] [, int x2] [, int color])
             requiresParameters('Letterbox');
-            checkPlugin('Letterbox', [1, 2], 'Letterbox(top=1, bottom=2)');
-            checkPlugin('Letterbox', [1, 2, 3, 4, 'darkOliveGreen'], 'Letterbox(top=1, bottom=2, x1=3, x2=4, color=5597999)');
+            checkPlugin('Letterbox', [1, 2], 'Letterbox(1, 2)');
+            checkPlugin('Letterbox', [1, 2, 3, 4, 'darkOliveGreen'], 'Letterbox(1, 2, x1=3, x2=4, color=5597999)');
         });
 
         it.is.parameterless('HorizontalReduceBy2');
@@ -542,7 +542,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('SkewRows', function() {
             // SkewRows(clip clip, int skew)
             requiresParameters('SkewRows');
-            checkPlugin('SkewRows', [123], 'SkewRows(skew=123)');
+            checkPlugin('SkewRows', [123], 'SkewRows(123)');
         });
 
         it.is.parameterless('TurnLeft');
@@ -557,16 +557,16 @@ describe('Base plugin implementations (core filters)', function() {
             filters.forEach(function(name) {
                 it(name, function() {
                     requiresParameters(name);
-                    checkPlugin(name, [123, 456], name + '(target_width=123, target_height=456)');
+                    checkPlugin(name, [123, 456], name + '(123, 456)');
                     if (name === 'BicubicResize') {
-                        checkPlugin(name, [123, 456, 1.2, 3.4, 5.6, 7.8, -12.34, -56.78], 'BicubicResize(target_width=123, target_height=456, b=1.2, c=3.4, src_left=5.6, src_top=7.8, src_width=-12.34, src_height=-56.78)');
+                        checkPlugin(name, [123, 456, 1.2, 3.4, 5.6, 7.8, -12.34, -56.78], 'BicubicResize(123, 456, b=1.2, c=3.4, src_left=5.6, src_top=7.8, src_width=-12.34, src_height=-56.78)');
                     } else {
-                        checkPlugin(name, [123, 456, 1.2, 3.4, -5.6, -7.8], name + '(target_width=123, target_height=456, src_left=1.2, src_top=3.4, src_width=-5.6, src_height=-7.8)');
+                        checkPlugin(name, [123, 456, 1.2, 3.4, -5.6, -7.8], name + '(123, 456, src_left=1.2, src_top=3.4, src_width=-5.6, src_height=-7.8)');
                         if (name in taps) {
-                            checkPlugin(name, [123, 456, null, null, null, null, 90], name + '(target_width=123, target_height=456, taps=90)');
+                            checkPlugin(name, [123, 456, null, null, null, null, 90], name + '(123, 456, taps=90)');
                         }
                         if (name === 'GaussResize') {
-                            checkPlugin(name, [123, 456, null, null, null, null, 0.9], 'GaussResize(target_width=123, target_height=456, p=0.9)');
+                            checkPlugin(name, [123, 456, null, null, null, null, 0.9], 'GaussResize(123, 456, p=0.9)');
                         }
                     }
                 });
@@ -577,13 +577,13 @@ describe('Base plugin implementations (core filters)', function() {
     describe('Pixel restoration filters', function() {
         it('Blur', function() {
             requiresParameters('Blur');
-            checkPlugin('Blur', [1.2, 3.4, 1], 'Blur(1.2, 3.4, true)');
+            checkPlugin('Blur', [0.1, -1.2, 1], 'Blur(0.1, -1.2, MMX=true)');
             checkPlugin('blur', [1], 'Blur(1)');
         });
 
         it('Sharpen', function() {
             requiresParameters('Sharpen');
-            checkPlugin('Sharpen', [4.3, 2.1, 0], 'Sharpen(4.3, 2.1, false)');
+            checkPlugin('Sharpen', [-0.1, 1.2, 0], 'Sharpen(-0.1, 1.2, MMX=false)');
         });
     });
 });
