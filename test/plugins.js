@@ -576,14 +576,24 @@ describe('Base plugin implementations (core filters)', function() {
 
     describe('Pixel restoration filters', function() {
         it('Blur', function() {
+            // Blur(clip clip, float amount, bool MMX)
+            // Blur(clip, float amountH, float amountV, bool MMX)
             requiresParameters('Blur');
             checkPlugin('Blur', [0.1, -1.2, 1], 'Blur(0.1, -1.2, MMX=true)');
             checkPlugin('blur', [1], 'Blur(1)');
         });
 
         it('Sharpen', function() {
+            // Sharpen(clip clip, float amount, bool MMX)
+            // Sharpen(clip, float amountH, float amountV, bool MMX)
             requiresParameters('Sharpen');
             checkPlugin('Sharpen', [-0.1, 1.2, 0], 'Sharpen(-0.1, 1.2, MMX=false)');
+        });
+
+        it('GeneralConvolution', function() {
+            // GeneralConvolution(clip clip, [int bias, string matrix, float divisor, bool auto])
+            checkPlugin('GeneralConvolution', [], 'GeneralConvolution()');
+            checkPlugin('GeneralConvolution', [12, '0 0 0 1 0 2 0 0 0', 3.5, false], 'GeneralConvolution(bias=12, matrix="0 0 0 1 0 2 0 0 0", divisor=3.5, auto=false)');
         });
     });
 });

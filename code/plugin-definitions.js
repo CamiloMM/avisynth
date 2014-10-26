@@ -235,3 +235,4 @@ newPlugin('Spline64Resize(ri:, ri:, d:src_left, d:src_top, d:src_width, d:src_he
 // Pixel restoration filters
 newPlugin('Blur(rd:, d:, b:MMX)');
 newPlugin('Sharpen(rd:, d:, b:MMX)');
+newPlugin('GeneralConvolution(i:bias, q:matrix, d:divisor, b:auto)');
