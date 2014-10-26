@@ -236,3 +236,5 @@ newPlugin('Spline64Resize(ri:, ri:, d:src_left, d:src_top, d:src_width, d:src_he
 newPlugin('Blur(rd:, d:, b:MMX)');
 newPlugin('Sharpen(rd:, d:, b:MMX)');
 newPlugin('GeneralConvolution(i:bias, q:matrix, d:divisor, b:auto)');
+newPlugin('SpatialSoften(ri:, ri:, ri:)');
+newPlugin('TemporalSoften(ri:, ri:, ri:, i:scenechange, i:mode)');

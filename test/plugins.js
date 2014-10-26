@@ -595,5 +595,18 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('GeneralConvolution', [], 'GeneralConvolution()');
             checkPlugin('GeneralConvolution', [12, '0 0 0 1 0 2 0 0 0', 3.5, false], 'GeneralConvolution(bias=12, matrix="0 0 0 1 0 2 0 0 0", divisor=3.5, auto=false)');
         });
+
+        it('SpatialSoften', function() {
+            // SpatialSoften(clip clip, int radius, int luma_threshold, int chroma_threshold)
+            requiresParameters('SpatialSoften');
+            checkPlugin('SpatialSoften', [5, 10, 20], 'SpatialSoften(5, 10, 20)');
+        });
+
+        it('TemporalSoften', function() {
+            // TemporalSoften(clip clip, int radius, int luma_threshold, int chroma_threshold [, int scenechange] [, int mode])
+            requiresParameters('TemporalSoften');
+            checkPlugin('TemporalSoften', [5, 10, 20], 'TemporalSoften(5, 10, 20)');
+            checkPlugin('TemporalSoften', [5, 10, 20, 40, 1], 'TemporalSoften(5, 10, 20, scenechange=40, mode=1)');
+        });
     });
 });
