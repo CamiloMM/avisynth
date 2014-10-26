@@ -608,5 +608,7 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('TemporalSoften', [5, 10, 20], 'TemporalSoften(5, 10, 20)');
             checkPlugin('TemporalSoften', [5, 10, 20, 40, 1], 'TemporalSoften(5, 10, 20, scenechange=40, mode=1)');
         });
+
+        it.is.parameterless('FixBrokenChromaUpsampling');
     });
 });
