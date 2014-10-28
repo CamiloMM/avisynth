@@ -92,6 +92,12 @@ function coreFilter(name, options, types) {
                 while (typeof (value = arguments[++a]) === type) { multi.push(value); } a--;
                 if (/[fp]/.test(m)) multi = multi.map(function(v) { return path.resolve(v); });
                 if (/[fpqt]/.test(m)) multi = multi.map(function(v) { return '"' + v + '"'; });
+                if (/v/.test(m)) multi = multi.map(function(v) {
+                    if (!/^[a-z_][0-9a-z_]*$/i.test(v)) {
+                        throw new AvisynthError('bad syntax for variable name "' + v + '"!');
+                    }
+                    return v;
+                });
                 multi.forEach(function(p) { params.push(p); });
             } else {
                 if (m && /t/.test(m)) checkType(value, options.types);
@@ -102,7 +108,7 @@ function coreFilter(name, options, types) {
                 if (m && /di/.test(m)) value = +value;
                 if (m && /i/.test(m)) value = Math.round(value);
                 if (m && /c/.test(m)) value = colors.parse(value);
-                if (m && /v/.test(m)) if (!/[a-z_][0-9a-z_]*/i.test(value)) {
+                if (m && /v/.test(m)) if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
                     throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                 }
 
@@ -239,3 +245,7 @@ newPlugin('GeneralConvolution(i:bias, q:matrix, d:divisor, b:auto)');
 newPlugin('SpatialSoften(ri:, ri:, ri:)');
 newPlugin('TemporalSoften(ri:, ri:, ri:, i:scenechange, i:mode)');
 newPlugin('FixBrokenChromaUpsampling');
+
+// Timeline editing filters
+newPlugin('AlignedSplice(rv:, rv:, mv:)');
+newPlugin('UnalignedSplice(rv:, rv:, mv:)');

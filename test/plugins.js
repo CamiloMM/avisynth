@@ -611,4 +611,17 @@ describe('Base plugin implementations (core filters)', function() {
 
         it.is.parameterless('FixBrokenChromaUpsampling');
     });
+
+    describe('Timeline editing filters', function() {
+        ['AlignedSplice', 'UnalignedSplice'].forEach(function(name) {
+            it(name, function() {
+                // AlignedSplice(clip clip1, clip clip2 [,...])
+                // UnalignedSplice(clip clip1, clip clip2 [,...])
+                checkPlugin.bind(null, name, ['foo'], name + '(foo)').should.throw(AvisynthError);
+                checkPlugin.bind(null, name, ['foo', 'bar', '3ad'], name + '(foo, bar, 3ad)').should.throw(AvisynthError);
+                checkPlugin(name, ['foo', 'bar'], name + '(foo, bar)');
+                checkPlugin(name, ['foo', 'bar', 'baz', 'quux'], name + '(foo, bar, baz, quux)');
+            });
+        });
+    });
 });
