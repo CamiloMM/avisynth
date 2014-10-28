@@ -65,6 +65,22 @@ function coreFilter(name, options, types) {
     if (typeof options.params === 'string') options.params = options.params.split(/\s*,\s*/);
     if (typeof options.types  === 'string') options.types  =  options.types.split(/\s*,\s*/);
 
+    // Utility that processes a parameter, used in core filters. The m variable is the modifier.
+    function processParameter(m, value) {
+        if (m && /t/.test(m)) checkType(value, options.types);
+        if (m && /[fp]/.test(m)) value = path.resolve(value);
+        if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
+        if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
+        if (m && /b/.test(m)) value = !!value;
+        if (m && /di/.test(m)) value = +value;
+        if (m && /i/.test(m)) value = Math.round(value);
+        if (m && /c/.test(m)) value = colors.parse(value);
+        if (m && /v/.test(m)) if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
+            throw new AvisynthError('bad syntax for variable name "' + value + '"!');
+        }
+        return value;
+    }
+
     // Here begins the actual creation of the plugin.
     return function() {
         // Construct parameter definitons.
@@ -90,28 +106,10 @@ function coreFilter(name, options, types) {
                 var multi = [value];
                 var type = typeof value;
                 while (typeof (value = arguments[++a]) === type) { multi.push(value); } a--;
-                if (/[fp]/.test(m)) multi = multi.map(function(v) { return path.resolve(v); });
-                if (/[fpqt]/.test(m)) multi = multi.map(function(v) { return '"' + v + '"'; });
-                if (/v/.test(m)) multi = multi.map(function(v) {
-                    if (!/^[a-z_][0-9a-z_]*$/i.test(v)) {
-                        throw new AvisynthError('bad syntax for variable name "' + v + '"!');
-                    }
-                    return v;
-                });
+                multi = multi.map(processParameter.bind(null, m));
                 multi.forEach(function(p) { params.push(p); });
             } else {
-                if (m && /t/.test(m)) checkType(value, options.types);
-                if (m && /[fp]/.test(m)) value = path.resolve(value);
-                if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
-                if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
-                if (m && /b/.test(m)) value = !!value;
-                if (m && /di/.test(m)) value = +value;
-                if (m && /i/.test(m)) value = Math.round(value);
-                if (m && /c/.test(m)) value = colors.parse(value);
-                if (m && /v/.test(m)) if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
-                    throw new AvisynthError('bad syntax for variable name "' + value + '"!');
-                }
-
+                value = processParameter(m, value);
                 params.push((definition.identifier ? definition.identifier + '=' : '') + value);
             }
         }
