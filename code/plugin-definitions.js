@@ -40,13 +40,13 @@ function coreFilter(name, options, types) {
     if (name.indexOf('(') !== -1) {
         var matches = name.match(/([^() ]*)\s*(\((.*)\))?/);
         name = matches[1];
-        if (options) types = options;
+        if (options) { types = options; }
         options = matches[3];
     }
 
     // Conveniently cast options/types from string to array, for the condition below.
-    if (typeof options === 'string') options = options.split(/\s*,\s*/);
-    if (typeof types   === 'string') types   =   types.split(/\s*,\s*/);
+    if (typeof options === 'string') { options = options.split(/\s*,\s*/); }
+    if (typeof types   === 'string') { types   =   types.split(/\s*,\s*/); }
 
     // If options is an array instead of object, it is treated as options.params.
     // Optionally, options.types can be inlined too, by passing a second array.
@@ -55,28 +55,30 @@ function coreFilter(name, options, types) {
     }
 
     // If options is still not defined, default it.
-    if (!isDefined(options)) options = {};
+    if (!isDefined(options)) { options = {}; }
 
     // We also support shorthands for the options properties.
-    if (options.p) options.params = options.p;
-    if (options.t) options.types  = options.t;
+    if (options.p) { options.params = options.p; }
+    if (options.t) { options.types  = options.t; }
 
     // Similar to a cast above, but for options' properties.
-    if (typeof options.params === 'string') options.params = options.params.split(/\s*,\s*/);
-    if (typeof options.types  === 'string') options.types  =  options.types.split(/\s*,\s*/);
+    if (typeof options.params === 'string') { options.params = options.params.split(/\s*,\s*/); }
+    if (typeof options.types  === 'string') { options.types  =  options.types.split(/\s*,\s*/); }
 
     // Utility that processes a parameter, used in core filters. The m variable is the modifier.
     function processParameter(m, value) {
-        if (m && /t/.test(m)) checkType(value, options.types);
-        if (m && /[fp]/.test(m)) value = path.resolve(value);
-        if (m && /[fpqt]/.test(m)) value = '"' + value + '"';
-        if (m && /n/.test(m) && typeof value === 'string') throw new AvisynthError('Only one path supported!');
-        if (m && /b/.test(m)) value = !!value;
-        if (m && /di/.test(m)) value = +value;
-        if (m && /i/.test(m)) value = Math.round(value);
-        if (m && /c/.test(m)) value = colors.parse(value);
-        if (m && /v/.test(m)) if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
-            throw new AvisynthError('bad syntax for variable name "' + value + '"!');
+        if (m && /t/.test(m)) { checkType(value, options.types); }
+        if (m && /[fp]/.test(m)) { value = path.resolve(value); }
+        if (m && /[fpqt]/.test(m)) { value = '"' + value + '"'; }
+        if (m && /n/.test(m) && typeof value === 'string') { throw new AvisynthError('Only one path supported!'); }
+        if (m && /b/.test(m)) { value = !!value; }
+        if (m && /di/.test(m)) { value = +value; }
+        if (m && /i/.test(m)) { value = Math.round(value); }
+        if (m && /c/.test(m)) { value = colors.parse(value); }
+        if (m && /v/.test(m)) {
+            if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
+                throw new AvisynthError('bad syntax for variable name "' + value + '"!');
+            }
         }
         return value;
     }
@@ -85,11 +87,13 @@ function coreFilter(name, options, types) {
     return function() {
         // Construct parameter definitons.
         var definitions = [];
-        if (options.params) options.params.forEach(function(param) {
-            // Each item in options.params should follow modifier:identifier format.
-            var matches = param.match(/^((.*):)?(.*)$/);
-            definitions.push({modifier: matches[2], identifier: matches[3]});
-        });
+        if (options.params) {
+            options.params.forEach(function(param) {
+                // Each item in options.params should follow modifier:identifier format.
+                var matches = param.match(/^((.*):)?(.*)$/);
+                definitions.push({modifier: matches[2], identifier: matches[3]});
+            });
+        }
 
         // Construct parameter list.
         var params = [];
@@ -97,9 +101,9 @@ function coreFilter(name, options, types) {
         // These may progress independently if a definiton accepts multiple arguments.
         for (var a = 0, d = 0; a < arguments.length; a++, d++) {
             var definition = definitions[d];
-            if (!definition) throw new AvisynthError('Too many arguments for ' + name);
+            if (!definition) { throw new AvisynthError('Too many arguments for ' + name); }
             var value = arguments[a];
-            if (!isDefined(value)) continue;
+            if (!isDefined(value)) { continue; }
             var m = definition.modifier;
             if (m && /m/.test(m)) {
                 // Multiple parameter modes.
@@ -118,8 +122,8 @@ function coreFilter(name, options, types) {
         for (var i = 0; i < definitions.length; i++) {
             var def = definitions[i];
             if (def.modifier && !isDefined(arguments[i])) {
-                if (/[f]/.test(def.modifier)) throw new AvisynthError('filename is a required argument!');
-                if (/[r]/.test(def.modifier)) throw new AvisynthError('a required argument is missing!');
+                if (/[f]/.test(def.modifier)) { throw new AvisynthError('filename is a required argument!'); }
+                if (/[r]/.test(def.modifier)) { throw new AvisynthError('a required argument is missing!'); }
             }
         }
 
