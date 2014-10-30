@@ -33,6 +33,7 @@ function checkType(value, allowed) {
 // i: field is cast to integer, rounded as necessary. Implies d.
 // v: a variable name (unquoted string), checked for syntactic validity.
 // c: a color variable, can be a number, name or string (0x123ABC, 0, 'red', 'F0F', 'FF00FF').
+// a: auto-type, strings get quoted, numbers and bools not (variables are only supported with an unmatched t).
 function coreFilter(name, options, types) {
 
     // Lazyness taken to new heights. First parameter can succintly describe some filters.
@@ -67,7 +68,7 @@ function coreFilter(name, options, types) {
 
     // Utility that processes a parameter, used in core filters. The m variable is the modifier.
     function processParameter(m, value) {
-        if (m && /t/.test(m)) { checkType(value, options.types); }
+        if (m && /t/.test(m) && !/a/.test(m)) { checkType(value, options.types); }
         if (m && /[fp]/.test(m)) { value = path.resolve(value); }
         if (m && /[fpqt]/.test(m)) { value = '"' + value + '"'; }
         if (m && /n/.test(m) && typeof value === 'string') { throw new AvisynthError('Only one path supported!'); }
@@ -78,6 +79,23 @@ function coreFilter(name, options, types) {
         if (m && /v/.test(m)) {
             if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
                 throw new AvisynthError('bad syntax for variable name "' + value + '"!');
+            }
+        }
+        if (m && /a/.test(m)) {
+            // Auto-parameters should guess what the value is supposed to mean.
+            // If it's a number or boolean, just output it as is.
+            if (typeof value === 'number') value = +value;
+            if (typeof value === 'boolean') value = !!value;
+            // But if it's a string, it depends on whether it can also be a type.
+            if (typeof value === 'string') {
+                // Types should not throw errors, but rather become variables if possible.
+                if (/t/.test(m)) {
+                    try { checkType(value, options.types); } catch (e) {
+                        if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
+                            throw new AvisynthError('bad syntax for variable name "' + value + '"!');
+                        }
+                    }
+                }
             }
         }
         return value;
@@ -251,3 +269,8 @@ newPlugin('FixBrokenChromaUpsampling');
 // Timeline editing filters
 newPlugin('AlignedSplice(rv:, rv:, mv:)');
 newPlugin('UnalignedSplice(rv:, rv:, mv:)');
+// Prototypes:
+//newPlugin('AssumeFPS(rat:, a:, a:)');
+//newPlugin('AssumeScaledFPS(i:multiplier, i:divisor, b:sync_audio)');
+//newPlugin('ChangeFPS(rat:, a:, a:)');
+//newPlugin('ConvertFPS(rat:, a:, a:, a:)');
