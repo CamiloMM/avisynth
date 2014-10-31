@@ -70,7 +70,7 @@ function coreFilter(name, options, types) {
     function processParameter(m, value) {
         if (m && /t/.test(m) && !/a/.test(m)) { checkType(value, options.types); }
         if (m && /[fp]/.test(m)) { value = path.resolve(value); }
-        if (m && /[fpqt]/.test(m)) { value = '"' + value + '"'; }
+        if (m && /[fpqt]/.test(m) && !/a/.test(m)) { value = '"' + value + '"'; }
         if (m && /n/.test(m) && typeof value === 'string') { throw new AvisynthError('Only one path supported!'); }
         if (m && /b/.test(m)) { value = !!value; }
         if (m && /di/.test(m)) { value = +value; }
@@ -90,7 +90,10 @@ function coreFilter(name, options, types) {
             if (typeof value === 'string') {
                 // Types should not throw errors, but rather become variables if possible.
                 if (/t/.test(m)) {
-                    try { checkType(value, options.types); } catch (e) {
+                    try {
+                        checkType(value, options.types);
+                        value = '"' + value + '"';
+                    } catch (e) {
                         if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
                             throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                         }
@@ -269,8 +272,8 @@ newPlugin('FixBrokenChromaUpsampling');
 // Timeline editing filters
 newPlugin('AlignedSplice(rv:, rv:, mv:)');
 newPlugin('UnalignedSplice(rv:, rv:, mv:)');
+newPlugin('AssumeFPS(rat:, a:, a:)', 'ntsc_film, ntsc_video, ntsc_double, ntsc_quad, ntsc_round_film, ntsc_round_video, ntsc_round_double, ntsc_round_quad, film, pal_film, pal_video, pal_double, pal_quad');
 // Prototypes:
-//newPlugin('AssumeFPS(rat:, a:, a:)');
 //newPlugin('AssumeScaledFPS(i:multiplier, i:divisor, b:sync_audio)');
 //newPlugin('ChangeFPS(rat:, a:, a:)');
 //newPlugin('ConvertFPS(rat:, a:, a:, a:)');

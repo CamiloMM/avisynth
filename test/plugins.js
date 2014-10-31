@@ -623,5 +623,18 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, ['foo', 'bar', 'baz', 'quux'], name + '(foo, bar, baz, quux)');
             });
         });
+
+        it('AssumeFPS', function() {
+            requiresParameters('AssumeFPS');
+            // AssumeFPS(clip clip, float fps [, bool sync_audio])
+            checkPlugin('AssumeFPS', [12.34], 'AssumeFPS(12.34)');
+            // AssumeFPS(clip clip, int numerator [, int denominator, bool sync_audio])
+            checkPlugin('AssumeFPS', [56, 78, false], 'AssumeFPS(56, 78, false)');
+            // AssumeFPS(clip clip1, clip clip2 [, bool sync_audio])
+            checkPlugin('AssumeFPS', ['foo', true], 'AssumeFPS(foo, true)');
+            // AssumeFPS(clip clip1, string preset [, bool sync_audio])
+            checkPlugin('AssumeFPS', ['ntsc_round_video'], 'AssumeFPS("ntsc_round_video")');
+            checkPlugin('AssumeFPS', ['film', false], 'AssumeFPS("film", false)');
+        });
     });
 });
