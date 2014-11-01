@@ -636,5 +636,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AssumeFPS', ['ntsc_round_video'], 'AssumeFPS("ntsc_round_video")');
             checkPlugin('AssumeFPS', ['film', false], 'AssumeFPS("film", false)');
         });
+
+        it('AssumeScaledFPS', function() {
+            // AssumeScaledFPS(clip [, int multiplier, int divisor, bool sync_audio])
+            checkPlugin('AssumeScaledFPS', [], 'AssumeScaledFPS()');
+            checkPlugin('AssumeScaledFPS', [123, 456, false], 'AssumeScaledFPS(multiplier=123, divisor=456, sync_audio=false)');
+        });
     });
 });
