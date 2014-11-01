@@ -169,6 +169,7 @@ var aviTypes = 'YV24, YV16, YV12, YV411, YUY2, RGB32, RGB24, Y8, AUTO, FULL';
 var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
 var showTypes = 'RGB24, RGB32, YUY2, YV12, Y8';
 var overlayModes = 'Blend, Add, Subtract, Multiply, Chroma, Luma, Lighten, Darken, SoftLight, HardLight, Difference, Exclusion';
+var fpsPresets = 'ntsc_film, ntsc_video, ntsc_double, ntsc_quad, ntsc_round_film, ntsc_round_video, ntsc_round_double, ntsc_round_quad, film, pal_film, pal_video, pal_double, pal_quad';
 
 // Shared parameter lists.
 var imgParams = 'f:, ni:start, i:end, d:fps, b:use_DevIL, b:info, t:pixel_type';
@@ -272,8 +273,8 @@ newPlugin('FixBrokenChromaUpsampling');
 // Timeline editing filters
 newPlugin('AlignedSplice(rv:, rv:, mv:)');
 newPlugin('UnalignedSplice(rv:, rv:, mv:)');
-newPlugin('AssumeFPS(rat:, a:, a:)', 'ntsc_film, ntsc_video, ntsc_double, ntsc_quad, ntsc_round_film, ntsc_round_video, ntsc_round_double, ntsc_round_quad, film, pal_film, pal_video, pal_double, pal_quad');
+newPlugin('AssumeFPS(rat:, a:, a:)', fpsPresets);
 newPlugin('AssumeScaledFPS(i:multiplier, i:divisor, b:sync_audio)');
+newPlugin('ChangeFPS(rat:, a:, a:)', fpsPresets);
 // Prototypes:
-//newPlugin('ChangeFPS(rat:, a:, a:)');
 //newPlugin('ConvertFPS(rat:, a:, a:, a:)');

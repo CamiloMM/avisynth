@@ -642,5 +642,18 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AssumeScaledFPS', [], 'AssumeScaledFPS()');
             checkPlugin('AssumeScaledFPS', [123, 456, false], 'AssumeScaledFPS(multiplier=123, divisor=456, sync_audio=false)');
         });
+
+        it('ChangeFPS', function() {
+            requiresParameters('ChangeFPS');
+            // ChangeFPS(clip clip, float fps [, bool linear])
+            checkPlugin('ChangeFPS', [12.34], 'ChangeFPS(12.34)');
+            // ChangeFPS(clip clip, int numerator [, int denominator, bool linear])
+            checkPlugin('ChangeFPS', [56, 78, false], 'ChangeFPS(56, 78, false)');
+            // ChangeFPS(clip clip1, clip clip2, bool linear)
+            checkPlugin('ChangeFPS', ['foo', true], 'ChangeFPS(foo, true)');
+            // ChangeFPS(clip clip1, string preset [, bool sync_audio]) <- error? should be "linear" here?
+            checkPlugin('ChangeFPS', ['ntsc_round_video'], 'ChangeFPS("ntsc_round_video")');
+            checkPlugin('ChangeFPS', ['film', false], 'ChangeFPS("film", false)');
+        });
     });
 });
