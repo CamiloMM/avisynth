@@ -71,10 +71,18 @@ function coreFilter(name, options, types) {
         if (m && /t/.test(m) && !/a/.test(m)) { checkType(value, options.types); }
         if (m && /[fp]/.test(m)) { value = path.resolve(value); }
         if (m && /[fpqt]/.test(m) && !/a/.test(m)) { value = '"' + value + '"'; }
-        if (m && /n/.test(m) && typeof value === 'string') { throw new AvisynthError('Only one path supported!'); }
-        if (m && /b/.test(m)) { value = !!value; }
-        if (m && /di/.test(m)) { value = +value; }
-        if (m && /i/.test(m)) { value = Math.round(value); }
+        if (m && /n/.test(m) && typeof value === 'string') {
+            throw new AvisynthError('Only one path supported!');
+        }
+        if (m && /b/.test(m) && value !== !!value) {
+            throw new AvisynthError('expected boolean, got "' + value + '"');
+        }
+        if (m && /di/.test(m) && value !== +value) {
+            throw new AvisynthError('expected number, got "' + value + '"');
+        }
+        if (m && /i/.test(m) && value !== Math.round(value)) {
+            throw new AvisynthError('expected integer, got "' + value + '"');
+        }
         if (m && /c/.test(m)) { value = colors.parse(value); }
         if (m && /v/.test(m)) {
             if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
@@ -84,8 +92,8 @@ function coreFilter(name, options, types) {
         if (m && /a/.test(m)) {
             // Auto-parameters should guess what the value is supposed to mean.
             // If it's a number or boolean, just output it as is.
-            if (typeof value === 'number') value = +value;
-            if (typeof value === 'boolean') value = !!value;
+            if (typeof value === 'number') { value = +value; }
+            if (typeof value === 'boolean') { value = !!value; }
             // But if it's a string, it depends on whether it can also be a type.
             if (typeof value === 'string') {
                 // Types should not throw errors, but rather become variables if possible.
@@ -277,3 +285,4 @@ newPlugin('AssumeFPS(rat:, a:, a:)', fpsPresets);
 newPlugin('AssumeScaledFPS(i:multiplier, i:divisor, b:sync_audio)');
 newPlugin('ChangeFPS(rat:, a:, a:)', fpsPresets);
 newPlugin('ConvertFPS(rat:, a:, a:, a:)', fpsPresets);
+newPlugin('DeleteFrame(rmi:)');

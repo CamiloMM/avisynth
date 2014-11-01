@@ -579,7 +579,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Blur(clip clip, float amount, bool MMX)
             // Blur(clip, float amountH, float amountV, bool MMX)
             requiresParameters('Blur');
-            checkPlugin('Blur', [0.1, -1.2, 1], 'Blur(0.1, -1.2, MMX=true)');
+            checkPlugin('Blur', [0.1, -1.2, true], 'Blur(0.1, -1.2, MMX=true)');
             checkPlugin('blur', [1], 'Blur(1)');
         });
 
@@ -587,7 +587,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Sharpen(clip clip, float amount, bool MMX)
             // Sharpen(clip, float amountH, float amountV, bool MMX)
             requiresParameters('Sharpen');
-            checkPlugin('Sharpen', [-0.1, 1.2, 0], 'Sharpen(-0.1, 1.2, MMX=false)');
+            checkPlugin('Sharpen', [-0.1, 1.2, false], 'Sharpen(-0.1, 1.2, MMX=false)');
         });
 
         it('GeneralConvolution', function() {
@@ -667,6 +667,14 @@ describe('Base plugin implementations (core filters)', function() {
             // ConvertFPS(clip clip1, string preset [, int zone, int vbi])
             checkPlugin('ConvertFPS', ['ntsc_round_film'], 'ConvertFPS("ntsc_round_film")');
             checkPlugin('ConvertFPS', ['pal_quad', 12, 34], 'ConvertFPS("pal_quad", 12, 34)');
+        });
+
+        it('DeleteFrame', function() {
+            // DeleteFrame(clip clip, int frame_num [, ...])
+            requiresParameters('DeleteFrame');
+            checkPlugin.bind(null, 'DeleteFrame', [false], 'DeleteFrame(false)').should.throw(AvisynthError);
+            checkPlugin('DeleteFrame', [123], 'DeleteFrame(123)');
+            checkPlugin('DeleteFrame', [3, 2, 1, 0], 'DeleteFrame(3, 2, 1, 0)');
         });
     });
 });
