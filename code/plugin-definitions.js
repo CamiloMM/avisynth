@@ -287,3 +287,4 @@ newPlugin('ChangeFPS(rat:, a:, a:)', fpsPresets);
 newPlugin('ConvertFPS(rat:, a:, a:, a:)', fpsPresets);
 newPlugin('DeleteFrame(rmi:)');
 newPlugin('Dissolve(rmv:, i:, d:fps)');
+newPlugin('DuplicateFrame(rmi:)');

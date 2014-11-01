@@ -687,10 +687,18 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Dissolve', function() {
             // Dissolve(clip clip1, clip clip2 [,...], int overlap [, float fps])
-            //requiresParameters('Dissolve');
-            //checkPlugin('Dissolve', ['foo'], 'Dissolve(foo)');
-            //checkPluginError('Dissolve', ['foo', false]);
+            requiresParameters('Dissolve');
+            checkPlugin('Dissolve', ['foo'], 'Dissolve(foo)');
+            checkPluginError('Dissolve', ['foo', false]);
             checkPlugin('Dissolve', ['foo', 'bar', 'baz', 12, 34.56], 'Dissolve(foo, bar, baz, 12, fps=34.56)');
+        });
+
+        it('DuplicateFrame', function() {
+            // DuplicateFrame(clip clip, int frame_num [, ...])
+            requiresParameters('DuplicateFrame');
+            checkPluginError('DuplicateFrame', [false]);
+            checkPlugin('DuplicateFrame', [123], 'DuplicateFrame(123)');
+            checkPlugin('DuplicateFrame', [3, 2, 1, 0], 'DuplicateFrame(3, 2, 1, 0)');
         });
     });
 });
