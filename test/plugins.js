@@ -181,25 +181,33 @@ describe('Base plugin implementations (core filters)', function() {
         lines.slice(-1)[0].should.equal('');
     }
 
+    // Checks that a plugin call throws an AvisynthError.
+    function checkPluginError(name, params) {
+        var script = new avisynth.Script('Version()');
+        expect(script[name]).to.be.a.function;
+        var methodCall = Function.apply.bind(script[name], script, params);
+        methodCall.should.throw(AvisynthError);
+    }
+
     // Auto-tests a filter which takes no parameters.
     it.is = it.is || {};
     it.is.parameterless = function(name) {
         it(name, function() {
-            checkPlugin.bind(null, name, [false], name + '(false)').should.throw(AvisynthError);
+            checkPluginError(name, [false]);
             checkPlugin(name, [], name + '()');
         });
     }
 
     // Auto-tests that a filter requires parameters.
     function requiresParameters(name) {
-        checkPlugin.bind(null, name, [], name + '()').should.throw(AvisynthError);
+        checkPluginError(name, []);
     }
 
     describe('Media file filters', function() {
         it('AviSource', function() {
             // AviSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
             requiresParameters('AviSource');
-            checkPlugin.bind(null, 'AviSource', [aviFile, true, 'PG13'], 'AviSource("' + aviFile + '", audio=true, pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('AviSource', [aviFile, true, 'PG13']);
             checkPlugin('AviSource', ['fake.avi'], 'AviSource("' + path.resolve('fake.avi') + '")');
             checkPlugin('AviSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'AviSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
             checkPlugin('AviSource', [aviFile, false], 'AviSource("' + aviFile + '", audio=false)');
@@ -211,7 +219,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('OpenDMLSource', function() {
             // OpenDMLSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
             requiresParameters('OpenDMLSource');
-            checkPlugin.bind(null, 'OpenDMLSource', [aviFile, true, 'PG13'], 'OpenDMLSource("' + aviFile + '", audio=true, pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('OpenDMLSource', [aviFile, true, 'PG13']);
             checkPlugin('OpenDMLSource', ['fake.avi'], 'OpenDMLSource("' + path.resolve('fake.avi') + '")');
             checkPlugin('OpenDMLSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'OpenDMLSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
             checkPlugin('OpenDMLSource', [aviFile, false], 'OpenDMLSource("' + aviFile + '", audio=false)');
@@ -223,7 +231,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('AviFileSource', function() {
             // AviFileSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
             requiresParameters('AviFileSource');
-            checkPlugin.bind(null, 'AviFileSource', [aviFile, true, 'PG13'], 'AviFileSource("' + aviFile + '", audio=true, pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('AviFileSource', [aviFile, true, 'PG13']);
             checkPlugin('AviFileSource', ['fake.avi'], 'AviFileSource("' + path.resolve('fake.avi') + '")');
             checkPlugin('AviFileSource', [aviFile, 'fake1.avi', aviFile, 'fake2.avi', aviFile], 'AviFileSource("' + [aviFile, path.resolve('fake1.avi'), aviFile, path.resolve('fake2.avi'), aviFile].join('", "') + '")');
             checkPlugin('AviFileSource', [aviFile, false], 'AviFileSource("' + aviFile + '", audio=false)');
@@ -242,7 +250,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('DirectShowSource', function() {
             // DirectShowSource(string filename [, float fps, bool seek, bool audio, bool video, bool convertfps, bool seekzero, int timeout, string pixel_type, int framecount, string logfile, int logmask])
             requiresParameters('DirectShowSource');
-            checkPlugin.bind(null, 'DirectShowSource', [aviFile, aviFile], 'DirectShowSource("' + aviFile + '")').should.throw(AvisynthError);
+            checkPluginError('DirectShowSource', [aviFile, aviFile]);
             checkPlugin('DirectShowSource', [aviFile], 'DirectShowSource("' + aviFile + '")');
             checkPlugin('DirectShowSource', [aviFile, 123.456], 'DirectShowSource("' + aviFile + '", fps=123.456)');
             checkPlugin('DirectShowSource', [aviFile, 24, false], 'DirectShowSource("' + aviFile + '", fps=24, seek=false)');
@@ -252,7 +260,7 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, true, false], 'DirectShowSource("' + aviFile + '", convertfps=true, seekzero=false)');
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, true, 123456], 'DirectShowSource("' + aviFile + '", seekzero=true, timeout=123456)');
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, 123456, 'RGB'], 'DirectShowSource("' + aviFile + '", timeout=123456, pixel_type="RGB")');
-            checkPlugin.bind(null, 'DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'DirectShowSource("' + aviFile + '", pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'PG13']);
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'YUVex', 1234567890], 'DirectShowSource("' + aviFile + '", pixel_type="YUVex", framecount=1234567890)');
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1234567890, textFile], 'DirectShowSource("' + aviFile + '", framecount=1234567890, logfile="' + textFile + '")');
             checkPlugin('DirectShowSource', ['fake.avi', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'fake.txt'], 'DirectShowSource("' + path.resolve('fake.avi') + '", logfile="' + path.resolve('fake.txt') + '")');
@@ -262,31 +270,31 @@ describe('Base plugin implementations (core filters)', function() {
         it('ImageSource', function() {
             // ImageSource(string file = "c:\%06d.ebmp", int start = 0, int end = 1000, float fps = 24, bool use_DevIL = false, bool info = false, string pixel_type = "RGB24")
             requiresParameters('ImageSource');
-            checkPlugin.bind(null, 'ImageSource', [jpgFile, jpgFile], 'ImageSource("' + jpgFile + '")').should.throw(AvisynthError);
+            checkPluginError('ImageSource', [jpgFile, jpgFile]);
             checkPlugin('ImageSource', ['./fake-%06d.jpg'], 'ImageSource("' + path.resolve('./fake-%06d.jpg') + '")');
             checkPlugin('ImageSource', [jpgFile, 123, 456, 123.456, false, false], 'ImageSource("' + jpgFile + '", start=123, end=456, fps=123.456, use_DevIL=false, info=false)');
             checkPlugin('ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'Y8'], 'ImageSource("' + jpgFile + '", pixel_type="Y8")');
-            checkPlugin.bind(null, 'ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'ImageSource("' + jpgFile + '", pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('ImageSource', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13']);
         });
 
         it('ImageSourceAnim', function() {
             // ImageSourceAnim(string file, float fps = 24, bool info = false, string pixel_type = "RGB32")
             requiresParameters('ImageSourceAnim');
-            checkPlugin.bind(null, 'ImageSourceAnim', [gifFile, gifFile], 'ImageSourceAnim("' + gifFile + '")').should.throw(AvisynthError);
+            checkPluginError('ImageSourceAnim', [gifFile, gifFile]);
             checkPlugin('ImageSourceAnim', ['./fake.gif'], 'ImageSourceAnim("' + path.resolve('./fake.gif') + '")');
             checkPlugin('ImageSourceAnim', [gifFile, 123.456, false], 'ImageSourceAnim("' + gifFile + '", fps=123.456, info=false)');
             checkPlugin('ImageSourceAnim', [gifFile, undefined, undefined, 'Y8'], 'ImageSourceAnim("' + gifFile + '", pixel_type="Y8")');
-            checkPlugin.bind(null, 'ImageSourceAnim', [gifFile, undefined, undefined, 'PG13'], 'ImageSourceAnim("' + gifFile + '", pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('ImageSourceAnim', [gifFile, undefined, undefined, 'PG13']);
         });
 
         it('ImageReader', function() {
             // ImageReader(string file = "c:\%06d.ebmp", int start = 0, int end = 1000, float fps = 24, bool use_DevIL = false, bool info = false, string pixel_type = "RGB24")
             requiresParameters('ImageReader');
-            checkPlugin.bind(null, 'ImageReader', [jpgFile, jpgFile], 'ImageReader("' + jpgFile + '")').should.throw(AvisynthError);
+            checkPluginError('ImageReader', [jpgFile, jpgFile]);
             checkPlugin('ImageReader', ['./fake-%06d.jpg'], 'ImageReader("' + path.resolve('./fake-%06d.jpg') + '")');
             checkPlugin('ImageReader', [jpgFile, 123, 456, 123.456, false, false], 'ImageReader("' + jpgFile + '", start=123, end=456, fps=123.456, use_DevIL=false, info=false)');
             checkPlugin('ImageReader', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'Y8'], 'ImageReader("' + jpgFile + '", pixel_type="Y8")');
-            checkPlugin.bind(null, 'ImageReader', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13'], 'ImageReader("' + jpgFile + '", pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('ImageReader', [jpgFile, undefined, undefined, undefined, undefined, undefined, 'PG13']);
         });
 
         // Screw it, I'm going to be less rigid with these tests.
@@ -327,14 +335,14 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('ConvertBackToYUY2', function() {
             // ConvertBackToYUY2(clip [, string matrix])
-            checkPlugin.bind(null, 'ConvertBackToYUY2', ['invalid'], 'ConvertBackToYUY2(matrix="invalid")').should.throw(AvisynthError);
+            checkPluginError('ConvertBackToYUY2', ['invalid']);
             checkPlugin('ConvertBackToYUY2', [], 'ConvertBackToYUY2()');
             checkPlugin('ConvertBackToYUY2', ['PC.709'], 'ConvertBackToYUY2(matrix="PC.709")');
         });
 
         it('ConvertToY8', function() {
             // ConvertToY8(clip [, string matrix])
-            checkPlugin.bind(null, 'ConvertToY8', ['invalid'], 'ConvertToY8(matrix="invalid")').should.throw(AvisynthError);
+            checkPluginError('ConvertToY8', ['invalid']);
             checkPlugin('ConvertToY8', [], 'ConvertToY8()');
             checkPlugin('ConvertToY8', ['Rec601'], 'ConvertToY8(matrix="Rec601")');
         });
@@ -343,7 +351,7 @@ describe('Base plugin implementations (core filters)', function() {
         'ConvertToYV411', 'ConvertToYV16', 'ConvertToYV24'].forEach(function(name) {
             it(name, function() {
                 // name(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
-                checkPlugin.bind(null, name, ['invalid'], name + '(matrix="invalid")').should.throw(AvisynthError);
+                checkPluginError(name, ['invalid']);
                 checkPlugin(name, [], name + '()');
                 checkPlugin(name, ['AVERAGE', false, 'MPEG2', 'spline36'], name + '(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="spline36")');
             });
@@ -351,7 +359,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('ConvertToYV12', function() {
             // ConvertToYV12(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
-            checkPlugin.bind(null, 'ConvertToYV12', ['invalid'], 'ConvertToYV12(matrix="invalid")').should.throw(AvisynthError);
+            checkPluginError('ConvertToYV12', ['invalid']);
             checkPlugin('ConvertToYV12', [], 'ConvertToYV12()');
             checkPlugin('ConvertToYV12', ['AVERAGE', false, 'MPEG2', 'sinc', 'DV'], 'ConvertToYV12(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="sinc", ChromaOutPlacement="DV")');
         });
@@ -376,7 +384,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Levels', function() {
             // Levels(clip input, int input_low, float gamma, int input_high, int output_low, int output_high [, bool coring] [, bool dither])
-            checkPlugin.bind(null, 'Levels', [0, 1, 255, 0], 'Levels(0, 1, 255, 0)').should.throw(AvisynthError);
+            checkPluginError('Levels', [0, 1, 255, 0]);
             checkPlugin('Levels', [0, 1, 255, 0, 255], 'Levels(0, 1, 255, 0, 255)');
             checkPlugin('Levels', [0, 1, 255, 0, 255, true, false], 'Levels(0, 1, 255, 0, 255, coring=true, dither=false)');
         });
@@ -385,27 +393,27 @@ describe('Base plugin implementations (core filters)', function() {
             // Limiter(clip clip [, int min_luma] [, int max_luma] [, int min_chroma] [, int max_chroma] [, string show])
             checkPlugin('Limiter', [], 'Limiter()');
             checkPlugin('Limiter', [1, 2, 3, 4, 'chroma_grey'], 'Limiter(min_luma=1, max_luma=2, min_chroma=3, max_chroma=4, show="chroma_grey")');
-            checkPlugin.bind(null, 'Limiter', [5, 6, 7, 8, 'bad_option'], 'Limiter(min_luma=5, max_luma=6, min_chroma=7, max_chroma=8, show="bad_option")').should.throw(AvisynthError);
+            checkPluginError('Limiter', [5, 6, 7, 8, 'bad_option']);
         });
 
         it('MergeARGB', function() {
             // MergeARGB(clip clipA, clip clipR, clip clipG, clip clipB)
-            checkPlugin.bind(null, 'MergeARGB', ['foo', 'bar', 'baz'], 'MergeARGB(foo, bar, baz)').should.throw(AvisynthError);
+            checkPluginError('MergeARGB', ['foo', 'bar', 'baz']);
             checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(foo, bar, baz, quux)');
         });
 
         it('MergeRGB', function() {
             // MergeRGB(clip clipR, clip clipG, clip clipB [, string pixel_type])
-            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar'], 'MergeRGB(foo, bar)').should.throw(AvisynthError);
+            checkPluginError('MergeRGB', ['foo', 'bar']);
             checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(foo, bar, baz)');
             checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(foo, bar, baz, pixel_type="RGB24")');
-            checkPlugin.bind(null, 'MergeRGB', ['foo', 'bar', 'baz', 'PG13'], 'MergeRGB(foo, bar, baz, pixel_type="PG13")').should.throw(AvisynthError);
+            checkPluginError('MergeRGB', ['foo', 'bar', 'baz', 'PG13']);
         });
 
         ['Merge', 'MergeChroma', 'MergeLuma'].forEach(function(name) {
             it(name, function() {
                 // name(clip clip1, clip clip2 [, float weight])
-                checkPlugin.bind(null, name, ['foo'], name + '(foo)').should.throw(AvisynthError);
+                checkPluginError(name, ['foo']);
                 checkPlugin(name, ['foo', 'bar'], name + '(foo, bar)');
                 checkPlugin(name, ['foo', 'bar', 12.34], name + '(foo, bar, weight=12.34)');
             });
@@ -420,7 +428,7 @@ describe('Base plugin implementations (core filters)', function() {
         ['ShowAlpha', 'ShowBlue', 'ShowGreen', 'ShowRed'].forEach(function(name) {
             it(name, function() {
                 // name(clip clip, string pixel_type)
-                checkPlugin.bind(null, name, ['PG13'], name + '(pixel_type="PG13")').should.throw(AvisynthError);
+                checkPluginError(name, ['PG13']);
                 checkPlugin(name, [], name + '()');
                 checkPlugin(name, ['Y8'], name + '(pixel_type="Y8")');
             });
@@ -436,7 +444,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('YToUV', function() {
             // YToUV(clip clipU, clip clipV [, clip clipY])
-            checkPlugin.bind(null, 'YToUV', ['foo'], 'YToUV(foo)').should.throw(AvisynthError);
+            checkPluginError('YToUV', ['foo']);
             checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(foo, bar)');
             checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(foo, bar, baz)');
         });
@@ -452,7 +460,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('Layer', function() {
             // Layer(clip base_clip, clip overlay_clip, string op, int level, int x, int y, int threshold, bool use_chroma)
             requiresParameters('Layer');
-            checkPlugin.bind(null, 'Layer', ['foo', 'bar', 'overlay'], 'Layer(foo, bar, op="overlay")').should.throw(AvisynthError); // Admittedly, overlay should be allowed, it isn't in the docs so I suppose it isn't.
+            checkPluginError('Layer', ['foo', 'bar', 'overlay']); // Admittedly, overlay should be allowed, it isn't in the docs so I suppose it isn't.
             checkPlugin('Layer', ['foo', 'bar'], 'Layer(foo, bar)');
             checkPlugin('Layer', ['foo', 'bar', 'lighten', 123, 12, -34, 42, true], 'Layer(foo, bar, op="lighten", level=123, x=12, y=-34, threshold=42, use_chroma=true)');
         });
@@ -476,7 +484,7 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(0)');
             checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(16711935)');
             checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(255, 10, 20, 30)');
-            checkPlugin.bind(null, 'ColorKeyMask', [-1], 'ColorKeyMask(-1)').should.throw(AvisynthError);
+            checkPluginError('ColorKeyMask', [-1]);
         });
 
         it('MaskHS', function() {
@@ -495,7 +503,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('Subtract', function() {
             // Subtract(clip1 clip, clip2 clip)
             requiresParameters('Subtract');
-            checkPlugin.bind(null, 'Subtract', ['foo'], 'Subtract(foo)').should.throw(AvisynthError);
+            checkPluginError('Subtract', ['foo']);
             checkPlugin('Subtract', ['foo', 'bar'], 'Subtract(foo, bar)');
         });
     });
@@ -511,7 +519,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('Crop', function() {
             // Crop(clip clip, int left, int top, int width, int height, bool align)
             // Crop(clip clip, int left, int top, int -right, int -bottom, bool align)
-            checkPlugin.bind(null, 'Crop', [1, 2, 3], 'Crop(1, 2, 3)').should.throw(AvisynthError);
+            checkPluginError('Crop', [1, 2, 3]);
             checkPlugin('Crop', [1, 2, 3, -4], 'Crop(1, 2, 3, -4)');
             checkPlugin('Crop', [5, 6, -7, 8, false], 'Crop(5, 6, -7, 8, align=false)');
         });
@@ -617,8 +625,8 @@ describe('Base plugin implementations (core filters)', function() {
             it(name, function() {
                 // AlignedSplice(clip clip1, clip clip2 [,...])
                 // UnalignedSplice(clip clip1, clip clip2 [,...])
-                checkPlugin.bind(null, name, ['foo'], name + '(foo)').should.throw(AvisynthError);
-                checkPlugin.bind(null, name, ['foo', 'bar', '3ad'], name + '(foo, bar, 3ad)').should.throw(AvisynthError);
+                checkPluginError(name, ['foo']);
+                checkPluginError(name, ['foo', 'bar', '3ad']);
                 checkPlugin(name, ['foo', 'bar'], name + '(foo, bar)');
                 checkPlugin(name, ['foo', 'bar', 'baz', 'quux'], name + '(foo, bar, baz, quux)');
             });
@@ -672,7 +680,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('DeleteFrame', function() {
             // DeleteFrame(clip clip, int frame_num [, ...])
             requiresParameters('DeleteFrame');
-            checkPlugin.bind(null, 'DeleteFrame', [false], 'DeleteFrame(false)').should.throw(AvisynthError);
+            checkPluginError('DeleteFrame', [false]);
             checkPlugin('DeleteFrame', [123], 'DeleteFrame(123)');
             checkPlugin('DeleteFrame', [3, 2, 1, 0], 'DeleteFrame(3, 2, 1, 0)');
         });
