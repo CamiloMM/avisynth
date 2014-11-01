@@ -286,3 +286,4 @@ newPlugin('AssumeScaledFPS(i:multiplier, i:divisor, b:sync_audio)');
 newPlugin('ChangeFPS(rat:, a:, a:)', fpsPresets);
 newPlugin('ConvertFPS(rat:, a:, a:, a:)', fpsPresets);
 newPlugin('DeleteFrame(rmi:)');
+newPlugin('Dissolve(rmv:, i:, d:fps)');

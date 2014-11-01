@@ -684,5 +684,13 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('DeleteFrame', [123], 'DeleteFrame(123)');
             checkPlugin('DeleteFrame', [3, 2, 1, 0], 'DeleteFrame(3, 2, 1, 0)');
         });
+
+        it('Dissolve', function() {
+            // Dissolve(clip clip1, clip clip2 [,...], int overlap [, float fps])
+            //requiresParameters('Dissolve');
+            //checkPlugin('Dissolve', ['foo'], 'Dissolve(foo)');
+            //checkPluginError('Dissolve', ['foo', false]);
+            checkPlugin('Dissolve', ['foo', 'bar', 'baz', 12, 34.56], 'Dissolve(foo, bar, baz, 12, fps=34.56)');
+        });
     });
 });
