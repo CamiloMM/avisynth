@@ -652,8 +652,21 @@ describe('Base plugin implementations (core filters)', function() {
             // ChangeFPS(clip clip1, clip clip2, bool linear)
             checkPlugin('ChangeFPS', ['foo', true], 'ChangeFPS(foo, true)');
             // ChangeFPS(clip clip1, string preset [, bool sync_audio]) <- error? should be "linear" here?
-            checkPlugin('ChangeFPS', ['ntsc_round_video'], 'ChangeFPS("ntsc_round_video")');
-            checkPlugin('ChangeFPS', ['film', false], 'ChangeFPS("film", false)');
+            checkPlugin('ChangeFPS', ['pal_double'], 'ChangeFPS("pal_double")');
+            checkPlugin('ChangeFPS', ['ntsc_video', false], 'ChangeFPS("ntsc_video", false)');
+        });
+
+        it('ConvertFPS', function() {
+            requiresParameters('ConvertFPS');
+            // ConvertFPS(clip clip, float new_rate [, int zone, int vbi])
+            checkPlugin('ConvertFPS', [12.34, 56, 78], 'ConvertFPS(12.34, 56, 78)');
+            // ConvertFPS(clip clip, int numerator [, int denominator, int zone, int vbi])
+            checkPlugin('ConvertFPS', [12, 34, 56, false], 'ConvertFPS(12, 34, 56, false)');
+            // ConvertFPS(clip clip1, clip clip2 [,int zone, int vbi])
+            checkPlugin('ConvertFPS', ['foo', 12, 34], 'ConvertFPS(foo, 12, 34)');
+            // ConvertFPS(clip clip1, string preset [, int zone, int vbi])
+            checkPlugin('ConvertFPS', ['ntsc_round_film'], 'ConvertFPS("ntsc_round_film")');
+            checkPlugin('ConvertFPS', ['pal_quad', 12, 34], 'ConvertFPS("pal_quad", 12, 34)');
         });
     });
 });

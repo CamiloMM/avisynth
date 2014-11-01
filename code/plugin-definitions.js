@@ -276,5 +276,4 @@ newPlugin('UnalignedSplice(rv:, rv:, mv:)');
 newPlugin('AssumeFPS(rat:, a:, a:)', fpsPresets);
 newPlugin('AssumeScaledFPS(i:multiplier, i:divisor, b:sync_audio)');
 newPlugin('ChangeFPS(rat:, a:, a:)', fpsPresets);
-// Prototypes:
-//newPlugin('ConvertFPS(rat:, a:, a:, a:)');
+newPlugin('ConvertFPS(rat:, a:, a:, a:)', fpsPresets);
