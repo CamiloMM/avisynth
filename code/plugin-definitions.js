@@ -77,7 +77,7 @@ function coreFilter(name, options, types) {
         if (m && /b/.test(m) && value !== !!value) {
             throw new AvisynthError('expected boolean, got "' + value + '"');
         }
-        if (m && /di/.test(m) && value !== +value) {
+        if (m && /d/.test(m) && value !== +value) {
             throw new AvisynthError('expected number, got "' + value + '"');
         }
         if (m && /i/.test(m) && value !== Math.round(value)) {
@@ -151,8 +151,8 @@ function coreFilter(name, options, types) {
         for (var i = 0; i < definitions.length; i++) {
             var def = definitions[i];
             if (def.modifier && !isDefined(arguments[i])) {
-                if (/[f]/.test(def.modifier)) { throw new AvisynthError('filename is a required argument!'); }
-                if (/[r]/.test(def.modifier)) { throw new AvisynthError('a required argument is missing!'); }
+                if (/f/.test(def.modifier)) { throw new AvisynthError('filename is a required argument!'); }
+                if (/r/.test(def.modifier)) { throw new AvisynthError('a required argument is missing!'); }
             }
         }
 

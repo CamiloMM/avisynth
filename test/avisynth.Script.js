@@ -60,9 +60,9 @@ describe('avisynth.Script', function() {
             it('should not throw errors if told to ignore them', function() {
                 var script = avisynth.Script();
                 var directory = fakePluginsDir;
-                script.load.bind(script,  textFile, true).should.not.throw;
-                script.load.bind(script,   missing, true).should.not.throw;
-                script.load.bind(script, directory, true).should.not.throw;
+                script.load.bind(script,  textFile, true).should.not.throw();
+                script.load.bind(script,   missing, true).should.not.throw();
+                script.load.bind(script, directory, true).should.not.throw();
             });
 
             it('should throw error if the path contains an invalid character', function() {

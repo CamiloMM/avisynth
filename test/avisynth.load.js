@@ -43,9 +43,9 @@ describe('avisynth.load', function() {
 
     it('should not throw errors if told to ignore them', function() {
         var directory = fakePluginsDir;
-        avisynth.load.bind(avisynth,  textFile, true).should.not.throw;
-        avisynth.load.bind(avisynth,   missing, true).should.not.throw;
-        avisynth.load.bind(avisynth, directory, true).should.not.throw;
+        avisynth.load.bind(avisynth,  textFile, true).should.not.throw();
+        avisynth.load.bind(avisynth,   missing, true).should.not.throw();
+        avisynth.load.bind(avisynth, directory, true).should.not.throw();
     });
 
     it('should throw error if the path contains an invalid character', function() {

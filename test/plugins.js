@@ -588,6 +588,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Blur(clip, float amountH, float amountV, bool MMX)
             requiresParameters('Blur');
             checkPlugin('Blur', [0.1, -1.2, true], 'Blur(0.1, -1.2, MMX=true)');
+            checkPluginError('Blur', [1, 1, 1]);
             checkPlugin('blur', [1], 'Blur(1)');
         });
 
@@ -596,6 +597,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Sharpen(clip, float amountH, float amountV, bool MMX)
             requiresParameters('Sharpen');
             checkPlugin('Sharpen', [-0.1, 1.2, false], 'Sharpen(-0.1, 1.2, MMX=false)');
+            checkPluginError('Sharpen', [true]);
         });
 
         it('GeneralConvolution', function() {
@@ -640,6 +642,7 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AssumeFPS', [56, 78, false], 'AssumeFPS(56, 78, false)');
             // AssumeFPS(clip clip1, clip clip2 [, bool sync_audio])
             checkPlugin('AssumeFPS', ['foo', true], 'AssumeFPS(foo, true)');
+            checkPluginError('AssumeFPS', ['1badparam', true]);
             // AssumeFPS(clip clip1, string preset [, bool sync_audio])
             checkPlugin('AssumeFPS', ['ntsc_round_video'], 'AssumeFPS("ntsc_round_video")');
             checkPlugin('AssumeFPS', ['film', false], 'AssumeFPS("film", false)');
