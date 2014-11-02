@@ -703,5 +703,16 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('DuplicateFrame', [123], 'DuplicateFrame(123)');
             checkPlugin('DuplicateFrame', [3, 2, 1, 0], 'DuplicateFrame(3, 2, 1, 0)');
         });
+
+        describe('Fade', function() {
+            ['FadeIn', 'FadeIO', 'FadeOut', 'FadeIn0', 'FadeIO0', 'FadeOut0',
+            'FadeIn2', 'FadeIO2', 'FadeOut2'].forEach(function(name) {
+                it(name, function() {
+                    // name(clip clip, int num_frames [, int color] [, float fps])
+                    requiresParameters(name);
+                    checkPlugin(name, [123, 'Yellow', 45.67], name + '(123, color=16776960, fps=45.67)');
+                });
+            });
+        });
     });
 });
