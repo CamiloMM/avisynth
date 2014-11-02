@@ -297,3 +297,4 @@ newPlugin('FadeOut0(ri:, c:color, d:fps)');
 newPlugin('FadeIn2(ri:, c:color, d:fps)');
 newPlugin('FadeIO2(ri:, c:color, d:fps)');
 newPlugin('FadeOut2(ri:, c:color, d:fps)');
+newPlugin('FreezeFrame(ri:, ri:, ri:)');
