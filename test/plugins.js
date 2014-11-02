@@ -720,5 +720,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPluginError('FreezeFrame', [1, 2]);
             checkPlugin('FreezeFrame', [2, 1, 0], 'FreezeFrame(2, 1, 0)');
         });
+
+        it('Interleave', function() {
+            // Interleave(clip1, clip2 [, ...])
+            requiresParameters('Interleave');
+            checkPlugin('Interleave', ['foo', 'bar', 'baz'], 'Interleave(foo, bar, baz)');
+        });
     });
 });
