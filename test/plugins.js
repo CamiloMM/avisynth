@@ -733,5 +733,13 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Loop', [1, 2, 3], 'Loop(1, 2, 3)');
             checkPluginError('Loop', [1, null, 3]);
         });
+
+        it('Reverse', function() {
+            // Reverse(clip clip)
+            checkPlugin('Reverse', [], 'Reverse()');
+            checkPlugin('Reverse', ['foo'], 'Reverse(foo)');
+            checkPluginError('Reverse', ['-bar']);
+            checkPluginError('Reverse', ['baz', 'quux']);
+        });
     });
 });

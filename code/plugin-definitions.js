@@ -311,3 +311,4 @@ newPlugin('FadeOut2(ri:, c:color, d:fps)');
 newPlugin('FreezeFrame(ri:, ri:, ri:)');
 newPlugin('Interleave(rmv:)');
 newPlugin('Loop(i:, i:, i:)');
+newPlugin('Reverse(v:)');
