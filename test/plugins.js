@@ -763,6 +763,13 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('SelectEvery', [2, 0], 'SelectEvery(2, 0)');
                 checkPlugin('SelectEvery', [8, 0,1, 2,3,2, 5,4, 7,6,7], 'SelectEvery(8, 0, 1, 2, 3, 2, 5, 4, 7, 6, 7)');
             });
+
+            it('SelectRangeEvery', function() {
+                // SelectRangeEvery(clip clip [, int every] [, int length] [, int offset] [, bool audio])
+                checkPlugin('SelectRangeEvery', [], 'SelectRangeEvery()');
+                checkPlugin('SelectRangeEvery', [280, 14, 2], 'SelectRangeEvery(every=280, length=14, offset=2)');
+                checkPlugin('SelectRangeEvery', [null, null, null, true], 'SelectRangeEvery(audio=true)');
+            });
         });
     });
 });
