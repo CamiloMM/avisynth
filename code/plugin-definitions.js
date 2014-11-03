@@ -312,3 +312,5 @@ newPlugin('FreezeFrame(ri:, ri:, ri:)');
 newPlugin('Interleave(rmv:)');
 newPlugin('Loop(i:, i:, i:)');
 newPlugin('Reverse(v:)');
+newPlugin('SelectEven(v:)');
+newPlugin('SelectOdd(v:)');

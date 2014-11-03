@@ -741,5 +741,21 @@ describe('Base plugin implementations (core filters)', function() {
             checkPluginError('Reverse', ['-bar']);
             checkPluginError('Reverse', ['baz', 'quux']);
         });
+
+        describe('Select', function() {
+            it('SelectEven', function() {
+                // SelectEven(clip clip)
+                checkPlugin('SelectEven', [], 'SelectEven()');
+                checkPlugin('SelectEven', ['foo'], 'SelectEven(foo)');
+                checkPluginError('SelectEven', ['1bar']);
+            });
+
+            it('SelectOdd', function() {
+                // SelectOdd(clip clip)
+                checkPlugin('SelectOdd', [], 'SelectOdd()');
+                checkPlugin('SelectOdd', ['foo'], 'SelectOdd(foo)');
+                checkPluginError('SelectOdd', ['baz', 'quux']);
+            });
+        });
     });
 });
