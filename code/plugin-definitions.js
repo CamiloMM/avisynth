@@ -314,3 +314,4 @@ newPlugin('Loop(i:, i:, i:)');
 newPlugin('Reverse(v:)');
 newPlugin('SelectEven(v:)');
 newPlugin('SelectOdd(v:)');
+newPlugin('SelectEvery(ri:, ri:, mi:)');

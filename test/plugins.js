@@ -756,6 +756,13 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('SelectOdd', ['foo'], 'SelectOdd(foo)');
                 checkPluginError('SelectOdd', ['baz', 'quux']);
             });
+
+            it('SelectEvery', function() {
+                // SelectEvery(clip clip, int step-size, int offset1 [, int offset2, ...])
+                requiresParameters('SelectEvery');
+                checkPlugin('SelectEvery', [2, 0], 'SelectEvery(2, 0)');
+                checkPlugin('SelectEvery', [8, 0,1, 2,3,2, 5,4, 7,6,7], 'SelectEvery(8, 0, 1, 2, 3, 2, 5, 4, 7, 6, 7)');
+            });
         });
     });
 });
