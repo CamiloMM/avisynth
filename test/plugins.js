@@ -731,8 +731,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Loop(clip clip [, int times = -1] [, int start_frame = 0] [, int end_frame = inf])
             checkPlugin('Loop', [], 'Loop()');
             checkPlugin('Loop', [1, 2, 3], 'Loop(1, 2, 3)');
-            checkPlugin('Loop', [1, null, 3], 'Loop(1, 3)');
-            //checkPluginError('Loop', [1, null, 3]);
+            checkPluginError('Loop', [1, null, 3]);
         });
     });
 });

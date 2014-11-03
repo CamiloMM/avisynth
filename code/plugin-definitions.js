@@ -72,7 +72,7 @@ function coreFilter(name, options, types) {
         if (m && /[fp]/.test(m)) { value = path.resolve(value); }
         if (m && /[fpqt]/.test(m) && !/a/.test(m)) { value = '"' + value + '"'; }
         if (m && /n/.test(m) && typeof value === 'string') {
-            throw new AvisynthError('Only one path supported!');
+            throw new AvisynthError('only one path supported!');
         }
         if (m && /b/.test(m) && value !== !!value) {
             throw new AvisynthError('expected boolean, got "' + value + '"');
@@ -130,7 +130,7 @@ function coreFilter(name, options, types) {
         // These may progress independently if a definiton accepts multiple arguments.
         for (var a = 0, d = 0; a < arguments.length; a++, d++) {
             var definition = definitions[d];
-            if (!definition) { throw new AvisynthError('Too many arguments for ' + name); }
+            if (!definition) { throw new AvisynthError('too many arguments for ' + name); }
             var value = arguments[a];
             if (!isDefined(value)) { continue; }
             var m = definition.modifier;
@@ -143,7 +143,18 @@ function coreFilter(name, options, types) {
                 multi.forEach(function(p) { params.push(p); });
             } else {
                 value = processParameter(m, value);
-                params.push((definition.identifier ? definition.identifier + '=' : '') + value);
+                if (definition.identifier) {
+                    params.push(definition.identifier + '=' + value);
+                } else {
+                    // Now we reach a special case, because if the parameter is nameless,
+                    // we have to avoid it being ambiguous with a previous one.
+                    // This could happen if any previous parameter was omitted (named or not).
+                    if (a > params.length) {
+                        throw new AvisynthError('a skipped parameter makes ' + value + ' ambiguous!');
+                    } else {
+                        params.push(value);
+                    }
+                }
             }
         }
 
