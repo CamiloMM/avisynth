@@ -333,35 +333,37 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ColorYUV', [], 'ColorYUV()');
         });
 
-        it('ConvertBackToYUY2', function() {
-            // ConvertBackToYUY2(clip [, string matrix])
-            checkPluginError('ConvertBackToYUY2', ['invalid']);
-            checkPlugin('ConvertBackToYUY2', [], 'ConvertBackToYUY2()');
-            checkPlugin('ConvertBackToYUY2', ['PC.709'], 'ConvertBackToYUY2(matrix="PC.709")');
-        });
-
-        it('ConvertToY8', function() {
-            // ConvertToY8(clip [, string matrix])
-            checkPluginError('ConvertToY8', ['invalid']);
-            checkPlugin('ConvertToY8', [], 'ConvertToY8()');
-            checkPlugin('ConvertToY8', ['Rec601'], 'ConvertToY8(matrix="Rec601")');
-        });
-
-        ['ConvertToRGB', 'ConvertToRGB24', 'ConvertToRGB32', 'ConvertToYUY2',
-        'ConvertToYV411', 'ConvertToYV16', 'ConvertToYV24'].forEach(function(name) {
-            it(name, function() {
-                // name(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
-                checkPluginError(name, ['invalid']);
-                checkPlugin(name, [], name + '()');
-                checkPlugin(name, ['AVERAGE', false, 'MPEG2', 'spline36'], name + '(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="spline36")');
+        describe('Convert', function() {
+            it('ConvertBackToYUY2', function() {
+                // ConvertBackToYUY2(clip [, string matrix])
+                checkPluginError('ConvertBackToYUY2', ['invalid']);
+                checkPlugin('ConvertBackToYUY2', [], 'ConvertBackToYUY2()');
+                checkPlugin('ConvertBackToYUY2', ['PC.709'], 'ConvertBackToYUY2(matrix="PC.709")');
             });
-        });
 
-        it('ConvertToYV12', function() {
-            // ConvertToYV12(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
-            checkPluginError('ConvertToYV12', ['invalid']);
-            checkPlugin('ConvertToYV12', [], 'ConvertToYV12()');
-            checkPlugin('ConvertToYV12', ['AVERAGE', false, 'MPEG2', 'sinc', 'DV'], 'ConvertToYV12(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="sinc", ChromaOutPlacement="DV")');
+            it('ConvertToY8', function() {
+                // ConvertToY8(clip [, string matrix])
+                checkPluginError('ConvertToY8', ['invalid']);
+                checkPlugin('ConvertToY8', [], 'ConvertToY8()');
+                checkPlugin('ConvertToY8', ['Rec601'], 'ConvertToY8(matrix="Rec601")');
+            });
+
+            ['ConvertToRGB', 'ConvertToRGB24', 'ConvertToRGB32', 'ConvertToYUY2',
+            'ConvertToYV411', 'ConvertToYV16', 'ConvertToYV24'].forEach(function(name) {
+                it(name, function() {
+                    // name(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
+                    checkPluginError(name, ['invalid']);
+                    checkPlugin(name, [], name + '()');
+                    checkPlugin(name, ['AVERAGE', false, 'MPEG2', 'spline36'], name + '(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="spline36")');
+                });
+            });
+
+            it('ConvertToYV12', function() {
+                // ConvertToYV12(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
+                checkPluginError('ConvertToYV12', ['invalid']);
+                checkPlugin('ConvertToYV12', [], 'ConvertToYV12()');
+                checkPlugin('ConvertToYV12', ['AVERAGE', false, 'MPEG2', 'sinc', 'DV'], 'ConvertToYV12(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="sinc", ChromaOutPlacement="DV")');
+            });
         });
 
         it('FixLuminance', function() {
@@ -396,26 +398,28 @@ describe('Base plugin implementations (core filters)', function() {
             checkPluginError('Limiter', [5, 6, 7, 8, 'bad_option']);
         });
 
-        it('MergeARGB', function() {
-            // MergeARGB(clip clipA, clip clipR, clip clipG, clip clipB)
-            checkPluginError('MergeARGB', ['foo', 'bar', 'baz']);
-            checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(foo, bar, baz, quux)');
-        });
+        describe('Merge', function() {
+            it('MergeARGB', function() {
+                // MergeARGB(clip clipA, clip clipR, clip clipG, clip clipB)
+                checkPluginError('MergeARGB', ['foo', 'bar', 'baz']);
+                checkPlugin('MergeARGB', ['foo', 'bar', 'baz', 'quux'], 'MergeARGB(foo, bar, baz, quux)');
+            });
 
-        it('MergeRGB', function() {
-            // MergeRGB(clip clipR, clip clipG, clip clipB [, string pixel_type])
-            checkPluginError('MergeRGB', ['foo', 'bar']);
-            checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(foo, bar, baz)');
-            checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(foo, bar, baz, pixel_type="RGB24")');
-            checkPluginError('MergeRGB', ['foo', 'bar', 'baz', 'PG13']);
-        });
+            it('MergeRGB', function() {
+                // MergeRGB(clip clipR, clip clipG, clip clipB [, string pixel_type])
+                checkPluginError('MergeRGB', ['foo', 'bar']);
+                checkPlugin('MergeRGB', ['foo', 'bar', 'baz'], 'MergeRGB(foo, bar, baz)');
+                checkPlugin('MergeRGB', ['foo', 'bar', 'baz', 'RGB24'], 'MergeRGB(foo, bar, baz, pixel_type="RGB24")');
+                checkPluginError('MergeRGB', ['foo', 'bar', 'baz', 'PG13']);
+            });
 
-        ['Merge', 'MergeChroma', 'MergeLuma'].forEach(function(name) {
-            it(name, function() {
-                // name(clip clip1, clip clip2 [, float weight])
-                checkPluginError(name, ['foo']);
-                checkPlugin(name, ['foo', 'bar'], name + '(foo, bar)');
-                checkPlugin(name, ['foo', 'bar', 12.34], name + '(foo, bar, weight=12.34)');
+            ['Merge', 'MergeChroma', 'MergeLuma'].forEach(function(name) {
+                it(name, function() {
+                    // name(clip clip1, clip clip2 [, float weight])
+                    checkPluginError(name, ['foo']);
+                    checkPlugin(name, ['foo', 'bar'], name + '(foo, bar)');
+                    checkPlugin(name, ['foo', 'bar', 12.34], name + '(foo, bar, weight=12.34)');
+                });
             });
         });
 
@@ -425,28 +429,32 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('RGBAdjust', [0.1, 0.2, 0.3, 0.4, 1, -2, 3, -4, 1.2, 3.4, 5.6, 1, true, false], 'RGBAdjust(0.1, 0.2, 0.3, 0.4, rb=1, gb=-2, bb=3, ab=-4, rg=1.2, gg=3.4, bg=5.6, ag=1, analyze=true, dither=false)');
         });
 
-        ['ShowAlpha', 'ShowBlue', 'ShowGreen', 'ShowRed'].forEach(function(name) {
-            it(name, function() {
-                // name(clip clip, string pixel_type)
-                checkPluginError(name, ['PG13']);
-                checkPlugin(name, [], name + '()');
-                checkPlugin(name, ['Y8'], name + '(pixel_type="Y8")');
+        describe('Show', function() {
+            ['ShowAlpha', 'ShowBlue', 'ShowGreen', 'ShowRed'].forEach(function(name) {
+                it(name, function() {
+                    // name(clip clip, string pixel_type)
+                    checkPluginError(name, ['PG13']);
+                    checkPlugin(name, [], name + '()');
+                    checkPlugin(name, ['Y8'], name + '(pixel_type="Y8")');
+                });
             });
         });
 
-        ['SwapUV', 'UToY', 'VToY', 'UToY8', 'VToY8'].forEach(function(name) {
-            it(name, function() {
-                // name(clip clip)
-                checkPlugin(name, [], name + '()');
-                checkPlugin(name, ['fooBar'], name + '(fooBar)');
+        describe('Swap', function() {
+            ['SwapUV', 'UToY', 'VToY', 'UToY8', 'VToY8'].forEach(function(name) {
+                it(name, function() {
+                    // name(clip clip)
+                    checkPlugin(name, [], name + '()');
+                    checkPlugin(name, ['fooBar'], name + '(fooBar)');
+                });
             });
-        });
 
-        it('YToUV', function() {
-            // YToUV(clip clipU, clip clipV [, clip clipY])
-            checkPluginError('YToUV', ['foo']);
-            checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(foo, bar)');
-            checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(foo, bar, baz)');
+            it('YToUV', function() {
+                // YToUV(clip clipU, clip clipV [, clip clipY])
+                checkPluginError('YToUV', ['foo']);
+                checkPlugin('YToUV', ['foo', 'bar'], 'YToUV(foo, bar)');
+                checkPlugin('YToUV', ['foo', 'bar', 'baz'], 'YToUV(foo, bar, baz)');
+            });
         });
 
         it('Tweak', function() {
@@ -465,32 +473,34 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Layer', ['foo', 'bar', 'lighten', 123, 12, -34, 42, true], 'Layer(foo, bar, op="lighten", level=123, x=12, y=-34, threshold=42, use_chroma=true)');
         });
 
-        it('Mask', function() {
-            // Mask(clip clip, mask_clip clip)
-            requiresParameters('Mask');
-            checkPlugin('Mask', ['foo'], 'Mask(foo)');
-            checkPlugin('Mask', ['foo', 'bar'], 'Mask(foo, bar)');
-        });
+        describe('Mask', function() {
+            it('Mask', function() {
+                // Mask(clip clip, mask_clip clip)
+                requiresParameters('Mask');
+                checkPlugin('Mask', ['foo'], 'Mask(foo)');
+                checkPlugin('Mask', ['foo', 'bar'], 'Mask(foo, bar)');
+            });
 
-        it('ResetMask', function() {
-            // ResetMask(clip clip)
-            checkPlugin('ResetMask', [], 'ResetMask()');
-            checkPlugin('ResetMask', ['foo'], 'ResetMask(foo)');
-        });
+            it('ResetMask', function() {
+                // ResetMask(clip clip)
+                checkPlugin('ResetMask', [], 'ResetMask()');
+                checkPlugin('ResetMask', ['foo'], 'ResetMask(foo)');
+            });
 
-        it('ColorKeyMask', function() {
-            // ColorKeyMask(clip clip, int color [, int tolB, int tolG, int tolR])
-            checkPlugin('ColorKeyMask', [], 'ColorKeyMask()'); // It's actually possible.
-            checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(0)');
-            checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(16711935)');
-            checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(255, 10, 20, 30)');
-            checkPluginError('ColorKeyMask', [-1]);
-        });
+            it('ColorKeyMask', function() {
+                // ColorKeyMask(clip clip, int color [, int tolB, int tolG, int tolR])
+                checkPlugin('ColorKeyMask', [], 'ColorKeyMask()'); // It's actually possible.
+                checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(0)');
+                checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(16711935)');
+                checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(255, 10, 20, 30)');
+                checkPluginError('ColorKeyMask', [-1]);
+            });
 
-        it('MaskHS', function() {
-            // MaskHS(clip [, int startHue, int endHue, int maxSat, int minSat, bool coring])
-            checkPlugin('MaskHS', [], 'MaskHS()');
-            checkPlugin('MaskHS', [10, 20, 30, 0, false], 'MaskHS(startHue=10, endHue=20, maxSat=30, minSat=0, coring=false)');
+            it('MaskHS', function() {
+                // MaskHS(clip [, int startHue, int endHue, int maxSat, int minSat, bool coring])
+                checkPlugin('MaskHS', [], 'MaskHS()');
+                checkPlugin('MaskHS', [10, 20, 30, 0, false], 'MaskHS(startHue=10, endHue=20, maxSat=30, minSat=0, coring=false)');
+            });
         });
 
         it('Overlay', function() {
@@ -559,7 +569,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it.is.parameterless('Turn180');
 
-        describe('Resizers', function() {
+        describe('Resize', function() {
             var filters = ['BicubicResize', 'BilinearResize', 'BlackmanResize', 'GaussResize', 'LanczosResize', 'Lanczos4Resize', 'PointResize', 'SincResize', 'Spline16Resize', 'Spline36Resize', 'Spline64Resize'];
             var taps = ['BlackmanResize', 'LanczosResize', 'SincResize'];
             filters.forEach(function(name) {
@@ -634,50 +644,52 @@ describe('Base plugin implementations (core filters)', function() {
             });
         });
 
-        it('AssumeFPS', function() {
-            requiresParameters('AssumeFPS');
-            // AssumeFPS(clip clip, float fps [, bool sync_audio])
-            checkPlugin('AssumeFPS', [12.34], 'AssumeFPS(12.34)');
-            // AssumeFPS(clip clip, int numerator [, int denominator, bool sync_audio])
-            checkPlugin('AssumeFPS', [56, 78, false], 'AssumeFPS(56, 78, false)');
-            // AssumeFPS(clip clip1, clip clip2 [, bool sync_audio])
-            checkPlugin('AssumeFPS', ['foo', true], 'AssumeFPS(foo, true)');
-            checkPluginError('AssumeFPS', ['1badparam', true]);
-            // AssumeFPS(clip clip1, string preset [, bool sync_audio])
-            checkPlugin('AssumeFPS', ['ntsc_round_video'], 'AssumeFPS("ntsc_round_video")');
-            checkPlugin('AssumeFPS', ['film', false], 'AssumeFPS("film", false)');
-        });
+        describe('FPS', function() {
+            it('AssumeFPS', function() {
+                requiresParameters('AssumeFPS');
+                // AssumeFPS(clip clip, float fps [, bool sync_audio])
+                checkPlugin('AssumeFPS', [12.34], 'AssumeFPS(12.34)');
+                // AssumeFPS(clip clip, int numerator [, int denominator, bool sync_audio])
+                checkPlugin('AssumeFPS', [56, 78, false], 'AssumeFPS(56, 78, false)');
+                // AssumeFPS(clip clip1, clip clip2 [, bool sync_audio])
+                checkPlugin('AssumeFPS', ['foo', true], 'AssumeFPS(foo, true)');
+                checkPluginError('AssumeFPS', ['1badparam', true]);
+                // AssumeFPS(clip clip1, string preset [, bool sync_audio])
+                checkPlugin('AssumeFPS', ['ntsc_round_video'], 'AssumeFPS("ntsc_round_video")');
+                checkPlugin('AssumeFPS', ['film', false], 'AssumeFPS("film", false)');
+            });
 
-        it('AssumeScaledFPS', function() {
-            // AssumeScaledFPS(clip [, int multiplier, int divisor, bool sync_audio])
-            checkPlugin('AssumeScaledFPS', [], 'AssumeScaledFPS()');
-            checkPlugin('AssumeScaledFPS', [123, 456, false], 'AssumeScaledFPS(multiplier=123, divisor=456, sync_audio=false)');
-        });
+            it('AssumeScaledFPS', function() {
+                // AssumeScaledFPS(clip [, int multiplier, int divisor, bool sync_audio])
+                checkPlugin('AssumeScaledFPS', [], 'AssumeScaledFPS()');
+                checkPlugin('AssumeScaledFPS', [123, 456, false], 'AssumeScaledFPS(multiplier=123, divisor=456, sync_audio=false)');
+            });
 
-        it('ChangeFPS', function() {
-            requiresParameters('ChangeFPS');
-            // ChangeFPS(clip clip, float fps [, bool linear])
-            checkPlugin('ChangeFPS', [12.34], 'ChangeFPS(12.34)');
-            // ChangeFPS(clip clip, int numerator [, int denominator, bool linear])
-            checkPlugin('ChangeFPS', [56, 78, false], 'ChangeFPS(56, 78, false)');
-            // ChangeFPS(clip clip1, clip clip2, bool linear)
-            checkPlugin('ChangeFPS', ['foo', true], 'ChangeFPS(foo, true)');
-            // ChangeFPS(clip clip1, string preset [, bool sync_audio]) <- error? should be "linear" here?
-            checkPlugin('ChangeFPS', ['pal_double'], 'ChangeFPS("pal_double")');
-            checkPlugin('ChangeFPS', ['ntsc_video', false], 'ChangeFPS("ntsc_video", false)');
-        });
+            it('ChangeFPS', function() {
+                requiresParameters('ChangeFPS');
+                // ChangeFPS(clip clip, float fps [, bool linear])
+                checkPlugin('ChangeFPS', [12.34], 'ChangeFPS(12.34)');
+                // ChangeFPS(clip clip, int numerator [, int denominator, bool linear])
+                checkPlugin('ChangeFPS', [56, 78, false], 'ChangeFPS(56, 78, false)');
+                // ChangeFPS(clip clip1, clip clip2, bool linear)
+                checkPlugin('ChangeFPS', ['foo', true], 'ChangeFPS(foo, true)');
+                // ChangeFPS(clip clip1, string preset [, bool sync_audio]) <- error? should be "linear" here?
+                checkPlugin('ChangeFPS', ['pal_double'], 'ChangeFPS("pal_double")');
+                checkPlugin('ChangeFPS', ['ntsc_video', false], 'ChangeFPS("ntsc_video", false)');
+            });
 
-        it('ConvertFPS', function() {
-            requiresParameters('ConvertFPS');
-            // ConvertFPS(clip clip, float new_rate [, int zone, int vbi])
-            checkPlugin('ConvertFPS', [12.34, 56, 78], 'ConvertFPS(12.34, 56, 78)');
-            // ConvertFPS(clip clip, int numerator [, int denominator, int zone, int vbi])
-            checkPlugin('ConvertFPS', [12, 34, 56, false], 'ConvertFPS(12, 34, 56, false)');
-            // ConvertFPS(clip clip1, clip clip2 [,int zone, int vbi])
-            checkPlugin('ConvertFPS', ['foo', 12, 34], 'ConvertFPS(foo, 12, 34)');
-            // ConvertFPS(clip clip1, string preset [, int zone, int vbi])
-            checkPlugin('ConvertFPS', ['ntsc_round_film'], 'ConvertFPS("ntsc_round_film")');
-            checkPlugin('ConvertFPS', ['pal_quad', 12, 34], 'ConvertFPS("pal_quad", 12, 34)');
+            it('ConvertFPS', function() {
+                requiresParameters('ConvertFPS');
+                // ConvertFPS(clip clip, float new_rate [, int zone, int vbi])
+                checkPlugin('ConvertFPS', [12.34, 56, 78], 'ConvertFPS(12.34, 56, 78)');
+                // ConvertFPS(clip clip, int numerator [, int denominator, int zone, int vbi])
+                checkPlugin('ConvertFPS', [12, 34, 56, false], 'ConvertFPS(12, 34, 56, false)');
+                // ConvertFPS(clip clip1, clip clip2 [,int zone, int vbi])
+                checkPlugin('ConvertFPS', ['foo', 12, 34], 'ConvertFPS(foo, 12, 34)');
+                // ConvertFPS(clip clip1, string preset [, int zone, int vbi])
+                checkPlugin('ConvertFPS', ['ntsc_round_film'], 'ConvertFPS("ntsc_round_film")');
+                checkPlugin('ConvertFPS', ['pal_quad', 12, 34], 'ConvertFPS("pal_quad", 12, 34)');
+            });
         });
 
         it('DeleteFrame', function() {
