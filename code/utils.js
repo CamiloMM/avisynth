@@ -41,3 +41,8 @@ exports.isNumeric = function(value) {
     if (Math.abs(value) === Infinity) return false;
     return +value == value;
 };
+
+// Checks that a value is not null or undefined.
+exports.isDefined = function (value) {
+    return typeof value !== 'undefined' && value !== null;
+};
