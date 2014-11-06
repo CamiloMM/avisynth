@@ -316,3 +316,5 @@ newPlugin('SelectEven(v:)');
 newPlugin('SelectOdd(v:)');
 newPlugin('SelectEvery(ri:, ri:, mi:)');
 newPlugin('SelectRangeEvery(i:every, i:length, i:offset, b:audio)');
+newPlugin('Trim(ri:, ri:, b:pad)');
+newPlugin('AudioTrim(rd:, rd:)');

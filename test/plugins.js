@@ -783,5 +783,25 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('SelectRangeEvery', [null, null, null, true], 'SelectRangeEvery(audio=true)');
             });
         });
+
+        it('Trim', function() {
+            // Trim(clip clip, int first_frame, int last_frame [, bool "pad"])
+            // Trim(clip clip, int first_frame, int -num_frames [, bool "pad"])
+            // Trim(clip, int first_frame, int "end" [, bool "pad"])
+            // Trim(clip, int first_frame, int "length" [, bool "pad"])
+            requiresParameters('Trim');
+            checkPlugin('Trim', [12, 34], 'Trim(12, 34)');
+            checkPlugin('Trim', [0, -1, false], 'Trim(0, -1, pad=false)');
+        });
+
+        it('AudioTrim', function() {
+            // AudioTrim(clip clip, float start_time, float end_time)
+            // AudioTrim(clip clip, float start_time, float -duration)
+            // AudioTrim(clip, float start_time, float "end")
+            // AudioTrim(clip, float start_time, float "length")
+            requiresParameters('AudioTrim');
+            checkPlugin('AudioTrim', [1.2, 3.4], 'AudioTrim(1.2, 3.4)');
+            checkPlugin('AudioTrim', [0, -0.1], 'AudioTrim(0, -0.1)');
+        });
     });
 });
