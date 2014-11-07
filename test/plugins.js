@@ -861,4 +861,20 @@ describe('Base plugin implementations (core filters)', function() {
 
         it.is.parameterless('SwapFields');
     });
+
+    describe('Audio processing filters', function() {
+        it('Amplify', function() {
+            // Amplify(clip, float amount1 [, ...])
+            // Amplify(clip, float left, float right)
+            requiresParameters('Amplify');
+            checkPlugin('Amplify', [1.2, 3.4, 5.6, 7.8], 'Amplify(1.2, 3.4, 5.6, 7.8)');
+        });
+
+        it('AmplifydB', function() {
+            // AmplifydB(clip, float amount1 [, ...])
+            // AmplifydB(clip, float left, float right)
+            requiresParameters('AmplifydB');
+            checkPlugin('AmplifydB', [-0.1], 'AmplifydB(-0.1)');
+        });
+    });
 });

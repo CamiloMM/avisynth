@@ -162,3 +162,7 @@ newPlugin('SeparateFields(v:)');
 newPlugin('SeparateColumns(ri:)');
 newPlugin('SeparateRows(ri:)');
 newPlugin('SwapFields(v:)');
+
+// Audio processing filters
+newPlugin('Amplify(rmd:)');
+newPlugin('AmplifydB(rmd:)');
