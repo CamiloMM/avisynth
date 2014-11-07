@@ -166,3 +166,4 @@ newPlugin('SwapFields(v:)');
 // Audio processing filters
 newPlugin('Amplify(rmd:)');
 newPlugin('AmplifydB(rmd:)');
+newPlugin('AssumeSampleRate(ri:)');

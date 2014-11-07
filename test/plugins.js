@@ -876,5 +876,11 @@ describe('Base plugin implementations (core filters)', function() {
             requiresParameters('AmplifydB');
             checkPlugin('AmplifydB', [-0.1], 'AmplifydB(-0.1)');
         });
+
+        it('AssumeSampleRate', function() {
+            // AssumeSampleRate(clip clip, samplerate int)
+            requiresParameters('AssumeSampleRate');
+            checkPlugin('AssumeSampleRate', [22050], 'AssumeSampleRate(22050)');
+        });
     });
 });
