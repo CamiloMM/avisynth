@@ -1,6 +1,8 @@
 var path     = require('path');
 var avisynth = require('../main');
 var utils    = require('../code/utils');
+var should   = require('chai').should();
+var expect   = require('chai').expect;
 
 // Misc tests.
 
@@ -24,6 +26,10 @@ describe('avisynth.utils', function() {
         it('should not allow characters AviSynth does not support', function() {
             var zettaiRyōiki = 'C:/zettai ryōiki.avs';
             zettaiRyōiki.should.not.satisfy(avisynth.utils.isValidPath); // Unfortunately.
+        });
+
+        it('should consider current path as valid', function() {
+            expect(undefined).to.satisfy(avisynth.utils.isValidPath);
         });
     });
 

@@ -141,7 +141,7 @@ describe('Plugin system', function() {
         });
 
         it('should insert code returned from plugin into script', function() {
-            var script = new avisynth.Script;
+            var script = new avisynth.Script('Version()\n');
             var code = 'Subtitle("' + rand + '")';
             avisynth.addPlugin('RandomSub', function() { return code; });
             script.randomsub();
