@@ -156,3 +156,4 @@ newPlugin('Weave(v:)');
 newPlugin('DoubleWeave(v:)');
 newPlugin('WeaveColumns(ri:)');
 newPlugin('WeaveRows(ri:)');
+newPlugin('PeculiarBlend(ri:)');

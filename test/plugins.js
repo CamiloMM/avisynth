@@ -836,5 +836,10 @@ describe('Base plugin implementations (core filters)', function() {
                 });
             });
         });
+
+        it('PeculiarBlend', function() {
+            requiresParameters('PeculiarBlend');
+            checkPlugin('PeculiarBlend', [123], 'PeculiarBlend(123)');
+        });
     });
 });
