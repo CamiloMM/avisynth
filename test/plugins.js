@@ -900,5 +900,33 @@ describe('Base plugin implementations (core filters)', function() {
             var names = ['ConvertAudioTo8bit', 'ConvertAudioTo16bit', 'ConvertAudioTo24bit', 'ConvertAudioTo32bit', 'ConvertAudioToFloat'];
             names.forEach(it.is.parameterless);
         });
+
+        describe('Channels', function() {
+            it.is.parameterless('ConvertToMono');
+
+            it('GetChannel', function() {
+                // GetChannel(clip clip, int ch1 [, int ch2, ...])
+                // GetChannels(clip clip, int ch1 [, int ch2, ...])
+                ['GetChannel', 'GetChannels'].forEach(requiresParameters);
+                checkPlugin('GetChannel', [1], 'GetChannel(1)');
+                checkPlugin('GetChannels', [5, 6], 'GetChannels(5, 6)');
+            });
+
+            it.is.parameterless('GetLeftChannel');
+
+            it.is.parameterless('GetRightChannel');
+
+            it('MergeChannels', function() {
+                // MergeChannels(clip1 clip, clip2 clip [, clip3 clip])
+                requiresParameters('MergeChannels');
+                checkPlugin('MergeChannels', ['foo', 'bar', 'baz'], 'MergeChannels(foo, bar, baz)');
+            });
+
+            it('MonoToStereo', function() {
+                // MonoToStereo(clip left_channel_clip, clip right_channel_clip)
+                requiresParameters('MonoToStereo');
+                checkPlugin('MonoToStereo', ['foo', 'bar'], 'MonoToStereo(foo, bar)');
+            });
+        });
     });
 });
