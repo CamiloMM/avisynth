@@ -203,6 +203,11 @@ describe('Base plugin implementations (core filters)', function() {
         checkPluginError(name, []);
     }
 
+    // Auto-tests that a filter does not require parameters (different from parameterless).
+    function doesNotRequireParameters(name) {
+        checkPlugin(name, [], name + '()');
+    }
+
     describe('Media file filters', function() {
         it('AviSource', function() {
             // AviSource(string filename [, ... ], [bool audio = true], [string pixel_type = "FULL"], [string fourCC])
@@ -811,6 +816,12 @@ describe('Base plugin implementations (core filters)', function() {
         describe('Parity', function() {
             var names = ['AssumeFieldBased', 'AssumeFrameBased', 'AssumeBFF', 'AssumeTFF', 'ComplementParity'];
             names.forEach(it.is.parameterless);
+        });
+
+        it('Bob', function() {
+            // Bob(clip clip [, float b, float c, int height])
+            doesNotRequireParameters('Bob');
+            checkPlugin('Bob', [1.2, 3.4, 567], 'Bob(b=1.2, c=3.4, height=567)');
         });
     });
 });

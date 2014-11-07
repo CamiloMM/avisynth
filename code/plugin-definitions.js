@@ -151,3 +151,4 @@ newPlugin('AssumeFrameBased(v:)');
 newPlugin('AssumeBFF(v:)');
 newPlugin('AssumeTFF(v:)');
 newPlugin('ComplementParity(v:)');
+newPlugin('Bob(d:b, d:c, i:height)');
