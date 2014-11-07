@@ -882,5 +882,17 @@ describe('Base plugin implementations (core filters)', function() {
             requiresParameters('AssumeSampleRate');
             checkPlugin('AssumeSampleRate', [22050], 'AssumeSampleRate(22050)');
         });
+
+        it('AudioDub', function() {
+            // AudioDub(video_clip, audio_clip)
+            requiresParameters('AudioDub');
+            checkPlugin('AudioDub', ['foo', 'bar'], 'AudioDub(foo, bar)');
+        });
+
+        it('AudioDubEx', function() {
+            // AudioDubEx(video_clip, audio_clip)
+            requiresParameters('AudioDubEx');
+            checkPlugin('AudioDubEx', ['foo', 'bar'], 'AudioDubEx(foo, bar)');
+        });
     });
 });

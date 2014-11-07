@@ -167,3 +167,5 @@ newPlugin('SwapFields(v:)');
 newPlugin('Amplify(rmd:)');
 newPlugin('AmplifydB(rmd:)');
 newPlugin('AssumeSampleRate(ri:)');
+newPlugin('AudioDub(rv:, rv:)');
+newPlugin('AudioDubEx(rv:, rv:)');
