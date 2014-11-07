@@ -143,7 +143,6 @@ newPlugin('SelectOdd(v:)');
 newPlugin('SelectEvery(ri:, ri:, mi:)');
 newPlugin('SelectRangeEvery(i:every, i:length, i:offset, b:audio)');
 newPlugin('Trim(ri:, ri:, b:pad)');
-newPlugin('AudioTrim(rd:, rd:)');
 
 // Interlace filters
 newPlugin('AssumeFieldBased(v:)');
@@ -169,3 +168,9 @@ newPlugin('AmplifydB(rmd:)');
 newPlugin('AssumeSampleRate(ri:)');
 newPlugin('AudioDub(rv:, rv:)');
 newPlugin('AudioDubEx(rv:, rv:)');
+newPlugin('AudioTrim(rd:, rd:)');
+newPlugin('ConvertAudioTo8bit(v:)');
+newPlugin('ConvertAudioTo16bit(v:)');
+newPlugin('ConvertAudioTo24bit(v:)');
+newPlugin('ConvertAudioTo32bit(v:)');
+newPlugin('ConvertAudioToFloat(v:)');

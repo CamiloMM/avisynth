@@ -800,16 +800,6 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Trim', [12, 34], 'Trim(12, 34)');
             checkPlugin('Trim', [0, -1, false], 'Trim(0, -1, pad=false)');
         });
-
-        it('AudioTrim', function() {
-            // AudioTrim(clip clip, float start_time, float end_time)
-            // AudioTrim(clip clip, float start_time, float -duration)
-            // AudioTrim(clip, float start_time, float "end")
-            // AudioTrim(clip, float start_time, float "length")
-            requiresParameters('AudioTrim');
-            checkPlugin('AudioTrim', [1.2, 3.4], 'AudioTrim(1.2, 3.4)');
-            checkPlugin('AudioTrim', [0, -0.1], 'AudioTrim(0, -0.1)');
-        });
     });
 
     describe('Interlace filters', function() {
@@ -893,6 +883,22 @@ describe('Base plugin implementations (core filters)', function() {
             // AudioDubEx(video_clip, audio_clip)
             requiresParameters('AudioDubEx');
             checkPlugin('AudioDubEx', ['foo', 'bar'], 'AudioDubEx(foo, bar)');
+        });
+
+        it('AudioTrim', function() {
+            // AudioTrim(clip clip, float start_time, float end_time)
+            // AudioTrim(clip clip, float start_time, float -duration)
+            // AudioTrim(clip, float start_time, float "end")
+            // AudioTrim(clip, float start_time, float "length")
+            requiresParameters('AudioTrim');
+            checkPlugin('AudioTrim', [1.2, 3.4], 'AudioTrim(1.2, 3.4)');
+            checkPlugin('AudioTrim', [0, -0.1], 'AudioTrim(0, -0.1)');
+        });
+
+        describe('ConvertAudio', function() {
+            // name(clip clip)
+            var names = ['ConvertAudioTo8bit', 'ConvertAudioTo16bit', 'ConvertAudioTo24bit', 'ConvertAudioTo32bit', 'ConvertAudioToFloat'];
+            names.forEach(it.is.parameterless);
         });
     });
 });
