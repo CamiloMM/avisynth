@@ -814,6 +814,7 @@ describe('Base plugin implementations (core filters)', function() {
 
     describe('Interlace filters', function() {
         describe('Parity', function() {
+            // name(clip clip)
             var names = ['AssumeFieldBased', 'AssumeFrameBased', 'AssumeBFF', 'AssumeTFF', 'ComplementParity'];
             names.forEach(it.is.parameterless);
         });
@@ -822,6 +823,18 @@ describe('Base plugin implementations (core filters)', function() {
             // Bob(clip clip [, float b, float c, int height])
             doesNotRequireParameters('Bob');
             checkPlugin('Bob', [1.2, 3.4, 567], 'Bob(b=1.2, c=3.4, height=567)');
+        });
+
+        describe('Weave', function() {
+            // name(clip clip)
+            ['Weave', 'DoubleWeave'].forEach(it.is.parameterless);
+            // name(clip clip, int period)
+            ['WeaveColumns', 'WeaveRows'].forEach(function(name) {
+                it(name, function() {
+                    requiresParameters(name);
+                    checkPlugin(name, [123], name + '(123)');
+                });
+            });
         });
     });
 });
