@@ -335,21 +335,21 @@ describe('Base plugin implementations (core filters)', function() {
         it('ColorYUV', function() {
             // ColorYUV(clip [, float gain_y] [, float off_y] [, float gamma_y] [, float cont_y] [, float gain_u] [, float off_u] [, float gamma_u] [, float cont_u] [, float gain_v] [, float off_v] [, float gamma_v] [, float cont_v] [, string levels] [, string opt] [, boolean showyuv] [, boolean analyze] [, boolean autowhite] [, boolean autogain] [, boolean conditional])
             checkPlugin('ColorYUV', [12.34, 23.45, 34.56, 45.67, 56.78, 67.89, 78.90, 89.01, 90.12, 123.456, 789, 12345.67890, 'TV->PC', 'coring', false, true, false, true, false], 'ColorYUV(gain_y=12.34, off_y=23.45, gamma_y=34.56, cont_y=45.67, gain_u=56.78, off_u=67.89, gamma_u=78.9, cont_u=89.01, gain_v=90.12, off_v=123.456, gamma_v=789, cont_v=12345.6789, levels="TV->PC", opt="coring", showyuv=false, analyze=true, autowhite=false, autogain=true, conditional=false)');
-            checkPlugin('ColorYUV', [], 'ColorYUV()');
+            doesNotRequireParameters('ColorYUV');
         });
 
         describe('Convert', function() {
             it('ConvertBackToYUY2', function() {
                 // ConvertBackToYUY2(clip [, string matrix])
                 checkPluginError('ConvertBackToYUY2', ['invalid']);
-                checkPlugin('ConvertBackToYUY2', [], 'ConvertBackToYUY2()');
+                doesNotRequireParameters('ConvertBackToYUY2');
                 checkPlugin('ConvertBackToYUY2', ['PC.709'], 'ConvertBackToYUY2(matrix="PC.709")');
             });
 
             it('ConvertToY8', function() {
                 // ConvertToY8(clip [, string matrix])
                 checkPluginError('ConvertToY8', ['invalid']);
-                checkPlugin('ConvertToY8', [], 'ConvertToY8()');
+                doesNotRequireParameters('ConvertToY8');
                 checkPlugin('ConvertToY8', ['Rec601'], 'ConvertToY8(matrix="Rec601")');
             });
 
@@ -366,26 +366,26 @@ describe('Base plugin implementations (core filters)', function() {
             it('ConvertToYV12', function() {
                 // ConvertToYV12(clip [, string matrix] [, bool interlaced] [, string ChromaInPlacement] [, string chromaresample])
                 checkPluginError('ConvertToYV12', ['invalid']);
-                checkPlugin('ConvertToYV12', [], 'ConvertToYV12()');
+                doesNotRequireParameters('ConvertToYV12');
                 checkPlugin('ConvertToYV12', ['AVERAGE', false, 'MPEG2', 'sinc', 'DV'], 'ConvertToYV12(matrix="AVERAGE", interlaced=false, ChromaInPlacement="MPEG2", chromaresample="sinc", ChromaOutPlacement="DV")');
             });
         });
 
         it('FixLuminance', function() {
             // FixLuminance(clip clip, int intercept, int slope)
-            checkPlugin('FixLuminance', [], 'FixLuminance()');
+            doesNotRequireParameters('FixLuminance');
             checkPlugin('FixLuminance', [123, 456], 'FixLuminance(123, 456)');
         });
 
         it('Greyscale', function() {
             // Greyscale(clip clip [, string matrix])
-            checkPlugin('Greyscale', [], 'Greyscale()');
+            doesNotRequireParameters('Greyscale');
             checkPlugin('Greyscale', ['rec709'], 'Greyscale(matrix="rec709")');
         });
 
         it('Invert', function() {
             // Invert(clip clip [, string channels])
-            checkPlugin('Invert', [], 'Invert()');
+            doesNotRequireParameters('Invert');
             checkPlugin('Invert', ['BG'], 'Invert(channels="BG")');
         });
 
@@ -398,7 +398,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Limiter', function() {
             // Limiter(clip clip [, int min_luma] [, int max_luma] [, int min_chroma] [, int max_chroma] [, string show])
-            checkPlugin('Limiter', [], 'Limiter()');
+            doesNotRequireParameters('Limiter');
             checkPlugin('Limiter', [1, 2, 3, 4, 'chroma_grey'], 'Limiter(min_luma=1, max_luma=2, min_chroma=3, max_chroma=4, show="chroma_grey")');
             checkPluginError('Limiter', [5, 6, 7, 8, 'bad_option']);
         });
@@ -430,7 +430,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('RGBAdjust', function() {
             // RGBAdjust(clip clip [, float red] [, float green] [, float blue] [, float alpha] [, float rb] [, float gb] [, float bb] [, float ab] [, float rg] [, float gg] [, float bg] [, float ag] [, bool analyze] [, bool dither])
-            checkPlugin('RGBAdjust', [], 'RGBAdjust()');
+            doesNotRequireParameters('RGBAdjust');
             checkPlugin('RGBAdjust', [0.1, 0.2, 0.3, 0.4, 1, -2, 3, -4, 1.2, 3.4, 5.6, 1, true, false], 'RGBAdjust(0.1, 0.2, 0.3, 0.4, rb=1, gb=-2, bb=3, ab=-4, rg=1.2, gg=3.4, bg=5.6, ag=1, analyze=true, dither=false)');
         });
 
@@ -464,7 +464,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Tweak', function() {
             // Tweak(clip clip [, float hue] [, float sat] [, float bright] [, float cont] [, bool coring] [, bool sse] [, float startHue] [, float endHue] [, float maxSat] [, float minSat] [, float interp] [, bool dither])
-            checkPlugin('Tweak', [], 'Tweak()');
+            doesNotRequireParameters('Tweak');
             checkPlugin('Tweak', [0.1, 2.3, 4.5, 6.7, true, false, 8.9, 12.34, 56.78, 0, 123, false], 'Tweak(hue=0.1, sat=2.3, bright=4.5, cont=6.7, coring=true, sse=false, startHue=8.9, endHue=12.34, maxSat=56.78, minSat=0, interp=123, dither=false)');
         });
     });
@@ -488,13 +488,13 @@ describe('Base plugin implementations (core filters)', function() {
 
             it('ResetMask', function() {
                 // ResetMask(clip clip)
-                checkPlugin('ResetMask', [], 'ResetMask()');
+                doesNotRequireParameters('ResetMask');
                 checkPlugin('ResetMask', ['foo'], 'ResetMask(foo)');
             });
 
             it('ColorKeyMask', function() {
                 // ColorKeyMask(clip clip, int color [, int tolB, int tolG, int tolR])
-                checkPlugin('ColorKeyMask', [], 'ColorKeyMask()'); // It's actually possible.
+                doesNotRequireParameters('ColorKeyMask'); // It's actually possible.
                 checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(0)');
                 checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(16711935)');
                 checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(255, 10, 20, 30)');
@@ -503,7 +503,7 @@ describe('Base plugin implementations (core filters)', function() {
 
             it('MaskHS', function() {
                 // MaskHS(clip [, int startHue, int endHue, int maxSat, int minSat, bool coring])
-                checkPlugin('MaskHS', [], 'MaskHS()');
+                doesNotRequireParameters('MaskHS');
                 checkPlugin('MaskHS', [10, 20, 30, 0, false], 'MaskHS(startHue=10, endHue=20, maxSat=30, minSat=0, coring=false)');
             });
         });
@@ -617,7 +617,7 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('GeneralConvolution', function() {
             // GeneralConvolution(clip clip, [int bias, string matrix, float divisor, bool auto])
-            checkPlugin('GeneralConvolution', [], 'GeneralConvolution()');
+            doesNotRequireParameters('GeneralConvolution');
             checkPlugin('GeneralConvolution', [12, '0 0 0 1 0 2 0 0 0', 3.5, false], 'GeneralConvolution(bias=12, matrix="0 0 0 1 0 2 0 0 0", divisor=3.5, auto=false)');
         });
 
@@ -666,7 +666,7 @@ describe('Base plugin implementations (core filters)', function() {
 
             it('AssumeScaledFPS', function() {
                 // AssumeScaledFPS(clip [, int multiplier, int divisor, bool sync_audio])
-                checkPlugin('AssumeScaledFPS', [], 'AssumeScaledFPS()');
+                doesNotRequireParameters('AssumeScaledFPS');
                 checkPlugin('AssumeScaledFPS', [123, 456, false], 'AssumeScaledFPS(multiplier=123, divisor=456, sync_audio=false)');
             });
 
@@ -748,14 +748,14 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Loop', function() {
             // Loop(clip clip [, int times = -1] [, int start_frame = 0] [, int end_frame = inf])
-            checkPlugin('Loop', [], 'Loop()');
+            doesNotRequireParameters('Loop');
             checkPlugin('Loop', [1, 2, 3], 'Loop(1, 2, 3)');
             checkPluginError('Loop', [1, null, 3]);
         });
 
         it('Reverse', function() {
             // Reverse(clip clip)
-            checkPlugin('Reverse', [], 'Reverse()');
+            doesNotRequireParameters('Reverse');
             checkPlugin('Reverse', ['foo'], 'Reverse(foo)');
             checkPluginError('Reverse', ['-bar']);
             checkPluginError('Reverse', ['baz', 'quux']);
@@ -764,14 +764,14 @@ describe('Base plugin implementations (core filters)', function() {
         describe('Select', function() {
             it('SelectEven', function() {
                 // SelectEven(clip clip)
-                checkPlugin('SelectEven', [], 'SelectEven()');
+                doesNotRequireParameters('SelectEven');
                 checkPlugin('SelectEven', ['foo'], 'SelectEven(foo)');
                 checkPluginError('SelectEven', ['1bar']);
             });
 
             it('SelectOdd', function() {
                 // SelectOdd(clip clip)
-                checkPlugin('SelectOdd', [], 'SelectOdd()');
+                doesNotRequireParameters('SelectOdd');
                 checkPlugin('SelectOdd', ['foo'], 'SelectOdd(foo)');
                 checkPluginError('SelectOdd', ['baz', 'quux']);
             });
@@ -785,7 +785,7 @@ describe('Base plugin implementations (core filters)', function() {
 
             it('SelectRangeEvery', function() {
                 // SelectRangeEvery(clip clip [, int every] [, int length] [, int offset] [, bool audio])
-                checkPlugin('SelectRangeEvery', [], 'SelectRangeEvery()');
+                doesNotRequireParameters('SelectRangeEvery');
                 checkPlugin('SelectRangeEvery', [280, 14, 2], 'SelectRangeEvery(every=280, length=14, offset=2)');
                 checkPlugin('SelectRangeEvery', [null, null, null, true], 'SelectRangeEvery(audio=true)');
             });
