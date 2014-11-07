@@ -676,6 +676,8 @@ describe('Base plugin implementations (core filters)', function() {
                 // ChangeFPS(clip clip1, string preset [, bool sync_audio]) <- error? should be "linear" here?
                 checkPlugin('ChangeFPS', ['pal_double'], 'ChangeFPS("pal_double")');
                 checkPlugin('ChangeFPS', ['ntsc_video', false], 'ChangeFPS("ntsc_video", false)');
+                checkPluginError('ChangeFPS', ['ntsc_video', '']);
+                checkPlugin('ChangeFPS', ['ntsc_video', 'variable'], 'ChangeFPS("ntsc_video", variable)');
             });
 
             it('ConvertFPS', function() {

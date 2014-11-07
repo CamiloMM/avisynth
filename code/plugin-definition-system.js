@@ -71,13 +71,16 @@ function createPlugin(name, options, types) {
     // If options is still not defined, default it.
     if (!utils.isDefined(options)) { options = {}; }
 
-    // We also support shorthands for the options properties.
-    if (options.p) { options.params = options.p; }
-    if (options.t) { options.types  = options.t; }
-
-    // Similar to a cast above, but for options' properties.
-    if (typeof options.params === 'string') { options.params = options.params.split(/\s*,\s*/); }
-    if (typeof options.types  === 'string') { options.types  =  options.types.split(/\s*,\s*/); }
+    // These aren't being used, in favor of the cleaner options currently available.
+    // I may just drop these options altogether, but I'm still not sure if they
+    // can have any use, if we expose this plugin definition system eventually.
+    // // We also support shorthands for the options properties.
+    // if (options.p) { options.params = options.p; }
+    // if (options.t) { options.types  = options.t; }
+    //
+    // // Similar to a cast above, but for options' properties.
+    // if (typeof options.params === 'string') { options.params = options.params.split(/\s*,\s*/); }
+    // if (typeof options.types  === 'string') { options.types  =  options.types.split(/\s*,\s*/); }
 
     // Utility that processes a parameter, used in core filters. The m variable is the modifier.
     processParameter = parameterProcessor(options);
@@ -94,7 +97,7 @@ function pluginImplementation(name, options, processParameter) {
             options.params.forEach(function(param) {
                 // Each item in options.params should follow modifier:identifier format.
                 var matches = param.match(/^((.*):)?(.*)$/);
-                definitions.push({modifier: matches[2] || '', identifier: matches[3]});
+                definitions.push({modifier: matches[2], identifier: matches[3]});
             });
         }
 
@@ -186,6 +189,10 @@ function parameterProcessor(options) {
                         if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
                             throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                         }
+                    }
+                } else {
+                    if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
+                        throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                     }
                 }
             }
