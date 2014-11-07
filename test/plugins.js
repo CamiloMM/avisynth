@@ -841,5 +841,10 @@ describe('Base plugin implementations (core filters)', function() {
             requiresParameters('PeculiarBlend');
             checkPlugin('PeculiarBlend', [123], 'PeculiarBlend(123)');
         });
+
+        it('Pulldown', function() {
+            requiresParameters('Pulldown');
+            checkPlugin('Pulldown', [0, 3], 'Pulldown(0, 3)');
+        });
     });
 });
