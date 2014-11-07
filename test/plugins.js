@@ -846,5 +846,17 @@ describe('Base plugin implementations (core filters)', function() {
             requiresParameters('Pulldown');
             checkPlugin('Pulldown', [0, 3], 'Pulldown(0, 3)');
         });
+
+        describe('Separate', function() {
+            // SeparateFields(clip clip)
+            it.is.parameterless('SeparateFields');
+            // name(clip, int interval)
+            ['SeparateColumns', 'SeparateRows'].forEach(function(name) {
+                it(name, function() {
+                    requiresParameters(name);
+                    checkPlugin(name, [123], name + '(123)');
+                });
+            });
+        });
     });
 });

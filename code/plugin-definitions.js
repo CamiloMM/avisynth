@@ -158,3 +158,6 @@ newPlugin('WeaveColumns(ri:)');
 newPlugin('WeaveRows(ri:)');
 newPlugin('PeculiarBlend(ri:)');
 newPlugin('Pulldown(ri:, ri:)');
+newPlugin('SeparateFields(v:)');
+newPlugin('SeparateColumns(ri:)');
+newPlugin('SeparateRows(ri:)');
