@@ -806,4 +806,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AudioTrim', [0, -0.1], 'AudioTrim(0, -0.1)');
         });
     });
+
+    describe('Interlace filters', function() {
+        describe('Parity', function() {
+            var names = ['AssumeFieldBased', 'AssumeFrameBased', 'AssumeBFF', 'AssumeTFF', 'ComplementParity'];
+            names.forEach(it.is.parameterless);
+        });
+    });
 });

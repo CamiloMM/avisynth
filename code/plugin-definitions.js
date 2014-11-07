@@ -144,3 +144,10 @@ newPlugin('SelectEvery(ri:, ri:, mi:)');
 newPlugin('SelectRangeEvery(i:every, i:length, i:offset, b:audio)');
 newPlugin('Trim(ri:, ri:, b:pad)');
 newPlugin('AudioTrim(rd:, rd:)');
+
+// Interlace filters
+newPlugin('AssumeFieldBased(v:)');
+newPlugin('AssumeFrameBased(v:)');
+newPlugin('AssumeBFF(v:)');
+newPlugin('AssumeTFF(v:)');
+newPlugin('ComplementParity(v:)');

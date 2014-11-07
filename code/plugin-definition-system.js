@@ -169,6 +169,9 @@ function parameterProcessor(options) {
         }
         if (/c/.test(m)) { value = colors.parse(value); }
         if (/v/.test(m)) {
+            if (typeof value !== 'string') {
+                throw new AvisynthError('variable must be a string!');
+            }
             if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
                 throw new AvisynthError('bad syntax for variable name "' + value + '"!');
             }
