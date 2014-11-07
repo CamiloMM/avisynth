@@ -858,5 +858,7 @@ describe('Base plugin implementations (core filters)', function() {
                 });
             });
         });
+
+        it.is.parameterless('SwapFields');
     });
 });

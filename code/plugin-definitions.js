@@ -161,3 +161,4 @@ newPlugin('Pulldown(ri:, ri:)');
 newPlugin('SeparateFields(v:)');
 newPlugin('SeparateColumns(ri:)');
 newPlugin('SeparateRows(ri:)');
+newPlugin('SwapFields(v:)');
