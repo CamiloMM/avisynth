@@ -948,5 +948,11 @@ describe('Base plugin implementations (core filters)', function() {
             requiresParameters('DelayAudio');
             checkPlugin('DelayAudio', [-0.5], 'DelayAudio(-0.5)');
         });
+
+        it.is.parameterless('EnsureVBRMP3Sync');
+
+        it.is.parameterless('KillAudio');
+
+        it.is.parameterless('KillVideo');
     });
 });

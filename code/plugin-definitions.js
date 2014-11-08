@@ -184,3 +184,6 @@ newPlugin('MonoToStereo(rv:, v:)');
 newPlugin('ResampleAudio(ri:, i:)');
 newPlugin('SSRC(ri:, b:)');
 newPlugin('DelayAudio(rd:)');
+newPlugin('EnsureVBRMP3Sync(v:)');
+newPlugin('KillAudio(v:)');
+newPlugin('KillVideo(v:)');
