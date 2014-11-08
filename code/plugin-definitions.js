@@ -188,3 +188,4 @@ newPlugin('EnsureVBRMP3Sync(v:)');
 newPlugin('KillAudio(v:)');
 newPlugin('KillVideo(v:)');
 newPlugin('MixAudio(rv:, v:, d:, d:)');
+newPlugin('Normalize(d:volume, b:show)');

@@ -961,5 +961,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('MixAudio', ['foo', 'bar'], 'MixAudio(foo, bar)');
             checkPlugin('MixAudio', ['foo', 'bar', 0.75, 0.25], 'MixAudio(foo, bar, 0.75, 0.25)');
         });
+
+        it('Normalize', function() {
+            // Normalize(clip clip [, float volume] [, bool show])
+            doesNotRequireParameters('Normalize');
+            checkPlugin('Normalize', [null, true], 'Normalize(show=true)');
+            checkPlugin('Normalize', [0.95], 'Normalize(volume=0.95)');
+        });
     });
 });
