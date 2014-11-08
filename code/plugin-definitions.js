@@ -189,3 +189,4 @@ newPlugin('KillAudio(v:)');
 newPlugin('KillVideo(v:)');
 newPlugin('MixAudio(rv:, v:, d:, d:)');
 newPlugin('Normalize(d:volume, b:show)');
+newPlugin('SuperEQ(rap:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:)');

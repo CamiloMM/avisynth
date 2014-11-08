@@ -20,7 +20,7 @@ var utils         = require('./utils');
 // the name is optional (some avisynth plugins don't even accept some named parameters).
 // The full list of modifiers is:
 // q: quoted (string).
-// p: file path (resolved to absolute), implies q.
+// p: filesystem path (resolved to absolute), implies q.
 // r: required field. Lack of it is an error.
 // f: forced file path, implies p and r.
 // n: not a path (actually, not a string). Throws if a string is given.
@@ -31,7 +31,7 @@ var utils         = require('./utils');
 // v: a variable name (unquoted string), checked for syntactic validity.
 // c: a color variable, can be an int, name or string (0x123ABC, 0, 'red', 'F0F', 'FF00FF').
 // a: auto-type, strings get quoted, numbers and bools not.
-//    (variables are only supported in "a" with an unmatched "t" type).
+//    (variables are only supported in "a" with an unmatched "t" type, and paths with "p").
 //
 // It might seem like a complicated function but once you see examples you'll notice
 // it allows defining complex plugin signatures in a single line.
@@ -153,7 +153,7 @@ function parameterProcessor(options) {
     // "m" is the modifier (assumed to be a string).
     return function(m, value) {
         if (/t/.test(m) && !/a/.test(m)) { checkType(value, options.types); }
-        if (/[fp]/.test(m)) { value = path.resolve(value); }
+        if (/[fp]/.test(m) && !/a/.test(m)) { value = path.resolve(value); }
         if (/[fpqt]/.test(m) && !/a/.test(m)) { value = '"' + value + '"'; }
         if (/n/.test(m) && typeof value === 'string') {
             throw new AvisynthError('only one path supported!');
@@ -193,6 +193,9 @@ function parameterProcessor(options) {
                             throw new AvisynthError('bad syntax for variable name "' + value + '"!');
                         }
                     }
+                } else if (/p/.test(m)) {
+                    // Will be converted to a path.
+                    value = '"' + path.resolve(value) + '"';
                 } else {
                     if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
                         throw new AvisynthError('bad syntax for variable name "' + value + '"!');

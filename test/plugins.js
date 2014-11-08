@@ -968,5 +968,15 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Normalize', [null, true], 'Normalize(show=true)');
             checkPlugin('Normalize', [0.95], 'Normalize(volume=0.95)');
         });
+
+        it('SuperEQ', function() {
+            // SuperEq(clip, string filename)
+            // SuperEq(clip, float band1 [, float band2, ..., float band18])
+            requiresParameters('SuperEQ');
+            checkPlugin('SuperEQ', ['fake.feq'], 'SuperEQ("' + path.resolve('fake.feq') + '")');
+            var list = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18]
+            checkPlugin('SuperEQ', list, 'SuperEQ(' + list.join(', ') + ')');
+            checkPluginError('SuperEQ', list.concat(0.19));
+        });
     });
 });
