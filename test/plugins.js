@@ -954,5 +954,12 @@ describe('Base plugin implementations (core filters)', function() {
         it.is.parameterless('KillAudio');
 
         it.is.parameterless('KillVideo');
+
+        it('MixAudio', function() {
+            // MixAudio(clip clip1, clip clip2, float clip1_factor, float clip2_factor)
+            requiresParameters('MixAudio');
+            checkPlugin('MixAudio', ['foo', 'bar'], 'MixAudio(foo, bar)');
+            checkPlugin('MixAudio', ['foo', 'bar', 0.75, 0.25], 'MixAudio(foo, bar, 0.75, 0.25)');
+        });
     });
 });
