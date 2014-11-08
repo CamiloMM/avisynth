@@ -181,3 +181,5 @@ newPlugin('GetLeftChannel(v:)');
 newPlugin('GetRightChannel(v:)');
 newPlugin('MergeChannels(rmv:)');
 newPlugin('MonoToStereo(rv:, v:)');
+newPlugin('ResampleAudio(ri:, i:)');
+newPlugin('SSRC(ri:, b:)');

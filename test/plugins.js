@@ -867,12 +867,6 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AmplifydB', [-0.1], 'AmplifydB(-0.1)');
         });
 
-        it('AssumeSampleRate', function() {
-            // AssumeSampleRate(clip clip, samplerate int)
-            requiresParameters('AssumeSampleRate');
-            checkPlugin('AssumeSampleRate', [22050], 'AssumeSampleRate(22050)');
-        });
-
         it('AudioDub', function() {
             // AudioDub(video_clip, audio_clip)
             requiresParameters('AudioDub');
@@ -895,10 +889,30 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AudioTrim', [0, -0.1], 'AudioTrim(0, -0.1)');
         });
 
-        describe('ConvertAudio', function() {
-            // name(clip clip)
+        describe('Samplerate', function() {
+            it('AssumeSampleRate', function() {
+                // AssumeSampleRate(clip clip, samplerate int)
+                requiresParameters('AssumeSampleRate');
+                checkPlugin('AssumeSampleRate', [22050], 'AssumeSampleRate(22050)');
+            });
+
             var names = ['ConvertAudioTo8bit', 'ConvertAudioTo16bit', 'ConvertAudioTo24bit', 'ConvertAudioTo32bit', 'ConvertAudioToFloat'];
+            // name(clip clip)
             names.forEach(it.is.parameterless);
+
+            it('ResampleAudio', function() {
+                // ResampleAudio(clip, int new_rate_numerator [, int new_rate_denominator])
+                requiresParameters('ResampleAudio');
+                checkPlugin('ResampleAudio', [48000], 'ResampleAudio(48000)');
+                checkPlugin('ResampleAudio', [1058400000, 25025], 'ResampleAudio(1058400000, 25025)');
+            });
+
+            it('SSRC', function() {
+                // SSRC(clip, int samplerate [, bool fast])
+                requiresParameters('SSRC');
+                checkPlugin('SSRC', [44100], 'SSRC(44100)');
+                checkPlugin('SSRC', [22050, false], 'SSRC(22050, false)');
+            });
         });
 
         describe('Channels', function() {
