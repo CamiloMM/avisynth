@@ -190,3 +190,4 @@ newPlugin('KillVideo(v:)');
 newPlugin('MixAudio(rv:, v:, d:, d:)');
 newPlugin('Normalize(d:volume, b:show)');
 newPlugin('SuperEQ(rap:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:, d:)');
+newPlugin('TimeStretch(d:tempo, d:rate, d:pitch, i:sequence, i:seekwindow, i:overlap, b:quickseek, i:aa)');
