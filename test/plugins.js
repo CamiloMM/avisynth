@@ -942,5 +942,11 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('MonoToStereo', ['foo', 'bar'], 'MonoToStereo(foo, bar)');
             });
         });
+
+        it('DelayAudio', function() {
+            // DelayAudio(clip, float seconds)
+            requiresParameters('DelayAudio');
+            checkPlugin('DelayAudio', [-0.5], 'DelayAudio(-0.5)');
+        });
     });
 });

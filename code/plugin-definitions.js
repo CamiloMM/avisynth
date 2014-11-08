@@ -183,3 +183,4 @@ newPlugin('MergeChannels(rmv:)');
 newPlugin('MonoToStereo(rv:, v:)');
 newPlugin('ResampleAudio(ri:, i:)');
 newPlugin('SSRC(ri:, b:)');
+newPlugin('DelayAudio(rd:)');
