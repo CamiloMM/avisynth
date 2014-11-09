@@ -986,4 +986,14 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('TimeStretch', [200, null, null, null, null, null, null, 0], 'TimeStretch(tempo=200, aa=0)');
         });
     });
+
+    describe('Conditional and other meta filters', function() {
+        describe('Conditionals', function() {
+            it('ConditionalFilter', function() {
+                // ConditionalFilter(clip testclip, clip source1, clip source2, string expression1, string operator, string expression2 [, bool "show"])
+                requiresParameters('ConditionalFilter');
+                checkPlugin('ConditionalFilter', ['foo', 'bar', 'AverageLuma()', 'lessthan', 20, true], 'ConditionalFilter(foo, bar, "AverageLuma()", "lessthan", "20", show=true)');
+            });
+        });
+    });
 });
