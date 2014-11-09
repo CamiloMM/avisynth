@@ -153,9 +153,11 @@ function parameterProcessor(options) {
     // "m" is the modifier (assumed to be a string).
     return function(m, value) {
         var param = {m: m, value: value, options: options};
-        processType(param);
-        processPath(param);
-        processString(param);
+        if (!/a/.test(m)) {
+            processType(param);
+            processPath(param);
+            processString(param);
+        }
         processNonPath(param);
         processBoolean(param);
         processDecimal(param);
@@ -170,19 +172,19 @@ function parameterProcessor(options) {
 // The following functions perform the grunt work of the parameter processor.
 
 function processType(param) {
-    if (/t/.test(param.m) && !/a/.test(param.m)) {
+    if (/t/.test(param.m)) {
         checkType(param.value, param.options.types);
     }
 }
 
 function processPath(param) {
-    if (/[fp]/.test(param.m) && !/a/.test(param.m)) {
+    if (/[fp]/.test(param.m)) {
         param.value = path.resolve(param.value);
     }
 }
 
 function processString(param) {
-    if (/[fpqt]/.test(param.m) && !/a/.test(param.m)) {
+    if (/[fpqt]/.test(param.m)) {
         param.value = '"' + param.value + '"';
     }
 }
@@ -232,8 +234,6 @@ function processAutotype(param) {
     if (/a/.test(param.m)) {
         // Auto-parameters should guess what the value is supposed to mean.
         // If it's a number or boolean, just output it as is.
-        if (typeof param.value === 'number') { param.value = +param.value; }
-        if (typeof param.value === 'boolean') { param.value = Boolean(param.value); }
         // But if it's a string, it depends on whether it can also be a type.
         if (typeof param.value === 'string') {
             // Types should not throw errors, but rather become variables if possible.
