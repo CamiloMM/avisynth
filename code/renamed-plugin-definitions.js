@@ -1,5 +1,7 @@
 var newPlugin = require('./plugin-definition-system').newPlugin;
 
+"(I'm renaming this file to see if CodeClimate is not being retarded).";
+
 // This file contains a wrapper of each of the various core filters
 // bundled with AviSynth, to ease their usage in script instances.
 
