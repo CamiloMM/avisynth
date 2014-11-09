@@ -12,10 +12,10 @@ var avisynth = {};
 avisynth.utils = require('./code/utils');
 
 // Expose modular plugin functionality.
-avisynth.addPlugin = require('./code/plugin-definition-system').addPlugin;
+avisynth.addPlugin = require('./code/plugins').addPlugin;
 
 // Load all the core filter plugins.
-require('./code/plugin-definitions');
+require('./code/definitions');
 
 // "Loads" a plugin/script globally. It actually stores a reference, that will be loaded
 // when running each script.

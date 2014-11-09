@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Geometric deformation filters
+// Geometric deformation filters. See definitions.js.
 
 newPlugin('AddBorders(ri:, ri:, ri:, ri:, c:color)');
 newPlugin('Crop(ri:, ri:, ri:, ri:, b:align)');

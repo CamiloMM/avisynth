@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Media file filters
+// Media file filters. See definitions.js.
 
 var imgTypes = 'Y8, RGB24, RGB32';
 var dssTypes = 'YV24, YV16, YV12, YUY2, AYUV, Y41P, Y411, ARGB, RGB32, RGB24, YUV, YUVex, RGB, AUTO, FULL';

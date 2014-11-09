@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Timeline editing filters
+// Timeline editing filters. See definitions.js.
 
 var fpsPresets = 'ntsc_film, ntsc_video, ntsc_double, ntsc_quad, ntsc_round_film, ntsc_round_video, ntsc_round_double, ntsc_round_quad, film, pal_film, pal_video, pal_double, pal_quad';
 

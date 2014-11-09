@@ -1,6 +1,6 @@
 var loader       = require('./loader');
 var autoload     = require('./autoload');
-var pluginSystem = require('./plugin-definition-system');
+var pluginSystem = require('./plugins');
 
 // Avisynth script constructor.
 // Note that I don't like the overhead of having getters and setters,

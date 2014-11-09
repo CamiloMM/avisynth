@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Audio processing filters
+// Audio processing filters. See definitions.js.
 
 newPlugin('Amplify(rmd:)');
 newPlugin('AmplifydB(rmd:)');

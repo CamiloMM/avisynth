@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Interlace filters
+// Interlace filters. See definitions.js.
 
 newPlugin('AssumeFieldBased(v:)');
 newPlugin('AssumeFrameBased(v:)');

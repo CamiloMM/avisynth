@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Color conversion and adjustment filters
+// Color conversion and adjustment filters. See definitions.js.
 
 var matrices = 'Rec601, PC.601, Rec709, PC.709, AVERAGE';
 var showTypes = 'RGB24, RGB32, YUY2, YV12, Y8';

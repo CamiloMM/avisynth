@@ -1,6 +1,6 @@
-var newPlugin = require('./plugin-definition-system').newPlugin;
+var newPlugin = require('./plugins').newPlugin;
 
-// Pixel restoration filters
+// Pixel restoration filters. See definitions.js.
 
 newPlugin('Blur(rd:, d:, b:MMX)');
 newPlugin('Sharpen(rd:, d:, b:MMX)');
