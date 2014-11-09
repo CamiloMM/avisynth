@@ -4,7 +4,7 @@ var expect        = require('chai').expect;
 var avisynth      = require('../main');
 var Script        = require('../code/script');
 var loader        = require('../code/loader');
-var pluginSystem  = require('../code/plugin-system');
+var pluginSystem  = require('../code/plugin-definition-system');
 var AvisynthError = require('../code/errors').AvisynthError;
 
 describe('avisynth.Script', function() {

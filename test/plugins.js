@@ -2,7 +2,7 @@ var path          = require('path');
 var expect        = require('chai').expect;
 var should        = require('chai').should();
 var avisynth      = require('../main');
-var pluginSystem  = require('../code/plugin-system');
+var pluginSystem  = require('../code/plugin-definition-system');
 var AvisynthError = require('../code/errors').AvisynthError;
 
 var fakePluginsDir = path.resolve(__dirname, 'plugins');
