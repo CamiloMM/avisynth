@@ -15,7 +15,7 @@ avisynth.utils = require('./code/utils');
 avisynth.addPlugin = require('./code/plugin-system').addPlugin;
 
 // Load all the core filter plugins.
-require('./code/renamed-plugin-definitions');
+require('./code/plugin-definitions');
 
 // "Loads" a plugin/script globally. It actually stores a reference, that will be loaded
 // when running each script.
