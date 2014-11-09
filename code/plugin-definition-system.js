@@ -83,7 +83,7 @@ function createPlugin(name, options, types) {
     // if (typeof options.types  === 'string') { options.types  =  options.types.split(/\s*,\s*/); }
 
     // Utility that processes a parameter, used in core filters. The m variable is the modifier.
-    processParameter = parameterProcessor(options);
+    var processParameter = parameterProcessor(options);
 
     return pluginImplementation(name, options, processParameter);
 }
@@ -194,7 +194,7 @@ function processNonPath(param) {
 }
 
 function processBoolean(param) {
-    if (/b/.test(param.m) && param.value !== !!param.value) {
+    if (/b/.test(param.m) && param.value !== Boolean(param.value)) {
         throw new AvisynthError('expected boolean, got "' + param.value + '"');
     }
 }
@@ -233,7 +233,7 @@ function processAutotype(param) {
         // Auto-parameters should guess what the value is supposed to mean.
         // If it's a number or boolean, just output it as is.
         if (typeof param.value === 'number') { param.value = +param.value; }
-        if (typeof param.value === 'boolean') { param.value = !!param.value; }
+        if (typeof param.value === 'boolean') { param.value = Boolean(param.value); }
         // But if it's a string, it depends on whether it can also be a type.
         if (typeof param.value === 'string') {
             // Types should not throw errors, but rather become variables if possible.
