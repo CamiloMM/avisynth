@@ -152,57 +152,108 @@ function pluginImplementation(name, options, processParameter) {
 function parameterProcessor(options) {
     // "m" is the modifier (assumed to be a string).
     return function(m, value) {
-        if (/t/.test(m) && !/a/.test(m)) { checkType(value, options.types); }
-        if (/[fp]/.test(m) && !/a/.test(m)) { value = path.resolve(value); }
-        if (/[fpqt]/.test(m) && !/a/.test(m)) { value = '"' + value + '"'; }
-        if (/n/.test(m) && typeof value === 'string') {
-            throw new AvisynthError('only one path supported!');
+        var param = {m: m, value: value, options: options};
+        processType(param);
+        processPath(param);
+        processString(param);
+        processNonPath(param);
+        processBoolean(param);
+        processDecimal(param);
+        processInteger(param);
+        processColor(param);
+        processVariable(param);
+        processAutotype(param);
+        return param.value;
+    };
+}
+
+// The following functions perform the grunt work of the parameter processor.
+
+function processType(param) {
+    if (/t/.test(param.m) && !/a/.test(param.m)) {
+        checkType(param.value, param.options.types);
+    }
+}
+
+function processPath(param) {
+    if (/[fp]/.test(param.m) && !/a/.test(param.m)) {
+        param.value = path.resolve(param.value);
+    }
+}
+
+function processString(param) {
+    if (/[fpqt]/.test(param.m) && !/a/.test(param.m)) {
+        param.value = '"' + param.value + '"';
+    }
+}
+
+function processNonPath(param) {
+    if (/n/.test(param.m) && typeof param.value === 'string') {
+        throw new AvisynthError('only one path supported!');
+    }
+}
+
+function processBoolean(param) {
+    if (/b/.test(param.m) && param.value !== !!param.value) {
+        throw new AvisynthError('expected boolean, got "' + param.value + '"');
+    }
+}
+
+function processDecimal(param) {
+    if (/d/.test(param.m) && param.value !== +param.value) {
+        throw new AvisynthError('expected number, got "' + param.value + '"');
+    }
+}
+
+function processInteger(param) {
+    if (/i/.test(param.m) && param.value !== Math.round(param.value)) {
+        throw new AvisynthError('expected integer, got "' + param.value + '"');
+    }
+}
+
+function processColor(param) {
+    if (/c/.test(param.m)) {
+        param.value = colors.parse(param.value);
+    }
+}
+
+function processVariable(param) {
+    if (/v/.test(param.m)) {
+        if (typeof param.value !== 'string') {
+            throw new AvisynthError('variable must be a string!');
         }
-        if (/b/.test(m) && value !== !!value) {
-            throw new AvisynthError('expected boolean, got "' + value + '"');
+        if (!/^[a-z_][0-9a-z_]*$/i.test(param.value)) {
+            throw new AvisynthError('bad syntax for variable name "' + param.value + '"!');
         }
-        if (/d/.test(m) && value !== +value) {
-            throw new AvisynthError('expected number, got "' + value + '"');
-        }
-        if (/i/.test(m) && value !== Math.round(value)) {
-            throw new AvisynthError('expected integer, got "' + value + '"');
-        }
-        if (/c/.test(m)) { value = colors.parse(value); }
-        if (/v/.test(m)) {
-            if (typeof value !== 'string') {
-                throw new AvisynthError('variable must be a string!');
-            }
-            if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
-                throw new AvisynthError('bad syntax for variable name "' + value + '"!');
-            }
-        }
-        if (/a/.test(m)) {
-            // Auto-parameters should guess what the value is supposed to mean.
-            // If it's a number or boolean, just output it as is.
-            if (typeof value === 'number') { value = +value; }
-            if (typeof value === 'boolean') { value = !!value; }
-            // But if it's a string, it depends on whether it can also be a type.
-            if (typeof value === 'string') {
-                // Types should not throw errors, but rather become variables if possible.
-                if (/t/.test(m)) {
-                    try {
-                        checkType(value, options.types);
-                        value = '"' + value + '"';
-                    } catch (e) {
-                        if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
-                            throw new AvisynthError('bad syntax for variable name "' + value + '"!');
-                        }
+    }
+}
+
+function processAutotype(param) {
+    if (/a/.test(param.m)) {
+        // Auto-parameters should guess what the value is supposed to mean.
+        // If it's a number or boolean, just output it as is.
+        if (typeof param.value === 'number') { param.value = +param.value; }
+        if (typeof param.value === 'boolean') { param.value = !!param.value; }
+        // But if it's a string, it depends on whether it can also be a type.
+        if (typeof param.value === 'string') {
+            // Types should not throw errors, but rather become variables if possible.
+            if (/t/.test(param.m)) {
+                try {
+                    checkType(param.value, param.options.types);
+                    param.value = '"' + param.value + '"';
+                } catch (e) {
+                    if (!/^[a-z_][0-9a-z_]*$/i.test(param.value)) {
+                        throw new AvisynthError('bad syntax for variable name "' + param.value + '"!');
                     }
-                } else if (/p/.test(m)) {
-                    // Will be converted to a path.
-                    value = '"' + path.resolve(value) + '"';
-                } else {
-                    if (!/^[a-z_][0-9a-z_]*$/i.test(value)) {
-                        throw new AvisynthError('bad syntax for variable name "' + value + '"!');
-                    }
+                }
+            } else if (/p/.test(param.m)) {
+                // Will be converted to a path.
+                param.value = '"' + path.resolve(param.value) + '"';
+            } else {
+                if (!/^[a-z_][0-9a-z_]*$/i.test(param.value)) {
+                    throw new AvisynthError('bad syntax for variable name "' + param.value + '"!');
                 }
             }
         }
-        return value;
-    };
+    }
 }
