@@ -994,6 +994,14 @@ describe('Base plugin implementations (core filters)', function() {
                 requiresParameters('ConditionalFilter');
                 checkPlugin('ConditionalFilter', ['foo', 'bar', 'AverageLuma()', 'lessthan', 20, true], 'ConditionalFilter(foo, bar, "AverageLuma()", "lessthan", "20", show=true)');
             });
+
+            it('ConditionalSelect', function() {
+                // ConditionalSelect(clip testclip, string expression, clip source0, clip source1, clip source2, ... [, bool "show"])
+                requiresParameters('ConditionalSelect');
+                // Don't ask me what "chr(13)" is supposed to mean there, it was in the docs like that. I wonder if it shouldn't be a LF instead of VT.
+                checkPlugin('ConditionalSelect', ['luma_av = AverageLuma()"+chr(13)+"luma_av < 25 ? (luma_av < 15 ? 2 : 1) : 0', 'foo', 'bar', 'baz'], 'ConditionalSelect("luma_av = AverageLuma()"+chr(13)+"luma_av < 25 ? (luma_av < 15 ? 2 : 1) : 0", foo, bar, baz)');
+                checkPlugin('ConditionalSelect', ['AverageChromaU() < 25 ? 1 : 0', 'foo', 'bar', true], 'ConditionalSelect("AverageChromaU() < 25 ? 1 : 0", foo, bar, show=true)');
+            });
         });
     });
 });
