@@ -1002,6 +1002,14 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('ConditionalSelect', ['luma_av = AverageLuma()"+chr(13)+"luma_av < 25 ? (luma_av < 15 ? 2 : 1) : 0', 'foo', 'bar', 'baz'], 'ConditionalSelect("luma_av = AverageLuma()"+chr(13)+"luma_av < 25 ? (luma_av < 15 ? 2 : 1) : 0", foo, bar, baz)');
                 checkPlugin('ConditionalSelect', ['AverageChromaU() < 25 ? 1 : 0', 'foo', 'bar', true], 'ConditionalSelect("AverageChromaU() < 25 ? 1 : 0", foo, bar, show=true)');
             });
+
+            it('ScriptClip', function() {
+                // ScriptClip(clip clip, string filter [, bool "show"] [, bool "after_frame"])
+                requiresParameters('ScriptClip');
+                // Again with the VTs.
+                checkPlugin('ScriptClip', ['diff = YDifferenceToNext()"+chr(13)+"diff > 2.5 ? Blur(fmin(diff/20,1.5)) : T'], 'ScriptClip("diff = YDifferenceToNext()"+chr(13)+"diff > 2.5 ? Blur(fmin(diff/20,1.5)) : T")');
+                checkPlugin('ScriptClip', ['subtitle(string(current_frame))', true, false], 'ScriptClip("subtitle(string(current_frame))", show=true, after_frame=false)');
+            });
         });
     });
 });

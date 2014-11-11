@@ -6,3 +6,4 @@ var operators = 'equals, greaterthan, lessthan, =, >, <, =='
 
 newPlugin('ConditionalFilter(rv:, rv:, rq:, rt:, rq:, b:show)', operators);
 newPlugin('ConditionalSelect(rq:, rmv:, b:show)');
+newPlugin('ScriptClip(rq:, b:show, b:after_frame)');
