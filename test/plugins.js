@@ -1016,6 +1016,12 @@ describe('Base plugin implementations (core filters)', function() {
                 requiresParameters('FrameEvaluate');
                 checkPlugin('FrameEvaluate', ['subtitle(string(current_frame))', false], 'FrameEvaluate("subtitle(string(current_frame))", false)');
             });
+
+            it('ConditionalReader', function() {
+                // ConditionalReader(clip clip, string filename, string variablename [, bool show])
+                requiresParameters('ConditionalReader');
+                checkPlugin('ConditionalReader', [textFile, 'fooBar', true], 'ConditionalReader("' + textFile + '", fooBar, true)');
+            });
         });
     });
 });
