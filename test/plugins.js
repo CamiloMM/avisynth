@@ -1010,6 +1010,12 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('ScriptClip', ['diff = YDifferenceToNext()"+chr(13)+"diff > 2.5 ? Blur(fmin(diff/20,1.5)) : T'], 'ScriptClip("diff = YDifferenceToNext()"+chr(13)+"diff > 2.5 ? Blur(fmin(diff/20,1.5)) : T")');
                 checkPlugin('ScriptClip', ['subtitle(string(current_frame))', true, false], 'ScriptClip("subtitle(string(current_frame))", show=true, after_frame=false)');
             });
+
+            it('FrameEvaluate', function() {
+                // FrameEvaluate(clip clip, string filter [, bool "after_frame"])
+                requiresParameters('FrameEvaluate');
+                checkPlugin('FrameEvaluate', ['subtitle(string(current_frame))', false], 'FrameEvaluate("subtitle(string(current_frame))", false)');
+            });
         });
     });
 });
