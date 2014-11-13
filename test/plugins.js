@@ -1023,5 +1023,20 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('ConditionalReader', [textFile, 'fooBar', true], 'ConditionalReader("' + textFile + '", fooBar, true)');
             });
         });
+
+        describe('Writers', function() {
+            it('WriteFile', function() {
+                // WriteFile(clip clip, string filename, string expression1 [, string expression2 [, ...]] [, bool append, bool flush])
+                requiresParameters('WriteFile');
+                checkPlugin('WriteFile', [textFile, 'current_frame', false], 'WriteFile("' + textFile + '", "current_frame", append=false)');
+                checkPlugin('WriteFile', [textFile, '(AverageLuma>30) && (AverageLuma<60)', 'current_frame', null, false], 'WriteFile("' + textFile + '", "(AverageLuma>30) && (AverageLuma<60)", "current_frame", flush=false)');
+            });
+
+            it('WriteFileIf', function() {
+                // WriteFileIf(clip clip, string filename, string expression1 [, string expression2 [, ...]] [, bool append, bool flush])
+                requiresParameters('WriteFileIf');
+                checkPlugin('WriteFileIf', [textFile, 'current_frame', false, true], 'WriteFileIf("' + textFile + '", "current_frame", append=false, flush=true)');
+            });
+        });
     });
 });
