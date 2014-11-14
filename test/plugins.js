@@ -1037,6 +1037,18 @@ describe('Base plugin implementations (core filters)', function() {
                 requiresParameters('WriteFileIf');
                 checkPlugin('WriteFileIf', [textFile, 'current_frame', false, true], 'WriteFileIf("' + textFile + '", "current_frame", append=false, flush=true)');
             });
+
+            it('WriteFileStart', function() {
+                // WriteFileStart(clip clip, string filename, string expression1 [, string expression2 [, ...]] [, bool append])
+                requiresParameters('WriteFileStart');
+                checkPlugin('WriteFileStart', [textFile, 'current_frame', false], 'WriteFileStart("' + textFile + '", "current_frame", append=false)');
+            });
+
+            it('WriteFileEnd', function() {
+                // WriteFileEnd(clip clip, string filename, string expression1 [, string expression2 [, ...]] [, bool append])
+                requiresParameters('WriteFileEnd');
+                checkPlugin('WriteFileEnd', [textFile, 'current_frame', false], 'WriteFileEnd("' + textFile + '", "current_frame", append=false)');
+            });
         });
     });
 });
