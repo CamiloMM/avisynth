@@ -13,3 +13,4 @@ newPlugin('WriteFile(f:, rmq:, b:append, b:flush)');
 newPlugin('WriteFileIf(f:, rmq:, b:append, b:flush)');
 newPlugin('WriteFileStart(f:, rmq:, b:append)');
 newPlugin('WriteFileEnd(f:, rmq:, b:append)');
+newPlugin('Animate(ri:, ri:, rq:, ra:, ram:)');

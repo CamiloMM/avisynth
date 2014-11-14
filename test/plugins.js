@@ -1050,5 +1050,12 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('WriteFileEnd', [textFile, 'current_frame', false], 'WriteFileEnd("' + textFile + '", "current_frame", append=false)');
             });
         });
+
+        it('Animate', function() {
+            // Animate(clip clip, int start_frame, int end_frame, string filtername, start_args, end_args)
+            requiresParameters('Animate');
+            checkPluginError('Animate', [1, 1, 'Sharpen', 1]);
+            checkPlugin('Animate', [0, 149, 'Crop', 0, 0, 64, 32, 316, 0, 64, 32], 'Animate(0, 149, "Crop", 0, 0, 64, 32, 316, 0, 64, 32)');
+        });
     });
 });
