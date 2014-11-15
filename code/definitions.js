@@ -19,3 +19,4 @@ require('./timeline');
 require('./interlacing');
 require('./audio');
 require('./meta');
+require('./debug');

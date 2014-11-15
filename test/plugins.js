@@ -1080,4 +1080,8 @@ describe('Base plugin implementations (core filters)', function() {
             });
         });
     });
+
+    describe('Debug filters', function() {
+        it.is.parameterless('Blackness');
+    });
 });
