@@ -15,3 +15,5 @@ newPlugin('WriteFileStart(f:, rmq:, b:append)');
 newPlugin('WriteFileEnd(f:, rmq:, b:append)');
 newPlugin('Animate(ri:, ri:, rq:, qra:, qram:)');
 newPlugin('ApplyRange(ri:, ri:, rq:, qram:)');
+newPlugin('TCPServer(i:)');
+newPlugin('TCPSource(rq:, i:port, t:compression)', 'None, LZO, Huffman, GZip');

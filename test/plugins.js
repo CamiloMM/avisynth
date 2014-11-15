@@ -1064,5 +1064,20 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ApplyRange', [1, 1, 'Sharpen', 1.1], 'ApplyRange(1, 1, "Sharpen", 1.1)');
             checkPlugin('ApplyRange', [0, 48, 'Subtitle', 'Hello, World!', 25, 130, 0, 99999, 'Arial', 48], 'ApplyRange(0, 48, "Subtitle", "Hello, World!", 25, 130, 0, 99999, "Arial", 48)');
         });
+
+        describe('TCP', function() {
+            it('TCPServer', function() {
+                // TCPServer(clip clip [, int port])
+                doesNotRequireParameters('TCPServer');
+                checkPlugin('TCPServer', [1234], 'TCPServer(1234)');
+            });
+
+            it('TCPSource', function() {
+                // TCPSource(string hostname [, int port, string compression])
+                requiresParameters('TCPSource');
+                checkPlugin('TCPSource', ['127.0.0.1'], 'TCPSource("127.0.0.1")');
+                checkPlugin('TCPSource', ['127.0.0.1', 1234, 'LZO'], 'TCPSource("127.0.0.1", port=1234, compression="LZO")');
+            });
+        });
     });
 });
