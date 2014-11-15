@@ -1082,6 +1082,14 @@ describe('Base plugin implementations (core filters)', function() {
     });
 
     describe('Debug filters', function() {
-        it.is.parameterless('Blackness');
+        ['BlankClip', 'Blackness'].forEach(function(name) {
+            it(name, function() {
+                // BlankClip([clip clip, int length, int width, int height, string pixel_type, int fps, int fps_denominator, int audio_rate, bool stereo, bool sixteen_bit, int color, int color_yuv])
+                // BlankClip([clip clip, int length, int width, int height, string pixel_type, int fps, int fps_denominator, int audio_rate, int channels, string sample_type, int color, int color_yuv])
+                doesNotRequireParameters(name);
+                checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, false, true, 0x000000, 0x00f080], name + '(240, 640, 480, "YV12", 24, 1, 44100, false, true, color=0, color_yuv=61568)');
+                checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, 1, '16bit', 0x000000, 0x0000f0], name + '(240, 640, 480, "YV12", 24, 1, 44100, 1, "16bit", color=0, color_yuv=240)');
+            });
+        });
     });
 });
