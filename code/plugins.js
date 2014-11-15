@@ -181,7 +181,12 @@ function pluginImplementation(name, options, processParameter) {
                 // Multiple parameter modes.
                 var multi = [value];
                 var type = typeof value;
-                while (typeof (value = arguments[++a]) === type) { multi.push(value); } a--;
+                if (/a/.test(m)) {
+                    while (typeof (value = arguments[++a]) !== 'undefined') { multi.push(value); }
+                } else {
+                    while (typeof (value = arguments[++a]) === type) { multi.push(value); }
+                }
+                a--;
                 multi = multi.map(processParameter.bind(null, m));
                 multi.forEach(function(p) { params.push(p); });
             } else {
@@ -315,6 +320,9 @@ function processAutotype(param) {
             } else if (/p/.test(param.m)) {
                 // Will be converted to a path.
                 param.value = '"' + path.resolve(param.value) + '"';
+            } else if (/q/.test(param.m)) {
+                // Will be just quoted.
+                param.value = '"' + param.value + '"';
             } else {
                 if (!/^[a-z_][0-9a-z_]*$/i.test(param.value)) {
                     throw new AvisynthError('bad syntax for variable name "' + param.value + '"!');

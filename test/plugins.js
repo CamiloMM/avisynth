@@ -1054,8 +1054,15 @@ describe('Base plugin implementations (core filters)', function() {
         it('Animate', function() {
             // Animate(clip clip, int start_frame, int end_frame, string filtername, start_args, end_args)
             requiresParameters('Animate');
-            checkPluginError('Animate', [1, 1, 'Sharpen', 1]);
+            checkPluginError('Animate', [1, 1, 'Sharpen', 1.1]);
             checkPlugin('Animate', [0, 149, 'Crop', 0, 0, 64, 32, 316, 0, 64, 32], 'Animate(0, 149, "Crop", 0, 0, 64, 32, 316, 0, 64, 32)');
+        });
+
+        it('ApplyRange', function() {
+            // ApplyRange(clip clip, int start_frame, int end_frame, string filtername, args)
+            requiresParameters('ApplyRange');
+            checkPlugin('ApplyRange', [1, 1, 'Sharpen', 1.1], 'ApplyRange(1, 1, "Sharpen", 1.1)');
+            checkPlugin('ApplyRange', [0, 48, 'Subtitle', 'Hello, World!', 25, 130, 0, 99999, 'Arial', 48], 'ApplyRange(0, 48, "Subtitle", "Hello, World!", 25, 130, 0, 99999, "Arial", 48)');
         });
     });
 });
