@@ -1091,5 +1091,13 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, 1, '16bit', 0x000000, 0x0000f0], name + '(240, 640, 480, "YV12", 24, 1, 44100, 1, "16bit", color=0, color_yuv=240)');
             });
         });
+
+        ['ColorBars', 'ColorBarsHD'].forEach(function(name) {
+            it(name, function() {
+                // name([int width] [, int height] [, string pixel_type])
+                doesNotRequireParameters(name);
+                checkPlugin(name, [640, 480, 'YUY2'], name + '(width=640, height=480, pixel_type="YUY2")');
+            });
+        });
     });
 });
