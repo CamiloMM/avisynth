@@ -1113,5 +1113,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Echo', ['foo'], 'Echo(foo)');
             checkPlugin('Echo', ['foo', 'bar', 'baz'], 'Echo(foo, bar, baz)');
         });
+
+        it('Histogram', function() {
+            // Histogram(clip clip [, string mode] [, float factor])
+            doesNotRequireParameters('Histogram');
+            checkPlugin('Histogram', ['Levels', 12.34], 'Histogram("Levels", 12.34)');
+        });
     });
 });
