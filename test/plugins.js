@@ -1127,5 +1127,11 @@ describe('Base plugin implementations (core filters)', function() {
             requiresParameters('MessageClip');
             checkPlugin('MessageClip', ['hello, world!', 800, 400, false, 'F00', '0F0', '00F'], 'MessageClip("hello, world!", width=800, height=400, shrink=false, text_color=16711680, halo_color=65280, bg_color=255)');
         });
+
+        it('Preroll', function() {
+            // Preroll(clip clip, int video, float audio)
+            doesNotRequireParameters('Preroll'); // And I have no idea why.
+            checkPlugin('Preroll', [123, 45.67], 'Preroll(video=123, audio=45.67)');
+        });
     });
 });
