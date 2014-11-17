@@ -1099,5 +1099,12 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin(name, [640, 480, 'YUY2'], name + '(width=640, height=480, pixel_type="YUY2")');
             });
         });
+
+        it('Compare', function() {
+            // Compare(clip_filtered clip, clip_original clip, string channels, string logfile, bool show_graph)
+            requiresParameters('Compare');
+            checkPlugin('Compare', ['foo'], 'Compare(foo)');
+            checkPlugin('Compare', ['foo', 'BR', 'fake.log', true], 'Compare(foo, channels="BR", logfile="' + path.resolve('fake.log') + '", show_graph=true)');
+        });
     });
 });

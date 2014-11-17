@@ -9,3 +9,4 @@ newPlugin('Blackness(i:, i:, i:, t:, i:, i:, i:, a:, aq:, c:color, c:color_yuv)'
 newPlugin('BlankClip(i:, i:, i:, t:, i:, i:, i:, a:, aq:, c:color, c:color_yuv)', clipTypes);
 newPlugin('ColorBars(i:width, i:height, t:pixel_type)', barsTypes);
 newPlugin('ColorBarsHD(i:width, i:height, t:pixel_type)', barsTypes);
+newPlugin('Compare(rv:, q:channels, p:logfile, b:show_graph)');
