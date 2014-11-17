@@ -19,6 +19,8 @@ exports.parse = function(color) {
     }
 
     // Color name.
+    // Note that this can safely be here because no color name resembles
+    // a triplet or hexad. Was this by design? I have no idea. But cool!
     if (typeof color === 'string' && color.toLowerCase() in colors) {
         return colors[color.toLowerCase()];
     }

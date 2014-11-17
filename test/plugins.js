@@ -1121,5 +1121,11 @@ describe('Base plugin implementations (core filters)', function() {
         });
 
         it.is.parameterless('Info');
+
+        it('MessageClip', function() {
+            // MessageClip(string message, int width, int height, bool shrink, int text_color, int halo_color, int bg_color)
+            requiresParameters('MessageClip');
+            checkPlugin('MessageClip', ['hello, world!', 800, 400, false, 'F00', '0F0', '00F'], 'MessageClip("hello, world!", width=800, height=400, shrink=false, text_color=16711680, halo_color=65280, bg_color=255)');
+        });
     });
 });
