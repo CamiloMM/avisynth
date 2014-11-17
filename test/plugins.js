@@ -1106,5 +1106,12 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Compare', ['foo'], 'Compare(foo)');
             checkPlugin('Compare', ['foo', 'BR', 'fake.log', true], 'Compare(foo, channels="BR", logfile="' + path.resolve('fake.log') + '", show_graph=true)');
         });
+
+        it('Echo', function() {
+            // Echo(clip clip1, clip clip2 [, ...])
+            requiresParameters('Echo');
+            checkPlugin('Echo', ['foo'], 'Echo(foo)');
+            checkPlugin('Echo', ['foo', 'bar', 'baz'], 'Echo(foo, bar, baz)');
+        });
     });
 });
