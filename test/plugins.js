@@ -1119,5 +1119,7 @@ describe('Base plugin implementations (core filters)', function() {
             doesNotRequireParameters('Histogram');
             checkPlugin('Histogram', ['Levels', 12.34], 'Histogram("Levels", 12.34)');
         });
+
+        it.is.parameterless('Info');
     });
 });

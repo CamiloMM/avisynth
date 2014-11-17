@@ -13,3 +13,4 @@ newPlugin('ColorBarsHD(i:width, i:height, t:pixel_type)', barsTypes);
 newPlugin('Compare(rv:, q:channels, p:logfile, b:show_graph)');
 newPlugin('Echo(rmv:)');
 newPlugin('Histogram(t:, d:)', histModes);
+newPlugin('Info(v:)');
