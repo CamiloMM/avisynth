@@ -1133,5 +1133,14 @@ describe('Base plugin implementations (core filters)', function() {
             doesNotRequireParameters('Preroll'); // And I have no idea why.
             checkPlugin('Preroll', [123, 45.67], 'Preroll(video=123, audio=45.67)');
         });
+
+        it('ShowFiveVersions', function() {
+            // ShowFiveVersions(clip clip1, clip clip2, clip clip3, clip clip4, clip clip5)
+            requiresParameters('ShowFiveVersions');
+            checkPluginError('ShowFiveVersions', ['foo', 'bar', 'baz']);
+            checkPluginError('ShowFiveVersions', ['six', 'parameters', 'are', 'way', 'too', 'much']);
+            checkPlugin('ShowFiveVersions', ['foo', 'bar', 'baz', 'quux'], 'ShowFiveVersions(foo, bar, baz, quux)');
+            checkPlugin('ShowFiveVersions', ['foo', 'bar', 'baz', 'quux', 'xyzzy'], 'ShowFiveVersions(foo, bar, baz, quux, xyzzy)');
+        });
     });
 });

@@ -16,3 +16,4 @@ newPlugin('Histogram(t:, d:)', histModes);
 newPlugin('Info(v:)');
 newPlugin('MessageClip(rq:, i:width, i:height, b:shrink, c:text_color, c:halo_color, c:bg_color)');
 newPlugin('Preroll(i:video, d:audio)');
+newPlugin('ShowFiveVersions(rv:, rv:, rv:, rv:, v:)');
