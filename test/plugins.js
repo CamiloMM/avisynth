@@ -1143,16 +1143,24 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ShowFiveVersions', ['foo', 'bar', 'baz', 'quux', 'xyzzy'], 'ShowFiveVersions(foo, bar, baz, quux, xyzzy)');
         });
 
-        it('ShowFrameNumber', function() {
-            // ShowFrameNumber(clip clip [, bool scroll, int offset, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
-            doesNotRequireParameters('ShowFrameNumber');
-            checkPlugin('ShowFrameNumber', [false, 0, 32, 96, 'Arial', 48, 'ABCDEF', '012345', 32, 10.5], 'ShowFrameNumber(scroll=false, offset=0, x=32, y=96, font="Arial", size=48, text_color=11259375, halo_color=74565, font_width=32, font_angle=10.5)');
-        });
+        describe('Timecodes', function() {
+            it('ShowFrameNumber', function() {
+                // ShowFrameNumber(clip clip [, bool scroll, int offset, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
+                doesNotRequireParameters('ShowFrameNumber');
+                checkPlugin('ShowFrameNumber', [false, 0, 32.125, 96.25, 'Arial', 48, 'ABCDEF', '012345', 32, 10.5], 'ShowFrameNumber(scroll=false, offset=0, x=32.125, y=96.25, font="Arial", size=48, text_color=11259375, halo_color=74565, font_width=32, font_angle=10.5)');
+            });
 
-        it('ShowSMPTE', function() {
-            // ShowSMPTE(clip clip [, float fps, string offset, int offset_f, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
-            doesNotRequireParameters('ShowSMPTE');
-            checkPlugin('ShowSMPTE', [29.97, '00:00:00:00', 123, 128, 80, 'Comic Sans MS', 32, 'lightSteelBlue', 'orange', 16, 24], 'ShowSMPTE(fps=29.97, offset="00:00:00:00", offset_f=123, x=128, y=80, font="Comic Sans MS", size=32, text_color=11584734, halo_color=16753920, font_width=16, font_angle=24)');
+            it('ShowSMPTE', function() {
+                // ShowSMPTE(clip clip [, float fps, string offset, int offset_f, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
+                doesNotRequireParameters('ShowSMPTE');
+                checkPlugin('ShowSMPTE', [29.97, '00:00:00:00', 123, 128.375, 80.5, 'Comic Sans MS', 32, 'lightSteelBlue', 'orange', 16, 24], 'ShowSMPTE(fps=29.97, offset="00:00:00:00", offset_f=123, x=128.375, y=80.5, font="Comic Sans MS", size=32, text_color=11584734, halo_color=16753920, font_width=16, font_angle=24)');
+            });
+
+            it('ShowTime', function() {
+                // ShowTime(clip clip [int offset_f, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
+                doesNotRequireParameters('ShowTime');
+                checkPlugin('ShowTime', [123, 128.625, 80.75, 'Tahoma', 32, 0, 'white', 16, 24], 'ShowTime(offset_f=123, x=128.625, y=80.75, font="Tahoma", size=32, text_color=0, halo_color=16777215, font_width=16, font_angle=24)');
+            });
         });
     });
 });
