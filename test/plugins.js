@@ -1142,5 +1142,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('ShowFiveVersions', ['foo', 'bar', 'baz', 'quux'], 'ShowFiveVersions(foo, bar, baz, quux)');
             checkPlugin('ShowFiveVersions', ['foo', 'bar', 'baz', 'quux', 'xyzzy'], 'ShowFiveVersions(foo, bar, baz, quux, xyzzy)');
         });
+
+        it('ShowFrameNumber', function() {
+            // ShowFrameNumber(clip clip [, bool scroll, int offset, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
+            doesNotRequireParameters('ShowFrameNumber');
+            checkPlugin('ShowFrameNumber', [false, 0, 32, 96, 'Arial', 48, 'ABCDEF', '012345', 32, 10.5], 'ShowFrameNumber(scroll=false, offset=0, x=32, y=96, font="Arial", size=48, text_color=11259375, halo_color=74565, font_width=32, font_angle=10.5)');
+        });
     });
 });

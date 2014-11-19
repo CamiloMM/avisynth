@@ -17,3 +17,4 @@ newPlugin('Info(v:)');
 newPlugin('MessageClip(rq:, i:width, i:height, b:shrink, c:text_color, c:halo_color, c:bg_color)');
 newPlugin('Preroll(i:video, d:audio)');
 newPlugin('ShowFiveVersions(rv:, rv:, rv:, rv:, v:)');
+newPlugin('ShowFrameNumber(b:scroll, i:offset, i:x, i:y, q:font, i:size, c:text_color, c:halo_color, i:font_width, d:font_angle)');
