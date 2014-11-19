@@ -20,3 +20,5 @@ newPlugin('ShowFiveVersions(rv:, rv:, rv:, rv:, v:)');
 newPlugin('ShowFrameNumber(b:scroll, i:offset, d:x, d:y, q:font, i:size, c:text_color, c:halo_color, i:font_width, d:font_angle)');
 newPlugin('ShowSMPTE(d:fps, q:offset, i:offset_f, d:x, d:y, q:font, i:size, c:text_color, c:halo_color, i:font_width, d:font_angle)');
 newPlugin('ShowTime(i:offset_f, d:x, d:y, q:font, i:size, c:text_color, c:halo_color, i:font_width, d:font_angle)');
+newPlugin('StackHorizontal(rmv:)');
+newPlugin('StackVertical(rmv:)');

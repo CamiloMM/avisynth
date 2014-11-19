@@ -1162,5 +1162,17 @@ describe('Base plugin implementations (core filters)', function() {
                 checkPlugin('ShowTime', [123, 128.625, 80.75, 'Tahoma', 32, 0, 'white', 16, 24], 'ShowTime(offset_f=123, x=128.625, y=80.75, font="Tahoma", size=32, text_color=0, halo_color=16777215, font_width=16, font_angle=24)');
             });
         });
+
+        describe('Stack', function() {
+            // StackHorizontal(clip clip1, clip clip2 [, ...])
+            // StackVertical(clip clip1, clip clip2 [, ...])
+            ['StackHorizontal', 'StackVertical'].forEach(function(name) {
+                it(name, function() {
+                    requiresParameters(name);
+                    checkPlugin(name, ['foo'], name + '(foo)');
+                    checkPlugin(name, ['foo', 'bar', 'baz'], name + '(foo, bar, baz)');
+                });
+            });
+        });
     });
 });
