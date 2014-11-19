@@ -18,3 +18,4 @@ newPlugin('MessageClip(rq:, i:width, i:height, b:shrink, c:text_color, c:halo_co
 newPlugin('Preroll(i:video, d:audio)');
 newPlugin('ShowFiveVersions(rv:, rv:, rv:, rv:, v:)');
 newPlugin('ShowFrameNumber(b:scroll, i:offset, i:x, i:y, q:font, i:size, c:text_color, c:halo_color, i:font_width, d:font_angle)');
+newPlugin('ShowSMPTE(d:fps, q:offset, i:offset_f, i:x, i:y, q:font, i:size, c:text_color, c:halo_color, i:font_width, d:font_angle)');

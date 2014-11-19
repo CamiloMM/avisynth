@@ -1148,5 +1148,11 @@ describe('Base plugin implementations (core filters)', function() {
             doesNotRequireParameters('ShowFrameNumber');
             checkPlugin('ShowFrameNumber', [false, 0, 32, 96, 'Arial', 48, 'ABCDEF', '012345', 32, 10.5], 'ShowFrameNumber(scroll=false, offset=0, x=32, y=96, font="Arial", size=48, text_color=11259375, halo_color=74565, font_width=32, font_angle=10.5)');
         });
+
+        it('ShowSMPTE', function() {
+            // ShowSMPTE(clip clip [, float fps, string offset, int offset_f, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
+            doesNotRequireParameters('ShowSMPTE');
+            checkPlugin('ShowSMPTE', [29.97, '00:00:00:00', 123, 128, 80, 'Comic Sans MS', 32, 'lightSteelBlue', 'orange', 16, 24], 'ShowSMPTE(fps=29.97, offset="00:00:00:00", offset_f=123, x=128, y=80, font="Comic Sans MS", size=32, text_color=11584734, halo_color=16753920, font_width=16, font_angle=24)');
+        });
     });
 });
