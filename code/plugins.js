@@ -24,7 +24,7 @@ var addPlugin = exports.addPlugin = function(name, options, code) {
     // Some names are reserved, to avoid overriding script instance methods.
     var reserved = ['code', 'references', 'load', 'autoload', 'allReferences', 'fullCode'];
     reserved.forEach(function(res) {
-        if (res.toLowerCase() === lowercase) {} throw new AvisynthError('reserved name!'); }
+        if (res.toLowerCase() === lowercase) { throw new AvisynthError('reserved name!'); }
     });
 
     // Ensure that load and autoload are arrays ('string' -> ['string'], null -> []).
