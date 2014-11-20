@@ -1174,5 +1174,12 @@ describe('Base plugin implementations (core filters)', function() {
                 });
             });
         });
+
+        it('Subtitle', function() {
+            // Subtitle(clip clip, string text, float x, float y, int first_frame, int last_frame, string font, float size, int text_color, int halo_color, int align, int spc, int lsp, float font_width, float font_angle, bool interlaced)
+            requiresParameters('Subtitle');
+            checkPlugin('Subtitle', ['foo bar'], 'Subtitle("foo bar")');
+            checkPlugin('Subtitle', ['foo bar', 12.34, 56.78, 12, 34, 'Lucida Console', 24.68, 0, 'white', 4, 10, 2, 12.34, 12.34, true], 'Subtitle("foo bar", x=12.34, y=56.78, first_frame=12, last_frame=34, font="Lucida Console", size=24.68, text_color=0, halo_color=16777215, align=4, spc=10, lsp=2, font_width=12.34, font_angle=12.34, interlaced=true)');
+        });
     });
 });
