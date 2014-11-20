@@ -96,6 +96,7 @@ function addToPrototype(name, plugin) {
 // i: field is cast to integer, rounded as necessary. Implies d.
 // v: a variable name (unquoted string), checked for syntactic validity.
 // c: a color variable, can be an int, name or string (0x123ABC, 0, 'red', 'F0F', 'FF00FF').
+// e: escaped string, currently \n, \\ and " (through """) are supported. Implies q.
 // a: auto-type, strings get quoted, numbers and bools not.
 //    (variables are only supported in "a" with an unmatched "t" type, and paths with "p").
 //
@@ -255,7 +256,10 @@ function processPath(param) {
 }
 
 function processString(param) {
-    if (/[fpqt]/.test(param.m)) {
+    if (/[e]/.test(param.m)) {
+        param.value = param.value.replace(/\\/g, '\\\\').replace(/\n/g, '\\n');
+        param.value = '"""' + param.value + '"""';
+    } else if (/[fpqt]/.test(param.m)) {
         param.value = '"' + param.value + '"';
     }
 }

@@ -22,4 +22,4 @@ newPlugin('ShowSMPTE(d:fps, q:offset, i:offset_f, d:x, d:y, q:font, i:size, c:te
 newPlugin('ShowTime(i:offset_f, d:x, d:y, q:font, i:size, c:text_color, c:halo_color, d:font_width, d:font_angle)');
 newPlugin('StackHorizontal(rmv:)');
 newPlugin('StackVertical(rmv:)');
-newPlugin('Subtitle(rq:, d:x, d:y, i:first_frame, i:last_frame, q:font, d:size, c:text_color, c:halo_color, i:align, i:spc, i:lsp, d:font_width, d:font_angle, b:interlaced)');
+newPlugin('Subtitle(re:, d:x, d:y, i:first_frame, i:last_frame, q:font, d:size, c:text_color, c:halo_color, i:align, i:spc, i:lsp, d:font_width, d:font_angle, b:interlaced)');
