@@ -5,6 +5,7 @@ var newPlugin = require('./plugins').newPlugin;
 var clipTypes = 'RGB24, RGB32, YUY2, YV12, YV16, YV24, YV411, Y8';
 var barsTypes = 'YUY2, YV12, YV24, RGB32';
 var histModes = 'Classic, Levels, Color, Color2, Luma, Audiolevels, Stereo, StereoOverlay, StereoY8';
+var toneTypes = 'Silence, Sine, Noise, Square, Triangle, Sawtooth';
 
 newPlugin('Blackness(i:, i:, i:, t:, i:, i:, i:, a:, aq:, c:color, c:color_yuv)', clipTypes);
 newPlugin('BlankClip(i:, i:, i:, t:, i:, i:, i:, a:, aq:, c:color, c:color_yuv)', clipTypes);
@@ -23,3 +24,4 @@ newPlugin('ShowTime(i:offset_f, d:x, d:y, q:font, i:size, c:text_color, c:halo_c
 newPlugin('StackHorizontal(rmv:)');
 newPlugin('StackVertical(rmv:)');
 newPlugin('Subtitle(re:, d:x, d:y, i:first_frame, i:last_frame, q:font, d:size, c:text_color, c:halo_color, i:align, i:spc, i:lsp, d:font_width, d:font_angle, b:interlaced)');
+newPlugin('Tone(d:length, d:frequency, i:samplerate, i:channels, t:type, d:level)', toneTypes);

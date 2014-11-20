@@ -1181,5 +1181,11 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('Subtitle', ['foo bar'], 'Subtitle("""foo bar""")');
             checkPlugin('Subtitle', ['foo\nbar', 12.34, 56.78, 12, 34, 'Lucida Console', 24.68, 0, 'white', 4, 10, 2, 12.34, 12.34, true], 'Subtitle("""foo\\nbar""", x=12.34, y=56.78, first_frame=12, last_frame=34, font="Lucida Console", size=24.68, text_color=0, halo_color=16777215, align=4, spc=10, lsp=2, font_width=12.34, font_angle=12.34, interlaced=true)');
         });
+
+        it('Tone', function() {
+            // Tone(float length, float frequency, int samplerate, int channels, string type, float level)
+            doesNotRequireParameters('Tone');
+            checkPlugin('Tone', [12.34, 666.666, 44100, 2, 'Sine', 0.5], 'Tone(length=12.34, frequency=666.666, samplerate=44100, channels=2, type="Sine", level=0.5)');
+        });
     });
 });
