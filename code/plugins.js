@@ -19,12 +19,12 @@ var addPlugin = exports.addPlugin = function(name, options, code) {
 
     // Do not add a plugin twice, and avoid name collisions.
     var lowercase = name.toLowerCase();
-    if (exports.plugins[lowercase]) throw new AvisynthError('plugin already exists!');
+    if (exports.plugins[lowercase]) { throw new AvisynthError('plugin already exists!'); }
 
     // Some names are reserved, to avoid overriding script instance methods.
     var reserved = ['code', 'references', 'load', 'autoload', 'allReferences', 'fullCode'];
     reserved.forEach(function(res) {
-        if (res.toLowerCase() === lowercase) throw new AvisynthError('reserved name!');
+        if (res.toLowerCase() === lowercase) {} throw new AvisynthError('reserved name!'); }
     });
 
     // Ensure that load and autoload are arrays ('string' -> ['string'], null -> []).
@@ -38,8 +38,8 @@ var addPlugin = exports.addPlugin = function(name, options, code) {
     plugin.aliases = [];
 
     // Generate aliases if needed.
-    if (/^[A-Z].*[A-Z]/.test(name)) plugin.aliases.push(name[0].toLowerCase() + name.substr(1));
-    if (/^.*[A-Z]/.test(name)) plugin.aliases.push(name);
+    if (/^[A-Z].*[A-Z]/.test(name)) { plugin.aliases.push(name[0].toLowerCase() + name.substr(1)); }
+    if (/^.*[A-Z]/.test(name)) { plugin.aliases.push(name); }
 
     exports.plugins[lowercase] = plugin;
 
@@ -59,7 +59,7 @@ function addToPrototype(name, plugin) {
         var returned = plugin.code.apply(context, arguments);
         if (typeof returned === 'string') {
             // Add a newline to avoid breaking stuff, if it's not already there.
-            if (this.code[this.code.length - 1] !== '\n') this.code += '\n';
+            if (this.code[this.code.length - 1] !== '\n') { this.code += '\n'; }
             this.code += returned;
         }
     };
@@ -257,8 +257,7 @@ function processPath(param) {
 
 function processString(param) {
     if (/[e]/.test(param.m)) {
-        param.value = param.value.replace(/\\/g, '\\\\').replace(/\n/g, '\\n');
-        param.value = '"""' + param.value + '"""';
+        param.value = '"""' + param.value.replace(/\\/g, '\\\\').replace(/\n/g, '\\n') + '"""';
     } else if (/[fpqt]/.test(param.m)) {
         param.value = '"' + param.value + '"';
     }
