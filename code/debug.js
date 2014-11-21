@@ -25,3 +25,4 @@ newPlugin('StackHorizontal(rmv:)');
 newPlugin('StackVertical(rmv:)');
 newPlugin('Subtitle(re:, d:x, d:y, i:first_frame, i:last_frame, q:font, d:size, c:text_color, c:halo_color, i:align, i:spc, i:lsp, d:font_width, d:font_angle, b:interlaced)');
 newPlugin('Tone(d:length, d:frequency, i:samplerate, i:channels, t:type, d:level)', toneTypes);
+newPlugin('Version');

@@ -1187,5 +1187,7 @@ describe('Base plugin implementations (core filters)', function() {
             doesNotRequireParameters('Tone');
             checkPlugin('Tone', [12.34, 666.666, 44100, 2, 'Sine', 0.5], 'Tone(length=12.34, frequency=666.666, samplerate=44100, channels=2, type="Sine", level=0.5)');
         });
+
+        it.is.parameterless('Version');
     });
 });
