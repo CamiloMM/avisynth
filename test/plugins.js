@@ -379,8 +379,8 @@ describe('Base plugin implementations (core filters)', function() {
 
         it('Greyscale', function() {
             // Greyscale(clip clip [, string matrix])
-            doesNotRequireParameters('Greyscale');
-            checkPlugin('Greyscale', ['rec709'], 'Greyscale(matrix="rec709")');
+            doesNotRequireParameters('GreyScale');
+            checkPlugin('GreyScale', ['rec709'], 'GreyScale(matrix="rec709")');
         });
 
         it('Invert', function() {
