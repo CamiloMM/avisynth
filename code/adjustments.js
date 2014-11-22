@@ -20,7 +20,7 @@ newPlugin('ConvertToYV12', convertParams + ', q:ChromaOutPlacement', matrices);
 newPlugin('ConvertToYV16', convertParams, matrices);
 newPlugin('ConvertToYV24', convertParams, matrices);
 newPlugin('FixLuminance(i:, i:)');
-newPlugin('Greyscale(q:matrix)');
+newPlugin('GreyScale(q:matrix)');
 newPlugin('Invert(q:channels)');
 newPlugin('Levels(ri:, rd:, ri:, ri:, ri:, b:coring, b:dither)');
 newPlugin('Limiter(i:min_luma, i:max_luma, i:min_chroma, i:max_chroma, t:show)', 'luma, luma_grey, chroma, chroma_grey');
