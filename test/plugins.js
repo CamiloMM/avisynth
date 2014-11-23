@@ -23,6 +23,10 @@ describe('Plugin system', function() {
         avisynth.addPlugin.should.equal(pluginSystem.addPlugin);
     });
 
+    it('should be exposed as an avisynth.newPlugin reference', function() {
+        avisynth.newPlugin.should.equal(pluginSystem.newPlugin);
+    });
+
     it('should allow adding plugins and getting them later', function() {
         avisynth.addPlugin('foo', function() {});
         expect(pluginSystem.plugins['foo']).to.exist;

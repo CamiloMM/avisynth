@@ -13,6 +13,7 @@ avisynth.utils = require('./code/utils');
 
 // Expose modular plugin functionality.
 avisynth.addPlugin = require('./code/plugins').addPlugin;
+avisynth.newPlugin = require('./code/plugins').newPlugin;
 
 // Load all the core filter plugins.
 require('./code/definitions');
