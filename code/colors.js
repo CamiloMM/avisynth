@@ -5,7 +5,7 @@ var AvisynthError = require('./errors').AvisynthError;
 exports.parse = function(color) {
     // A valid number.
     if (typeof color === 'number' && color >= 0 && color <= 0xFFFFFF) {
-        return Math.round(color);
+        return hexColor(Math.round(color));
     }
 
     // Hex triplet format.
@@ -15,18 +15,27 @@ exports.parse = function(color) {
 
     // Hexad format.
     if (typeof color === 'string' && /^[0-9A-F]{6}$/i.test(color)) {
-        return parseInt(color, 16);
+        return hexColor(parseInt(color, 16));
     }
 
     // Color name.
     // Note that this can safely be here because no color name resembles
     // a triplet or hexad. Was this by design? I have no idea. But cool!
     if (typeof color === 'string' && color.toLowerCase() in colors) {
-        return colors[color.toLowerCase()];
+        return hexColor(colors[color.toLowerCase()]);
     }
 
     throw new AvisynthError('Color format wrong: "' + color + '"');
 };
+
+// This function converts an int representing the color 0xRRGGBB into its
+// hexad counterpart in Avisynth syntax such as $RRGGBB.
+// In case of colors with more room, it will still be in hex (alpha channel maybe?).
+function hexColor(value) {
+    // We pad it with zeroes.
+    var pad = Array(Math.max(0, 7 - value.toString(16).length)).join(0);
+    return '$' + pad + value.toString(16).toUpperCase();
+}
 
 // The named color definitions, taken from http://avisynth.nl/index.php/Color_presets
 // All these colors are lowercase here, but in the original, four were inconsistent:

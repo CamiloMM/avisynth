@@ -499,9 +499,9 @@ describe('Base plugin implementations (core filters)', function() {
             it('ColorKeyMask', function() {
                 // ColorKeyMask(clip clip, int color [, int tolB, int tolG, int tolR])
                 doesNotRequireParameters('ColorKeyMask'); // It's actually possible.
-                checkPlugin('ColorKeyMask', [0], 'ColorKeyMask(0)');
-                checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask(16711935)');
-                checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask(255, 10, 20, 30)');
+                checkPlugin('ColorKeyMask', [0], 'ColorKeyMask($000000)');
+                checkPlugin('ColorKeyMask', ['F0F'], 'ColorKeyMask($FF00FF)');
+                checkPlugin('ColorKeyMask', ['blue', 10, 20, 30], 'ColorKeyMask($0000FF, 10, 20, 30)');
                 checkPluginError('ColorKeyMask', [-1]);
             });
 
@@ -532,7 +532,7 @@ describe('Base plugin implementations (core filters)', function() {
             // AddBorders(clip clip, int left, int top, int right, int bottom [, int color])
             requiresParameters('AddBorders');
             checkPlugin('AddBorders', [1, 2, 3, 4], 'AddBorders(1, 2, 3, 4)');
-            checkPlugin('AddBorders', [10, 20, 30, 40, 'Chocolate'], 'AddBorders(10, 20, 30, 40, color=13789470)');
+            checkPlugin('AddBorders', [10, 20, 30, 40, 'Chocolate'], 'AddBorders(10, 20, 30, 40, color=$D2691E)');
         });
 
         it('Crop', function() {
@@ -557,7 +557,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Letterbox(clip clip, int top, int bottom [, int x1] [, int x2] [, int color])
             requiresParameters('Letterbox');
             checkPlugin('Letterbox', [1, 2], 'Letterbox(1, 2)');
-            checkPlugin('Letterbox', [1, 2, 3, 4, 'darkOliveGreen'], 'Letterbox(1, 2, x1=3, x2=4, color=5597999)');
+            checkPlugin('Letterbox', [1, 2, 3, 4, 'darkOliveGreen'], 'Letterbox(1, 2, x1=3, x2=4, color=$556B2F)');
         });
 
         it.is.parameterless('HorizontalReduceBy2');
@@ -733,7 +733,7 @@ describe('Base plugin implementations (core filters)', function() {
                 it(name, function() {
                     // name(clip clip, int num_frames [, int color] [, float fps])
                     requiresParameters(name);
-                    checkPlugin(name, [123, 'Yellow', 45.67], name + '(123, color=16776960, fps=45.67)');
+                    checkPlugin(name, [123, 'Yellow', 45.67], name + '(123, color=$FFFF00, fps=45.67)');
                 });
             });
         });
@@ -1091,8 +1091,8 @@ describe('Base plugin implementations (core filters)', function() {
                 // BlankClip([clip clip, int length, int width, int height, string pixel_type, int fps, int fps_denominator, int audio_rate, bool stereo, bool sixteen_bit, int color, int color_yuv])
                 // BlankClip([clip clip, int length, int width, int height, string pixel_type, int fps, int fps_denominator, int audio_rate, int channels, string sample_type, int color, int color_yuv])
                 doesNotRequireParameters(name);
-                checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, false, true, 0x000000, 0x00f080], name + '(240, 640, 480, "YV12", 24, 1, 44100, false, true, color=0, color_yuv=61568)');
-                checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, 1, '16bit', 0x000000, 0x0000f0], name + '(240, 640, 480, "YV12", 24, 1, 44100, 1, "16bit", color=0, color_yuv=240)');
+                checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, false, true, 0x000000, 0x00f080], name + '(240, 640, 480, "YV12", 24, 1, 44100, false, true, color=$000000, color_yuv=$00F080)');
+                checkPlugin(name, [240, 640, 480, 'YV12', 24, 1, 44100, 1, '16bit', 0x000000, 0x0000f0], name + '(240, 640, 480, "YV12", 24, 1, 44100, 1, "16bit", color=$000000, color_yuv=$0000F0)');
             });
         });
 
@@ -1129,7 +1129,7 @@ describe('Base plugin implementations (core filters)', function() {
         it('MessageClip', function() {
             // MessageClip(string message, int width, int height, bool shrink, int text_color, int halo_color, int bg_color)
             requiresParameters('MessageClip');
-            checkPlugin('MessageClip', ['hello, world!', 800, 400, false, 'F00', '0F0', '00F'], 'MessageClip("hello, world!", width=800, height=400, shrink=false, text_color=16711680, halo_color=65280, bg_color=255)');
+            checkPlugin('MessageClip', ['hello, world!', 800, 400, false, 'F00', '0F0', '00F'], 'MessageClip("hello, world!", width=800, height=400, shrink=false, text_color=$FF0000, halo_color=$00FF00, bg_color=$0000FF)');
         });
 
         it('Preroll', function() {
@@ -1151,19 +1151,19 @@ describe('Base plugin implementations (core filters)', function() {
             it('ShowFrameNumber', function() {
                 // ShowFrameNumber(clip clip [, bool scroll, int offset, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
                 doesNotRequireParameters('ShowFrameNumber');
-                checkPlugin('ShowFrameNumber', [false, 0, 32.125, 96.25, 'Arial', 48, 'ABCDEF', '012345', 32, 10.5], 'ShowFrameNumber(scroll=false, offset=0, x=32.125, y=96.25, font="Arial", size=48, text_color=11259375, halo_color=74565, font_width=32, font_angle=10.5)');
+                checkPlugin('ShowFrameNumber', [false, 0, 32.125, 96.25, 'Arial', 48, 'ABCDEF', '012345', 32, 10.5], 'ShowFrameNumber(scroll=false, offset=0, x=32.125, y=96.25, font="Arial", size=48, text_color=$ABCDEF, halo_color=$012345, font_width=32, font_angle=10.5)');
             });
 
             it('ShowSMPTE', function() {
                 // ShowSMPTE(clip clip [, float fps, string offset, int offset_f, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
                 doesNotRequireParameters('ShowSMPTE');
-                checkPlugin('ShowSMPTE', [29.97, '00:00:00:00', 123, 128.375, 80.5, 'Comic Sans MS', 32, 'lightSteelBlue', 'orange', 16, 24], 'ShowSMPTE(fps=29.97, offset="00:00:00:00", offset_f=123, x=128.375, y=80.5, font="Comic Sans MS", size=32, text_color=11584734, halo_color=16753920, font_width=16, font_angle=24)');
+                checkPlugin('ShowSMPTE', [29.97, '00:00:00:00', 123, 128.375, 80.5, 'Comic Sans MS', 32, 'lightSteelBlue', 'orange', 16, 24], 'ShowSMPTE(fps=29.97, offset="00:00:00:00", offset_f=123, x=128.375, y=80.5, font="Comic Sans MS", size=32, text_color=$B0C4DE, halo_color=$FFA500, font_width=16, font_angle=24)');
             });
 
             it('ShowTime', function() {
                 // ShowTime(clip clip [int offset_f, float x, float y, string font, int size, int text_color, int halo_color, float font_width, float font_angle])
                 doesNotRequireParameters('ShowTime');
-                checkPlugin('ShowTime', [123, 128.625, 80.75, 'Tahoma', 32, 0, 'white', 16, 24], 'ShowTime(offset_f=123, x=128.625, y=80.75, font="Tahoma", size=32, text_color=0, halo_color=16777215, font_width=16, font_angle=24)');
+                checkPlugin('ShowTime', [123, 128.625, 80.75, 'Tahoma', 32, 0, 'white', 16, 24], 'ShowTime(offset_f=123, x=128.625, y=80.75, font="Tahoma", size=32, text_color=$000000, halo_color=$FFFFFF, font_width=16, font_angle=24)');
             });
         });
 
@@ -1183,7 +1183,7 @@ describe('Base plugin implementations (core filters)', function() {
             // Subtitle(clip clip, string text, float x, float y, int first_frame, int last_frame, string font, float size, int text_color, int halo_color, int align, int spc, int lsp, float font_width, float font_angle, bool interlaced)
             requiresParameters('Subtitle');
             checkPlugin('Subtitle', ['foo bar'], 'Subtitle("""foo bar""")');
-            checkPlugin('Subtitle', ['foo\nbar', 12.34, 56.78, 12, 34, 'Lucida Console', 24.68, 0, 'white', 4, 10, 2, 12.34, 12.34, true], 'Subtitle("""foo\\nbar""", x=12.34, y=56.78, first_frame=12, last_frame=34, font="Lucida Console", size=24.68, text_color=0, halo_color=16777215, align=4, spc=10, lsp=2, font_width=12.34, font_angle=12.34, interlaced=true)');
+            checkPlugin('Subtitle', ['foo\nbar', 12.34, 56.78, 12, 34, 'Lucida Console', 24.68, 0, 'white', 4, 10, 2, 12.34, 12.34, true], 'Subtitle("""foo\\nbar""", x=12.34, y=56.78, first_frame=12, last_frame=34, font="Lucida Console", size=24.68, text_color=$000000, halo_color=$FFFFFF, align=4, spc=10, lsp=2, font_width=12.34, font_angle=12.34, interlaced=true)');
         });
 
         it('Tone', function() {
