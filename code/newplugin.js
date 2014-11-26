@@ -98,14 +98,22 @@ function pluginImplementation(name, options, processParameter) {
             });
         }
 
+        // Acquire named parameters, and shift arguments if necessary.
+        var namedParams = {};
+        var args = [].slice.call(arguments);
+        if (({}).toString.call(arguments[0]) === '[object Object]') {
+            namedParams = arguments[0];
+            args = [].slice.call(arguments, 1);
+        }
+
         // Construct parameter list.
         var params = [];
         // There are two iterators; "a" is for actual argument, "d" is for definiton.
         // These may progress independently if a definiton accepts multiple arguments.
-        for (var a = 0, d = 0; a < arguments.length; a++, d++) {
+        for (var a = 0, d = 0; a < args.length; a++, d++) {
             var definition = definitions[d];
             if (!definition) { throw new AvisynthError('too many arguments for ' + name); }
-            var value = arguments[a];
+            var value = args[a];
             if (!utils.isDefined(value)) { continue; }
             var m = definition.modifier;
             if (/m/.test(m)) {
@@ -113,9 +121,9 @@ function pluginImplementation(name, options, processParameter) {
                 var multi = [value];
                 var type = typeof value;
                 if (/a/.test(m)) {
-                    while (typeof (value = arguments[++a]) !== 'undefined') { multi.push(value); }
+                    while (typeof (value = args[++a]) !== 'undefined') { multi.push(value); }
                 } else {
-                    while (typeof (value = arguments[++a]) === type) { multi.push(value); }
+                    while (typeof (value = args[++a]) === type) { multi.push(value); }
                 }
                 a--;
                 multi = multi.map(processParameter.bind(null, m));
@@ -140,10 +148,18 @@ function pluginImplementation(name, options, processParameter) {
         // Ensure all required arguments are provided.
         for (var i = 0; i < definitions.length; i++) {
             var def = definitions[i];
-            if (def.modifier && !utils.isDefined(arguments[i])) {
+            if (def.modifier && !utils.isDefined(args[i])) {
                 if (/f/.test(def.modifier)) { throw new AvisynthError('filename is a required argument!'); }
                 if (/r/.test(def.modifier)) { throw new AvisynthError('a required argument is missing!'); }
             }
+        }
+
+        // Build extra params from the named parameters object.
+        for (var i in namedParams) {
+            // I'm creating an ad-hoc param object for processAutotype.
+            var adHoc = {m: 'aq', value: namedParams[i]};
+            processAutotype(adHoc);
+            params.push(i + '=' + adHoc.value);
         }
 
         return name + '(' + params.join(', ') + ')';

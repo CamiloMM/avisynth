@@ -330,9 +330,17 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('SegmentedDirectShowSource', ['fake1.avi', aviFile, 123.456, false, true, false, true, false, 123456, 'YUVex'], 'SegmentedDirectShowSource("' + [path.resolve('fake1.avi'), aviFile].join('", "') + '", fps=123.456, seek=false, audio=true, video=false, convertfps=true, seekzero=false, timeout=123456, pixel_type="YUVex")');
         });
 
-        // This is a very complex function. We'll only support its most basic usage.
-        // See http://avisynth.nl/index.php/SoundOut
-        it.is.parameterless('SoundOut');
+        // Thanks to our named parameters object, we now support SoundOut.
+        it('SoundOut', function() {
+            checkPlugin('SoundOut', [{
+                output: 'mp3',
+                filename: path.resolve('fake.mp3'),
+                autoclose: true,
+                showprogress: true,
+                mode: 2,
+                cbrrate: 192
+            }], 'SoundOut(output="mp3", filename="' + path.resolve('fake.mp3') + '", autoclose=true, showprogress=true, mode=2, cbrrate=192)');
+        });
     });
 
     describe('Color conversion and adjustment filters', function() {
