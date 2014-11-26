@@ -223,6 +223,8 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('AviSource', [aviFile, true, 'YV24'], 'AviSource("' + aviFile + '", audio=true, pixel_type="YV24")');
             checkPlugin('AviSource', [aviFile, false, 'YV16', 'PR0N'], 'AviSource("' + aviFile + '", audio=false, pixel_type="YV16", fourCC="PR0N")');
             checkPlugin('AviSource', [aviFile, aviFile, aviFile, aviFile, aviFile, false, 'YV12', 'PR0N'], 'AviSource("' + [aviFile, aviFile, aviFile, aviFile, aviFile].join('", "') + '", audio=false, pixel_type="YV12", fourCC="PR0N")');
+            // Example using named parameter objects.
+            checkPlugin('AviSource', [{fourCC: 'PR0N'}, aviFile, aviFile, true], 'AviSource("' + [aviFile, aviFile].join('", "') + '", audio=true, fourCC="PR0N")');
         });
 
         it('OpenDMLSource', function() {
@@ -274,6 +276,8 @@ describe('Base plugin implementations (core filters)', function() {
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1234567890, textFile], 'DirectShowSource("' + aviFile + '", framecount=1234567890, logfile="' + textFile + '")');
             checkPlugin('DirectShowSource', ['fake.avi', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'fake.txt'], 'DirectShowSource("' + path.resolve('fake.avi') + '", logfile="' + path.resolve('fake.txt') + '")');
             checkPlugin('DirectShowSource', [aviFile, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, textFile, 32], 'DirectShowSource("' + aviFile + '", logfile="' + textFile + '", logmask=32)');
+            // Example using named parameter objects.
+            checkPlugin('DirectShowSource', [{logfile: textFile, logmask: 32}, aviFile], 'DirectShowSource("' + aviFile + '", logfile="' + textFile + '", logmask=32)');
         });
 
         it('ImageSource', function() {
