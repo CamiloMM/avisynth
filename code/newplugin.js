@@ -68,16 +68,13 @@ function createPlugin(name, options, types) {
     // If options is still not defined, default it.
     if (!utils.isDefined(options)) { options = {}; }
 
-    // These aren't being used, in favor of the cleaner options currently available.
-    // I may just drop these options altogether, but I'm still not sure if they
-    // can have any use, if we expose this plugin definition system eventually.
-    // // We also support shorthands for the options properties.
-    // if (options.p) { options.params = options.p; }
-    // if (options.t) { options.types  = options.t; }
-    //
-    // // Similar to a cast above, but for options' properties.
-    // if (typeof options.params === 'string') { options.params = options.params.split(/\s*,\s*/); }
-    // if (typeof options.types  === 'string') { options.types  =  options.types.split(/\s*,\s*/); }
+    // We also support shorthands for the options properties.
+    if (options.p) { options.params = options.p; }
+    if (options.t) { options.types  = options.t; }
+
+    // Similar to a cast above, but for options' properties.
+    if (typeof options.params === 'string') { options.params = options.params.split(/\s*,\s*/); }
+    if (typeof options.types  === 'string') { options.types  =  options.types.split(/\s*,\s*/); }
 
     // Utility that processes a parameter, used in core filters. The m variable is the modifier.
     var processParameter = parameterProcessor(options);

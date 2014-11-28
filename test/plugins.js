@@ -171,6 +171,48 @@ describe('Plugin system', function() {
             lines2.slice(-1)[0].should.equal('');
         });
     });
+
+    describe('newPlugin options object', function() {
+        // Helper because we shouldn't be spending more than one line in this.
+        // Making it fluent just because it's so damn good.
+        function lastLineOf(script) {
+            return {
+                shouldBe: function(line) {
+                    script.fullCode().split('\n').slice(-2)[0].should.equal(line);
+                    script.fullCode().split('\n').slice(-1)[0].should.equal('');
+                }
+            };
+        }
+
+        // I've tested most of newPlugin implicitly in the base plugin
+        // implementations tests. This is the only part I didn't yet.
+        it('should allow longhand form', function() {
+            var script = new avisynth.Script;
+            avisynth.newPlugin('LongHand1', {params: ['q:a', 'i:b']});
+            script.longHand1('foo', 123);
+            lastLineOf(script).shouldBe('LongHand1(a="foo", b=123)');
+            avisynth.newPlugin('LongHand2', {params: ['d:a', 't:b'], types: ['foo', 'bar']});
+            script.longhand2(12.34, 'foo');
+            lastLineOf(script).shouldBe('LongHand2(a=12.34, b="foo")');
+            script.longhand2.bind(script, 12.34, 'baz').should.throw(AvisynthError);
+            avisynth.newPlugin('LongHand3', {params: 'd:a, t:b', types: 'foo, bar'});
+            script.longhand3(12.34, 'foo');
+            lastLineOf(script).shouldBe('LongHand3(a=12.34, b="foo")');
+            script.longhand3.bind(script, 12.34, 'baz').should.throw(AvisynthError);
+        });
+
+        it('should allow shorthand form', function() {
+            var script = new avisynth.Script;
+            avisynth.newPlugin('LongHand4', {p: ['d:a', 't:b'], t: ['foo', 'bar']});
+            script.longhand4(12.34, 'foo');
+            lastLineOf(script).shouldBe('LongHand4(a=12.34, b="foo")');
+            script.longhand4.bind(script, 12.34, 'baz').should.throw(AvisynthError);
+            avisynth.newPlugin('LongHand5', {p: 'd:a, t:b', t: 'foo, bar'});
+            script.longhand5(12.34, 'foo');
+            lastLineOf(script).shouldBe('LongHand5(a=12.34, b="foo")');
+            script.longhand5.bind(script, 12.34, 'baz').should.throw(AvisynthError);
+        });
+    });
 });
 
 describe('Base plugin implementations (core filters)', function() {
