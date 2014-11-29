@@ -209,6 +209,20 @@ describe('Plugin system', function() {
             script.longhand5.bind(script, 12.34, 'baz').should.throw(AvisynthError);
         });
     });
+
+    describe('newPlugin types parameter', function() {
+        it('should be case-insensitive', function() {
+            var script = new avisynth.Script;
+            avisynth.newPlugin('TypeCase(t:)', 'Foo, Bar');
+            script.typeCase('fOo');
+            lastLineOf(script).shouldBe('TypeCase("Foo")');
+            script.typeCase.bind(script, 'Baz').should.throw(AvisynthError);
+            lastLineOf(script).shouldBe('TypeCase("Foo")');
+            script.typeCase();
+            script.typeCase.bind(script, '').should.throw(AvisynthError);
+            lastLineOf(script).shouldBe('TypeCase()');
+        });
+    });
 });
 
 describe('Base plugin implementations (core filters)', function() {

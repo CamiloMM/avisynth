@@ -39,8 +39,12 @@ exports.newPlugin = function(name, options, types) {
 
 // Checks that a value is one of a set of allowed values, else throwing an AvisynthError.
 function checkType(value, allowed) {
-    if (value && allowed.indexOf(value) === -1) {
+    value = (value + '').toLowerCase();
+    var index = allowed.map(function(i) { return i.toLowerCase(); }).indexOf(value);
+    if (index === -1) {
         throw new AvisynthError('bad type (' + value + ')! allowed values: ' + allowed);
+    } else {
+        return allowed[index];
     }
 }
 
@@ -188,7 +192,7 @@ function parameterProcessor(options) {
 
 function processType(param) {
     if (/t/.test(param.m)) {
-        checkType(param.value, param.options.types);
+        param.value = checkType(param.value, param.options.types);
     }
 }
 
