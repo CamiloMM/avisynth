@@ -19,6 +19,17 @@ var rand = Math.random(); // Guess what, initializing it takes ~260ms for me on 
 
 describe('Plugin system', function() {
 
+    // Helper because we shouldn't be spending more than one line in this.
+    // Making it fluent just because it's so damn good.
+    function lastLineOf(script) {
+        return {
+            shouldBe: function(line) {
+                script.fullCode().split('\n').slice(-2)[0].should.equal(line);
+                script.fullCode().split('\n').slice(-1)[0].should.equal('');
+            }
+        };
+    }
+
     it('should be exposed as an avisynth.addPlugin reference', function() {
         avisynth.addPlugin.should.equal(pluginSystem.addPlugin);
     });
@@ -116,9 +127,7 @@ describe('Plugin system', function() {
                 load: scriptPath
             }, function() {});
             script1.requireStuff2();
-            var code = script1.fullCode().split('\n');
-            code.slice(-2)[0].should.equal('Import("' + scriptPath + '")');
-            code.slice(-1)[0].should.equal('');
+            lastLineOf(script1).shouldBe('Import("' + scriptPath + '")');
 
             var script2 = new avisynth.Script;
             avisynth.addPlugin('RequireDir2', {
@@ -149,9 +158,7 @@ describe('Plugin system', function() {
             var code = 'Subtitle("' + rand + '")';
             avisynth.addPlugin('RandomSub', function() { return code; });
             script.randomsub();
-            var lines = script.fullCode().split('\n');
-            lines.slice(-2)[0].should.equal(code);
-            lines.slice(-1)[0].should.equal('');
+            lastLineOf(script).shouldBe(code);
         });
 
         it('should insert plugin code after previously inserted code', function() {
@@ -173,17 +180,6 @@ describe('Plugin system', function() {
     });
 
     describe('newPlugin options object', function() {
-        // Helper because we shouldn't be spending more than one line in this.
-        // Making it fluent just because it's so damn good.
-        function lastLineOf(script) {
-            return {
-                shouldBe: function(line) {
-                    script.fullCode().split('\n').slice(-2)[0].should.equal(line);
-                    script.fullCode().split('\n').slice(-1)[0].should.equal('');
-                }
-            };
-        }
-
         // I've tested most of newPlugin implicitly in the base plugin
         // implementations tests. This is the only part I didn't yet.
         it('should allow longhand form', function() {
