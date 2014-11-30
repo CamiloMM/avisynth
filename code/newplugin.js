@@ -21,9 +21,9 @@ var AvisynthError = require('./errors').AvisynthError;
 // f: forced file path, implies p and r.
 // n: not a path (actually, not a string). Throws if a string is given.
 // t: a type, this is checked against options.types. Implies q.
-// b: field is cast to boolean.
-// d: field is cast to a decimal number (integer or float).
-// i: field is cast to integer, rounded as necessary. Implies d.
+// b: field must be a boolean.
+// d: field must be a a decimal number (integer or float).
+// i: field must be an integer. Implies d.
 // v: a variable name (unquoted string), checked for syntactic validity.
 // c: a color variable, can be an int, name or string (0x123ABC, 0, 'red', 'F0F', 'FF00FF').
 // e: escaped string, currently \n, \\ and " (through """) are supported. Implies q.

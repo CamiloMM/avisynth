@@ -21,4 +21,4 @@ newPlugin('ImageSourceAnim(f:, nd:fps, b:info, t:pixel_type)', imgTypes);
 newPlugin('ImageWriter(f:, i:start, i:end, q:type, b:info)');
 newPlugin('SegmentedAviSource(mf:, b:audio, t:pixel_type)', aviTypes);
 newPlugin('SegmentedDirectShowSource(mf:, d:fps, b:seek, b:audio, b:video, b:convertfps, b:seekzero, i:timeout, t:pixel_type)', dssTypes);
-newPlugin('SoundOut');
+newPlugin('SoundOut'); // Use the named parameters object feature.
