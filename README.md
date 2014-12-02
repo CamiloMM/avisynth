@@ -22,7 +22,7 @@ This is very much work-in-progress, but here's an idea of how it could work:
 var avisynth = require('avisynth');
 var script = new avisynth.Script(); // Omitting "new" is also ok
 script.code = 'Version()'; // Can also be passed to the constructor
-script.sharpen(1); // Direct plugin and built-in calls; working on it at the moment.
+script.sharpen(1); // Direct plugin and built-in calls
 // Still thinking of how the rest of the API will be.
 ```
 
