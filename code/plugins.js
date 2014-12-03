@@ -56,8 +56,8 @@ function addToPrototype(name, plugin) {
         var returned = plugin.code.apply(context, arguments);
         if (typeof returned === 'string') {
             // Add a newline to avoid breaking stuff, if it's not already there.
-            if (this.code[this.code.length - 1] !== '\n') { this.code += '\n'; }
-            this.code += returned;
+            if (this.rawCode[this.rawCode.length - 1] !== '\n') { this.rawCode += '\n'; }
+            this.rawCode += returned;
         }
     };
 

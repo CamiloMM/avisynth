@@ -7,7 +7,7 @@ var pluginSystem = require('./plugins');
 // so the coding style here is "KISS". Defensive programming is for afflicted people.
 function Script(code) {
     // Raw copy of the code.
-    this.code = code || '';
+    this.rawCode = code || '';
 
     // These references work like in the loader. See loader.js.
     // This is not intended for direct insertion, using the functions below is safer.
@@ -40,7 +40,7 @@ function Script(code) {
             if (refs[ref] === 'plugin') fullCode += 'LoadPlugin("' + ref + '")\n';
         }
 
-        if (this.code.trim()) fullCode += this.code + '\n';
+        if (this.rawCode.trim()) fullCode += this.rawCode + '\n';
         return fullCode;
     };
 };

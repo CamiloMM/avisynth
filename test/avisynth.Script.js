@@ -28,11 +28,11 @@ describe('avisynth.Script', function() {
     describe('instances', function() {
         it('should accept a code parameter, and include it as a property', function() {
             var code = '\nVersion()\n\nSubtitle("' + rand + '")';
-            avisynth.Script(code).code.should.equal(code);
+            avisynth.Script(code).rawCode.should.equal(code);
         });
 
         it('should have empty code if no code was provided', function() {
-            avisynth.Script().code.should.equal('');
+            avisynth.Script().rawCode.should.equal('');
         });
 
         it('should integrate with the plugins by prototypal inheritance', function() {
