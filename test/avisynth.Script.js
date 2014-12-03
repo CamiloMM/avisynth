@@ -158,5 +158,18 @@ describe('avisynth.Script', function() {
                 script.fullCode().should.equal(expected);
             });
         });
+
+        describe('.code', function() {
+            it('should be a function that allows adding code', function() {
+                var script = new avisynth.Script;
+                var code = '\nVersion()\n\nSubtitle("'+rand+'")\nSharpen(1)';
+                var lines = code.split('\n');
+                lines.forEach(function(line) {
+                    script.code(line);
+                });
+                script.code(code);
+                script.rawCode.should.equal(code + '\n' + code + '\n');
+            });
+        });
     });
 });

@@ -31,6 +31,14 @@ function Script(code) {
         return refs;
     };
 
+    // Adds one or more lines of code.
+    this.code = function(code) {
+        if (this.rawCode && this.rawCode[this.rawCode.length - 1] !== '\n') {
+            this.rawCode += '\n';
+        }
+        this.rawCode += code + '\n';
+    };
+
     // Gets the full code, including loading of scripts/plugins and all generated code.
     this.fullCode = function() {
         var fullCode = '', refs = this.allReferences();
