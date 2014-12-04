@@ -34,9 +34,9 @@
   },
   "homepage": "https://github.com/CamiloMM/avisynth",
   "devDependencies": {
-    "chai": "^1.9.1",
+    "chai": "^1.10.0",
     "codeclimate-test-reporter": "0.0.4",
-    "istanbul": "^0.3.2",
-    "mocha": "^1.21.4"
+    "istanbul": "^0.3.4",
+    "mocha": "^2.0.1"
   }
 }
