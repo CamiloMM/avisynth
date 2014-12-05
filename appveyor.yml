@@ -5,7 +5,7 @@ init:
   - git config --global core.autocrlf input
 
 # version format
-version: "AppVeyor build #{build}."
+version: "AppVeyor build <b>{build}</b>"
 
 environment:
   # The codeclimate-test-reporter expects an env. variable with this name.
