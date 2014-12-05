@@ -5,10 +5,11 @@ init:
   - git config --global core.autocrlf input
 
 # version format
-version: I did this {build} times already.
+version: "AppVeyor build #{build}."
 
-# what combinations to test
 environment:
+  # The codeclimate-test-reporter expects an env. variable with this name.
+  CODECLIMATE_REPO_TOKEN: eafd204769d6f461a5835536441a1e78a1db4dd10658fd213398123fedece7eb
   matrix:
     - nodejs_version: 0.10
 
@@ -19,3 +20,4 @@ test_script:
   - npm --version
   - npm install
   - npm test
+  - node_modules/.bin/codeclimate < coverage/lcov.info
