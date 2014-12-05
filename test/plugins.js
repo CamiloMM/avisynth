@@ -44,6 +44,8 @@ describe('Plugin system', function() {
         pluginSystem.plugins['foo'].code.should.be.a.function;
     });
 
+    it('fails', function() { expect('foo').to.equal('bar'); })
+
     it('should allow plugins to be defined with options', function() {
         var script = new avisynth.Script;
         avisynth.addPlugin('HaveOptions', {}, function() {});
