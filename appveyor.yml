@@ -5,7 +5,7 @@ init:
   - git config --global core.autocrlf input
 
 # version format
-version: build {build}
+version: I did this {build} times already.
 
 # what combinations to test
 environment:
