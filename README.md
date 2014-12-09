@@ -26,6 +26,11 @@ script.sharpen(1); // Direct plugin and built-in calls
 // Still thinking of how the rest of the API will be.
 ```
 
+docs
+====
+
+At the moment I'm working on [a Wiki][wiki] so soon there'll be docs there.
+
 [Avisynth]:           http://avisynth.nl/
 [NodeJS]:             http://nodejs.org/
 [travis-badge]:       http://img.shields.io/travis/CamiloMM/avisynth.svg?style=flat
@@ -37,3 +42,4 @@ script.sharpen(1); // Direct plugin and built-in calls
 [coverage-badge]:     http://img.shields.io/codeclimate/coverage/github/CamiloMM/avisynth.svg?style=flat
 [dependencies-badge]: https://david-dm.org/CamiloMM/avisynth.svg?style=flat
 [dependencies-link]:  https://david-dm.org/CamiloMM/avisynth
+[wiki]:               https://github.com/CamiloMM/avisynth/wiki
