@@ -1,6 +1,7 @@
 var loader       = require('./loader');
 var autoload     = require('./autoload');
 var pluginSystem = require('./plugins');
+var system       = require('./system');
 
 // Avisynth script constructor.
 // Note that I don't like the overhead of having getters and setters,
@@ -50,6 +51,24 @@ function Script(code) {
 
         if (this.rawCode.trim()) fullCode += this.rawCode + '\n';
         return fullCode;
+    };
+
+    // Gets a path to a generated file containing the contents of this script.
+    // The path will be located in a temporary directory, and identified by
+    // the script fullCode's MD5 hash (all generated scripts will be in the same folder).
+    // Note that by the nature of this hash ID mechanism, once you get a path, the
+    // file at that path is guaranteed to never change (even if you edit the instance).
+    this.getPath = function() {
+        // TODO
+    };
+
+    // Renders a frame of the script to a path.
+    this.renderFrame = function(time, path) {
+        if (!path) {
+            path = time;
+            time = 0;
+        }
+        // TODO
     };
 };
 
