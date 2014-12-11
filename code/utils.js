@@ -1,4 +1,5 @@
 var path = require('path');
+var fs   = require('fs');
 
 // Various utilities used by code in other places.
 
@@ -45,4 +46,13 @@ exports.isNumeric = function(value) {
 // Checks that a value is not null or undefined.
 exports.isDefined = function (value) {
     return typeof value !== 'undefined' && value !== null;
+};
+
+// Ensures that a directory exists, synchronously.
+exports.ensureDirectory = function(path) {
+    try {
+        fs.mkdirSync(path);
+    } catch (e) {
+        if (e.code != 'EEXIST') throw e;
+    }
 };

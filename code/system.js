@@ -1,5 +1,6 @@
-var os = require('os');
-var fs = require('fs');
+var os    = require('os');
+var fs    = require('fs');
+var utils = require('./utils');
 
 // TODO: this file will contain system helpers.
 
@@ -15,12 +16,14 @@ var init = exports.init = function init() {
 
 // Sets up the temp storage if it's not there.
 function initializeTempStorage() {
-    var path = os.tmpdir() + '/' + tempStorageName();
-    fs.mkdirSync(path);
+    utils.ensureDirectory(tempStorageName());
+    utils.ensureDirectory(tempStorageName('scripts'));
 }
 
 // Gets a name for the temp storage folder. This is a deterministic name,
-// made from the pid, such as 'avisynth.js-1234'.
-function tempStorageName() {
-    return 'avisynth.js-' + process.pid;
+// made from the pid, such as '/tmp/avisynth.js-1234'.
+// Passing a "sub" parameter will return a sub-path like '/tmp/avisynth.js-1234/fooBar'.
+function tempStorageName(sub) {
+    var extra = sub ? '/' + sub : '';
+    return os.tmpdir() + '/avisynth.js-' + process.pid + extra;
 }
