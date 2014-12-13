@@ -2,8 +2,6 @@ var os    = require('os');
 var fs    = require('fs');
 var utils = require('./utils');
 
-// TODO: this file will contain system helpers.
-
 // Determines whether system functionality has been initialized.
 var initialized = false;
 
@@ -26,4 +24,9 @@ function initializeTempStorage() {
 function tempStorageName(sub) {
     var extra = sub ? '/' + sub : '';
     return os.tmpdir() + '/avisynth.js-' + process.pid + extra;
+}
+
+// Cleans up everything done by system features initialization.
+function cleanUp() {
+    utils.removeDirectory(tempStorageName());
 }
