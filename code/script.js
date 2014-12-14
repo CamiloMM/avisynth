@@ -1,3 +1,4 @@
+var crypto       = require('crypto');
 var loader       = require('./loader');
 var autoload     = require('./autoload');
 var pluginSystem = require('./plugins');
@@ -53,13 +54,25 @@ function Script(code) {
         return fullCode;
     };
 
+    // Gets the MD5 (in hex) of this script's contents.
+    this.md5 = function() {
+        var code = this.fullCode();
+        var hash = crypto.createHash('md5');
+        return hash.update(code).digest('hex');
+    };
+
     // Gets a path to a generated file containing the contents of this script.
     // The path will be located in a temporary directory, and identified by
     // the script fullCode's MD5 hash (all generated scripts will be in the same folder).
     // Note that by the nature of this hash ID mechanism, once you get a path, the
     // file at that path is guaranteed to never change (even if you edit the instance).
     this.getPath = function() {
-        // TODO
+        var md5 = this.md5();
+        var sub = 'scripts/' + md5 + '.avs';
+        var path = system.temp(sub);
+        if (path) return path;
+        var path = system.tempWrite(sub, this.fullCode());
+        return path;
     };
 
     // Renders a frame of the script to a path.

@@ -25,9 +25,11 @@ exports.temp = function(sub) {
 }
 
 // Writes content to a file sub-path from the temp directory.
+// It returns the full path to which the content was written.
 exports.tempWrite = function(sub, content) {
     var path = tempStoragePath(sub);
     fs.writeFileSync(path, content);
+    return path;
 }
 
 // Sets up the temp storage if it's not there.
