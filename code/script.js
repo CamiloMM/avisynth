@@ -77,11 +77,19 @@ function Script(code) {
 
     // Renders a frame of the script to a path.
     this.renderFrame = function(time, path) {
+        // Time is optional.
         if (!path) {
             path = time;
             time = 0;
         }
-        // TODO
+        // Current Working Directory where the script will be ran.
+        var cwd = system.temp('scripts');
+        // Make a copy of the current env.
+        // By the way, this method of cloning is surprisingly the fastest!
+        var env = JSON.parse(JSON.stringify(process.env));
+        // We'll edit the env before running.
+        env.PWD = cwd;
+        env.PATH = system.buildPATH();
     };
 };
 

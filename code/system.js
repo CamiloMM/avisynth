@@ -7,11 +7,19 @@ var utils = require('./utils');
 var initialized = false;
 
 // Ensures that the system-related functionality has been initialized.
-var init = exports.init = function init() {
+var init = exports.init = function() {
     if (initialized) return;
     initializeTempStorage();
     initialized = true;
 };
+
+// Cleans up everything done by system features initialization.
+var cleanUp = exports.cleanUp = function() {
+    // Only clean up if initialized.
+    if (!initialized) return;
+    utils.removeDirectory(tempStoragePath());
+    initialized = false;
+}
 
 // Checks if a sub-path exists within the temporary directory for this session.
 // If it exists, it will return the absolute path for the sub-path given.
@@ -56,9 +64,4 @@ function initializeTempStorage() {
 function tempStoragePath(sub) {
     var extra = sub ? '/' + sub : '';
     return os.tmpdir() + '/avisynth.js-' + process.pid + extra;
-}
-
-// Cleans up everything done by system features initialization.
-function cleanUp() {
-    utils.removeDirectory(tempStoragePath());
 }
