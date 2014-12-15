@@ -1,5 +1,6 @@
 var os    = require('os');
 var fs    = require('fs');
+var path  = require('path');
 var utils = require('./utils');
 
 // Determines whether system functionality has been initialized.
@@ -16,21 +17,32 @@ var init = exports.init = function init() {
 // If it exists, it will return the absolute path for the sub-path given.
 // If it doesn't, it returns false.
 exports.temp = function(sub) {
+    init();
     var path = tempStoragePath(sub);
     if (fs.existsSync(path)) {
         return path;
     } else {
         return null;
     }
-}
+};
 
 // Writes content to a file sub-path from the temp directory.
 // It returns the full path to which the content was written.
 exports.tempWrite = function(sub, content) {
+    init();
     var path = tempStoragePath(sub);
     fs.writeFileSync(path, content);
     return path;
-}
+};
+
+// Returns the full PATH variable that running scripts should use.
+exports.buildPATH = function() {
+    init();
+    var original = process.env.PATH.split(path.delimiter);
+    var additions = [path.resolve(__dirname, '../bin')];
+    var result = original.concat(additions).join(path.delimiter);
+    return result;
+};
 
 // Sets up the temp storage if it's not there.
 function initializeTempStorage() {
