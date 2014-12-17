@@ -1,8 +1,11 @@
-var crypto       = require('crypto');
-var loader       = require('./loader');
-var autoload     = require('./autoload');
-var pluginSystem = require('./plugins');
-var system       = require('./system');
+var crypto        = require('crypto');
+var loader        = require('./loader');
+var autoload      = require('./autoload');
+var pluginSystem  = require('./plugins');
+var system        = require('./system');
+var utils         = require('./utils');
+var spawn         = require('child_process').spawn;
+var AvisynthError = require('./errors').AvisynthError;
 
 // Avisynth script constructor.
 // Note that I don't like the overhead of having getters and setters,
@@ -76,20 +79,57 @@ function Script(code) {
     };
 
     // Renders a frame of the script to a path.
-    this.renderFrame = function(time, path) {
+    // The callback, if given, will be executed once the frame is rendered,
+    // with an error parameter (null unless an error is encountered).
+    this.renderFrame = function(time, path, callback) {
         // Time is optional.
-        if (!path) {
+        if (!utils.isNumeric(time)) {
+            callback = path;
             path = time;
             time = 0;
         }
+
         // Current Working Directory where the script will be ran.
         var cwd = system.temp('scripts');
+
         // Make a copy of the current env.
         // By the way, this method of cloning is surprisingly the fastest!
         var env = JSON.parse(JSON.stringify(process.env));
+
         // We'll edit the env before running.
         env.PWD = cwd;
         env.PATH = system.buildPATH();
+
+        // This is the command that will be ran:
+        var cmd = 'ffmpeg'; // It's in the PATH now.
+        var args = ['-hide_banner', '-loglevel', 'error', '-ss', time,
+                    '-i', this.getPath(), '-frames:v', 1, path];
+
+        // We're using spawn instead of exec because it handles arguments better.
+        // (In other words, we'd hate having to deal with shell-dependent escaping).
+        var ffmpeg = spawn(cmd, args, {cwd: cwd, env: env});
+
+        // The callback is only called once; on success or on first error.
+        var called = false;
+        function call(err) {
+            if (called) return;
+            if (callback) callback(err);
+            called = true;
+        }
+
+        // We collect stderr data so errors can be gathered from it.
+        var stderr = '';
+        ffmpeg.stderr.on('data', function (data) { stderr += data; });
+
+        ffmpeg.on('error', call);
+
+        ffmpeg.on('close', function (code) {
+            var err;
+            if (code) err = new AvisynthError(stderr);
+
+            // A callback, if passed, will be called with or without error.
+            call(err);
+        });
     };
 };
 
