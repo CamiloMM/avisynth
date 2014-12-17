@@ -65,3 +65,21 @@ function tempStoragePath(sub) {
     var extra = sub ? '/' + sub : '';
     return os.tmpdir() + '/avisynth.js-' + process.pid + extra;
 }
+
+// We'll clean up before exiting. Taken from http://stackoverflow.com/a/14032965
+process.stdin.resume(); //so the program will not close instantly
+
+function exitHandler(options, err) {
+    if (options.cleanup) cleanUp();
+    if (err) console.log(err.stack);
+    if (options.exit) process.exit();
+}
+
+// Do something when app is closing
+process.on('exit', exitHandler.bind(null, {cleanup:true}));
+
+// Catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+// Catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
