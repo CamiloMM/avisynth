@@ -119,7 +119,7 @@ function Script(code) {
 
         // We collect stderr data so errors can be gathered from it.
         var stderr = '';
-        ffmpeg.stderr.on('data', function (data) { stderr += data; });
+        ffmpeg.stderr.on('data', function (data) { stderr += data.toString(); });
 
         ffmpeg.on('error', call);
 
