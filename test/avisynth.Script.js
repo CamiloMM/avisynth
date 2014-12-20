@@ -175,6 +175,18 @@ describe('avisynth.Script', function() {
             });
         });
 
+        describe('.getPath', function() {
+            it('should create and keep a script file', function() {
+                var script = avisynth.Script('ColorBars()');
+                var base = os.tmpdir() + '/avisynth.js-' + process.pid + '/scripts/';
+                var location = base + script.md5() + '.avs';
+                fs.existsSync(location).should.be.false;
+                script.getPath();
+                fs.existsSync(location).should.be.true;
+                expect(location).to.equal(script.getPath());
+            });
+        });
+
         describe('.renderFrame', function() {
             it('should allow rendering a script to a file', function(done) {
                 this.timeout(10000); // Take your time.
