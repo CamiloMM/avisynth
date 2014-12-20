@@ -177,6 +177,7 @@ describe('avisynth.Script', function() {
 
         describe('.renderFrame', function() {
             it('should allow rendering a script to a file', function(done) {
+                this.timeout(10000); // Take your time.
                 var script = new avisynth.Script('ColorBarsHD()');
                 var png = os.tmpdir() + '/avisynth-test-' + rand + '.png';
                 script.renderFrame(png, function(err) {
