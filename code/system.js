@@ -52,6 +52,9 @@ exports.buildPATH = function() {
     return result;
 };
 
+// The path to binaries has to be specified due to PATH shenanigans.
+exports.ffmpeg = path.resolve(__dirname, '../bin/ffmpeg.exe');
+
 // Sets up the temp storage if it's not there.
 function initializeTempStorage() {
     utils.ensureDirectory(tempStoragePath());

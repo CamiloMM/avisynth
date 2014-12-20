@@ -101,7 +101,7 @@ function Script(code) {
         env.PATH = system.buildPATH();
 
         // This is the command that will be ran:
-        var cmd = 'ffmpeg'; // It's in the PATH now.
+        var cmd = system.ffmpeg; // It's not technically in the PATH yet!
         var args = ['-hide_banner', '-loglevel', 'error', '-ss', time,
                     '-i', this.getPath(), '-frames:v', 1, path];
 
