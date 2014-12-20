@@ -58,7 +58,7 @@ exports.ensureDirectory = function(path) {
 };
 
 // Recursively remove a directory. Taken from https://gist.github.com/tkihira/2367067
-exports.removeDirectory = function(dir) {
+var removeDirectory = exports.removeDirectory = function(dir) {
     var list = fs.readdirSync(dir);
     for(var i = 0; i < list.length; i++) {
         var filename = path.join(dir, list[i]);
@@ -68,7 +68,7 @@ exports.removeDirectory = function(dir) {
             // pass these files
         } else if(stat.isDirectory()) {
             // rmdir recursively
-            rmdir(filename);
+            removeDirectory(filename);
         } else {
             // rm fiilename
             fs.unlinkSync(filename);
