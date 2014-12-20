@@ -1,4 +1,6 @@
 var path          = require('path');
+var fs            = require('fs');
+var os            = require('os');
 var should        = require('chai').should();
 var expect        = require('chai').expect;
 var avisynth      = require('../main');
@@ -170,6 +172,23 @@ describe('avisynth.Script', function() {
                 script.code(code);
                 script.rawCode.should.equal(code + '\n' + code + '\n' + code + '\n');
                 script.rawCode.should.equal([code, code, code, ''].join('\n'));
+            });
+        });
+
+        describe('.renderFrame', function() {
+            it('should allow rendering a script to a file', function(done) {
+                var script = new avisynth.Script('ColorBarsHD()');
+                var png = os.tmpdir() + '/avisynth-test-' + rand + '.png';
+                script.renderFrame(png, function(err) {
+                    if (err) {
+                        done(err);
+                    } else if (fs.existsSync(png)) {
+                        fs.unlinkSync(png);
+                        done(err);
+                    } else {
+                        done(new Error('file not created'));
+                    }
+                });
             });
         });
     });
