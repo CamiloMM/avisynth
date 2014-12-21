@@ -89,6 +89,9 @@ function Script(code) {
             time = 0;
         }
 
+        // Path must be absolute.
+        path = require('path').resolve(path);
+
         // Current Working Directory where the script will be ran.
         var cwd = system.temp('scripts');
 
