@@ -1,6 +1,7 @@
 var path          = require('path');
 var fs            = require('fs');
 var os            = require('os');
+var crypto        = require('crypto');
 var should        = require('chai').should();
 var expect        = require('chai').expect;
 var avisynth      = require('../main');
@@ -191,13 +192,21 @@ describe('avisynth.Script', function() {
             it('should allow rendering a script to a file', function(done) {
                 this.timeout(10000); // Take your time.
                 var script = new avisynth.Script('ColorBarsHD()');
-                var png = os.tmpdir() + '/avisynth-test ' + rand + '.png';
-                script.renderFrame(png, function(err) {
+                // We're using BMP as a format because it can be consistently hashed.
+                var bmp = os.tmpdir() + '/avisynth-test ' + rand + '.bmp';
+                var expected = '6be6eacc299e3ee146aeb016c33970b7'; // MD5
+                script.renderFrame(bmp, function(err) {
                     if (err) {
                         done(err);
-                    } else if (fs.existsSync(png)) {
-                        fs.unlinkSync(png);
-                        done(err);
+                    } else if (fs.existsSync(bmp)) {
+                        var bytes = fs.readFileSync(bmp);
+                        var actual = crypto.createHash('md5').update(bytes).digest('hex');
+                        fs.unlinkSync(bmp);
+                        if (actual !== expected) {
+                            done(new Error('md5 mismatch: ' + expected + ' vs ' + actual));
+                        } else {
+                            done(err);
+                        }
                     } else {
                         done(new Error('file not created'));
                     }
