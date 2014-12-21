@@ -23,6 +23,9 @@ var avisynth = require('avisynth');
 var script = new avisynth.Script(); // Omitting "new" is also ok
 script.code = 'Version()'; // Can also be passed to the constructor
 script.sharpen(1); // Direct plugin and built-in calls
+script.renderFrame('foo.png', function(err) { // Time offset optional.
+    console.log(err || 'foo.png saved!'); // Easy frame rendering.
+});
 // Still thinking of how the rest of the API will be.
 ```
 
