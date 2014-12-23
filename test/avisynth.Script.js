@@ -241,6 +241,14 @@ describe('avisynth.Script', function() {
                     }
                 });
             });
+
+            it('callback is optional', function(done) {
+                this.timeout(3100); // This is scheduled.
+                var script = new avisynth.Script('ColorBarsHD()');
+                var bmp = os.tmpdir() + '/avisynth-test-2 ' + rand + '.bmp';
+                script.renderFrame(bmp);
+                setTimeout(done, 3000);
+            });
         });
     });
 });
