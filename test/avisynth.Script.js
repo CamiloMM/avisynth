@@ -193,7 +193,7 @@ describe('avisynth.Script', function() {
                 this.timeout(10000); // Take your time.
                 var script = new avisynth.Script('ColorBarsHD()');
                 // We're using BMP as a format because it can be consistently hashed.
-                var bmp = os.tmpdir() + '/avisynth-test ' + rand + '.bmp';
+                var bmp = os.tmpdir() + '/avisynth-test-render ' + rand + '.bmp';
                 var expected = '6be6eacc299e3ee146aeb016c33970b7'; // MD5
                 script.renderFrame(bmp, function(err) {
                     if (err) {
@@ -222,7 +222,7 @@ describe('avisynth.Script', function() {
                 script.animate(0, 100, 'Levels', 
                                0, 1, 255,   0, 255, 
                                0, 1, 255, 255, 255);
-                var bmp = os.tmpdir() + '/avisynth-test ' + rand + '.bmp';
+                var bmp = os.tmpdir() + '/avisynth-test-frame ' + rand + '.bmp';
                 var expected = '8c3e13b37151b371f99f354408356a71';
                 script.renderFrame(2.5, bmp, function(err) {
                     if (err) {
@@ -245,9 +245,23 @@ describe('avisynth.Script', function() {
             it('callback is optional', function(done) {
                 this.timeout(3100); // This is scheduled.
                 var script = new avisynth.Script('ColorBarsHD()');
-                var bmp = os.tmpdir() + '/avisynth-test-2 ' + rand + '.bmp';
+                var bmp = os.tmpdir() + '/avisynth-test-callback ' + rand + '.bmp';
                 script.renderFrame(bmp);
                 setTimeout(done, 3000);
+            });
+
+            it('bad scripts should cause an error', function(done) {
+                this.timeout(10000); // Take your time.
+                var script = new avisynth.Script('TheSpanishInquisition()');
+                var bmp = os.tmpdir() + '/avisynth-test-error ' + rand + '.bmp';
+                script.renderFrame(bmp, function(err) {
+                    if (err) {
+                        if (fs.existsSync(bmp)) fs.unlinkSync(bmp);
+                        done();
+                    } else {
+                        done(new Error('no error created when running a faulty script'));
+                    }
+                });
             });
         });
     });
