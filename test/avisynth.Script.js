@@ -253,7 +253,21 @@ describe('avisynth.Script', function() {
             it('bad scripts should cause an error', function(done) {
                 this.timeout(10000); // Take your time.
                 var script = new avisynth.Script('TheSpanishInquisition()');
-                var bmp = os.tmpdir() + '/avisynth-test-error ' + rand + '.bmp';
+                var bmp = os.tmpdir() + '/avisynth-test-bad-script ' + rand + '.bmp';
+                script.renderFrame(bmp, function(err) {
+                    if (err) {
+                        if (fs.existsSync(bmp)) fs.unlinkSync(bmp);
+                        done();
+                    } else {
+                        done(new Error('no error created when running a faulty script'));
+                    }
+                });
+            });
+
+            it('bad paths should cause an error', function(done) {
+                this.timeout(10000); // Take your time.
+                var script = new avisynth.Script('ColorBarsHD()');
+                var bmp = os.tmpdir() + '/avisynth-test-bad-path\0 ' + rand + '.bmp';
                 script.renderFrame(bmp, function(err) {
                     if (err) {
                         if (fs.existsSync(bmp)) fs.unlinkSync(bmp);
