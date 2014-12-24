@@ -115,9 +115,9 @@ function Script(code) {
         // The callback is only called once; on success or on first error.
         var called = false;
         function call(err) {
-            if (called) return;
+            /* istanbul ignore if */ if (called) return;
+            called = true; // Putting it before the actual callback because event loop.
             if (callback) callback(err);
-            called = true;
         }
 
         // We collect stderr data so errors can be gathered from it.
