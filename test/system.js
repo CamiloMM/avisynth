@@ -17,6 +17,7 @@ describe('system-level features', function() {
         system.init();
         if (!fs.existsSync(tmp)) throw new Error('"' + tmp + '" should exist!');
         system.cleanUp();
+        system.cleanUp(); // Should not crash or something.
         if (fs.existsSync(tmp)) throw new Error('"' + tmp + '" should not exist!');
     });
 });
