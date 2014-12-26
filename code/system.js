@@ -72,6 +72,7 @@ function tempStoragePath(sub) {
 // We'll clean up before exiting. Taken from http://stackoverflow.com/a/14032965
 process.stdin.resume(); //so the program will not close instantly
 
+/* istanbul ignore next: this only gets called when the process exits. */
 function exitHandler(options, err) {
     if (options.cleanup) cleanUp();
     if (err) console.log(err.stack);
