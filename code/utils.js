@@ -64,9 +64,7 @@ var removeDirectory = exports.removeDirectory = function(dir) {
         var filename = path.join(dir, list[i]);
         var stat = fs.statSync(filename);
         
-        if(filename == "." || filename == "..") {
-            // pass these files
-        } else if(stat.isDirectory()) {
+        if(stat.isDirectory()) {
             // rmdir recursively
             removeDirectory(filename);
         } else {
