@@ -1,4 +1,5 @@
 var path     = require('path');
+var os       = require('os');
 var avisynth = require('../main');
 var utils    = require('../code/utils');
 var should   = require('chai').should();
@@ -66,6 +67,17 @@ describe('avisynth.utils', function() {
             avisynth.utils.isNumeric(true        ).should.be.false;
             avisynth.utils.isNumeric(Infinity    ).should.be.false;
             avisynth.utils.isNumeric(undefined   ).should.be.false;
+        });
+    });
+
+    describe('.ensureDirectory', function() {
+        it('should not throw if directory exists', function() {
+            avisynth.utils.ensureDirectory(os.tmpdir());
+        });
+
+        it('should throw if directory path is invalid', function() {
+            var call = utils.ensureDirectory.bind(utils, os.tmpdir() + '/\0');
+            expect(call).to.throw(Error);
         });
     });
 });
