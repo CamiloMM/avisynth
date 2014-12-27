@@ -277,6 +277,34 @@ describe('avisynth.Script', function() {
                     }
                 });
             });
+
+            it('overwriting a file should not throw an error', function(done) {
+                this.timeout(10000); // Take your time.
+                var script = new avisynth.Script('ColorBarsHD()');
+                // We're using BMP as a format because it can be consistently hashed.
+                var bmp = os.tmpdir() + '/avisynth-test-overwrite ' + rand + '.bmp';
+                // First we write bogus content.
+                fs.writeFileSync(bmp, 'testing');
+                fs.readFileSync(bmp, {encoding:'utf8'}).should.equal('testing');
+                // Now we attempt normal rendering.
+                var expected = '6be6eacc299e3ee146aeb016c33970b7'; // MD5
+                script.renderFrame(bmp, function(err) {
+                    if (err) {
+                        done(err);
+                    } else if (fs.existsSync(bmp)) {
+                        var bytes = fs.readFileSync(bmp);
+                        var actual = crypto.createHash('md5').update(bytes).digest('hex');
+                        //fs.unlinkSync(bmp);
+                        if (actual !== expected) {
+                            done(new Error('md5 mismatch: ' + expected + ' vs ' + actual));
+                        } else {
+                            done(err);
+                        }
+                    } else {
+                        done(new Error('file not created'));
+                    }
+                });
+            });
         });
     });
 });

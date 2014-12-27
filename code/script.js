@@ -105,8 +105,8 @@ function Script(code) {
 
         // This is the command that will be ran:
         var cmd = system.ffmpeg; // It's not technically in the PATH yet!
-        var args = ['-hide_banner', '-loglevel', 'error', '-ss', time,
-                    '-i', this.getPath(), '-frames:v', 1, path];
+        var args = ['-hide_banner', '-y', '-loglevel', 'error', '-ss',
+                    time, '-i', this.getPath(), '-frames:v', 1, path];
 
         // We're using spawn instead of exec because it handles arguments better.
         // (In other words, we'd hate having to deal with shell-dependent escaping).
