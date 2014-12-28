@@ -179,8 +179,8 @@ describe('avisynth.Script', function() {
         describe('.getPath', function() {
             it('should create and keep a script file', function() {
                 var script = avisynth.Script('ColorBars()');
-                var base = os.tmpdir() + '/avisynth.js-' + process.pid + '/scripts/';
-                var location = base + script.md5() + '.avs';
+                var base = os.tmpdir() + '/avisynth.js-' + process.pid + '/scripts';
+                var location = path.resolve(base, script.md5() + '.avs');
                 fs.existsSync(location).should.be.false;
                 script.getPath();
                 fs.existsSync(location).should.be.true;

@@ -1,7 +1,9 @@
-var os    = require('os');
-var fs    = require('fs');
-var path  = require('path');
-var utils = require('./utils');
+var os            = require('os');
+var fs            = require('fs');
+var path          = require('path');
+var utils         = require('./utils');
+var spawn         = require('child_process').spawn;
+var AvisynthError = require('./errors').AvisynthError;
 
 // Determines whether system functionality has been initialized.
 var initialized = false;
@@ -55,6 +57,48 @@ exports.buildPATH = function() {
 // The path to binaries has to be specified due to PATH shenanigans.
 exports.ffmpeg = path.resolve(__dirname, '../bin/ffmpeg.exe');
 
+// Generalized method of calling native executables.
+// We make the assumption that avisynth/bin must be in the path,
+// and that cwd can be relative to the temp directory.
+exports.spawn = function(cmd, args, cwd, callback) {
+    // Current Working Directory where the command will be ran.
+    var cwd = exports.temp(cwd);
+
+    // Make a copy of the current env.
+    // By the way, this method of cloning is surprisingly the fastest!
+    var env = JSON.parse(JSON.stringify(process.env));
+
+    // We'll edit the env before running.
+    env.PWD = cwd;
+    env.PATH = exports.buildPATH();
+
+    // We're using spawn instead of exec because it handles arguments better.
+    // (In other words, we'd hate having to deal with shell-dependent escaping).
+    var child = spawn(cmd, args, {cwd: cwd, env: env});
+
+    // The callback is only called once; on success or on first error.
+    var called = false;
+    function call(err) {
+        /* istanbul ignore if: should never happen */ if (called) return;
+        called = true; // Putting it before the actual callback because event loop.
+        if (callback) callback(err);
+    }
+
+    // We collect stderr data so errors can be gathered from it.
+    var stderr = '';
+    child.stderr.on('data', function (data) { stderr += data.toString(); });
+
+    child.on('error', call);
+
+    child.on('close', function (code) {
+        var err;
+        if (code) err = new AvisynthError(stderr);
+
+        // A callback, if passed, will be called with or without error.
+        call(err);
+    });
+};
+
 // Sets up the temp storage if it's not there.
 function initializeTempStorage() {
     utils.ensureDirectory(tempStoragePath());
@@ -65,8 +109,8 @@ function initializeTempStorage() {
 // made from the pid, such as '/tmp/avisynth.js-1234'.
 // Passing a "sub" parameter will return a sub-path like '/tmp/avisynth.js-1234/fooBar'.
 function tempStoragePath(sub) {
-    var extra = sub ? '/' + sub : '';
-    return os.tmpdir() + '/avisynth.js-' + process.pid + extra;
+    var dir = os.tmpdir() + '/avisynth.js-' + process.pid;
+    return sub ? path.resolve(dir, sub) : dir;
 }
 
 // We'll clean up before exiting. Taken from http://stackoverflow.com/a/14032965

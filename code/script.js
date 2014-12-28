@@ -4,7 +4,6 @@ var autoload      = require('./autoload');
 var pluginSystem  = require('./plugins');
 var system        = require('./system');
 var utils         = require('./utils');
-var spawn         = require('child_process').spawn;
 var AvisynthError = require('./errors').AvisynthError;
 
 // Avisynth script constructor.
@@ -92,47 +91,11 @@ function Script(code) {
         // Path must be absolute.
         path = require('path').resolve(path);
 
-        // Current Working Directory where the script will be ran.
-        var cwd = system.temp('scripts');
-
-        // Make a copy of the current env.
-        // By the way, this method of cloning is surprisingly the fastest!
-        var env = JSON.parse(JSON.stringify(process.env));
-
-        // We'll edit the env before running.
-        env.PWD = cwd;
-        env.PATH = system.buildPATH();
-
         // This is the command that will be ran:
-        var cmd = system.ffmpeg; // It's not technically in the PATH yet!
         var args = ['-hide_banner', '-y', '-loglevel', 'error', '-ss',
                     time, '-i', this.getPath(), '-frames:v', 1, path];
 
-        // We're using spawn instead of exec because it handles arguments better.
-        // (In other words, we'd hate having to deal with shell-dependent escaping).
-        var ffmpeg = spawn(cmd, args, {cwd: cwd, env: env});
-
-        // The callback is only called once; on success or on first error.
-        var called = false;
-        function call(err) {
-            /* istanbul ignore if: should never happen */ if (called) return;
-            called = true; // Putting it before the actual callback because event loop.
-            if (callback) callback(err);
-        }
-
-        // We collect stderr data so errors can be gathered from it.
-        var stderr = '';
-        ffmpeg.stderr.on('data', function (data) { stderr += data.toString(); });
-
-        ffmpeg.on('error', call);
-
-        ffmpeg.on('close', function (code) {
-            var err;
-            if (code) err = new AvisynthError(stderr);
-
-            // A callback, if passed, will be called with or without error.
-            call(err);
-        });
+        system.spawn(system.ffmpeg, args, 'scripts', callback);
     };
 };
 
