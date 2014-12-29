@@ -247,7 +247,10 @@ describe('avisynth.Script', function() {
                 var script = new avisynth.Script('ColorBarsHD()');
                 var bmp = os.tmpdir() + '/avisynth-test-callback ' + rand + '.bmp';
                 script.renderFrame(bmp);
-                setTimeout(done, 3000);
+                setTimeout(function() {
+                    if (fs.existsSync(bmp)) fs.unlinkSync(bmp); // cleanup
+                    done();
+                }, 3000);
             });
 
             it('bad scripts should cause an error', function(done) {
@@ -294,7 +297,7 @@ describe('avisynth.Script', function() {
                     } else if (fs.existsSync(bmp)) {
                         var bytes = fs.readFileSync(bmp);
                         var actual = crypto.createHash('md5').update(bytes).digest('hex');
-                        //fs.unlinkSync(bmp);
+                        fs.unlinkSync(bmp);
                         if (actual !== expected) {
                             done(new Error('md5 mismatch: ' + expected + ' vs ' + actual));
                         } else {
