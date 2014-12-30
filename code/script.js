@@ -97,6 +97,14 @@ function Script(code) {
 
         system.spawn(system.ffmpeg, args, 'scripts', callback);
     };
+
+    // "Just runs" the script; this is useful if you want the script to
+    // do something but don't care about its output (e.g., writing files).
+    this.run = function(callback) {
+        var path = this.getPath();
+        var args = ['-hide_banner', '-loglevel', 'error', '-i', path, '-f', 'null', '-'];
+        system.spawn(system.ffmpeg, args, '.', callback);
+    };
 };
 
 Script.prototype = pluginSystem.pluginPrototype;
