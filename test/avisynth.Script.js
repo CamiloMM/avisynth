@@ -309,5 +309,41 @@ describe('avisynth.Script', function() {
                 });
             });
         });
+
+        describe('.run', function() {
+            it('should allow rendering specific frames', function(done) {
+                this.timeout(10000); // Take your time.
+                var script = new avisynth.Script();
+                script.colorBarsHD();
+                script.trim(0, 150); // ColorBarsHD is one hour long.
+                // Animating so that a particular frame can be identified as such.
+                // ShowFrameNumber is problematic because then we rely on precise
+                // font rendering, and that's not reliably hashable in this case.
+                script.animate(50, 150, 'Levels', 
+                               0, 1, 255,   0, 255, 
+                               0, 1, 255, 255, 255);
+                var bmp = os.tmpdir() + '/avisynth-test-frame ' + rand + '.bmp';
+                script.convertToRGB();
+                script.imageWriter(bmp, 123, -1, 'bmp');
+                var expected = 'e3d37022a3fd06512fc93a183cd181b1';
+                script.run(function(err) {
+                    bmp += '000123.bmp'; // ImageWriter adds frame number.
+                    if (err) {
+                        done(err);
+                    } else if (fs.existsSync(bmp)) {
+                        var bytes = fs.readFileSync(bmp);
+                        var actual = crypto.createHash('md5').update(bytes).digest('hex');
+                        fs.unlinkSync(bmp);
+                        if (actual !== expected) {
+                            done(new Error('md5 mismatch: ' + expected + ' vs ' + actual));
+                        } else {
+                            done(err);
+                        }
+                    } else {
+                        done(new Error('file not created'));
+                    }
+                });
+            });
+        });
     });
 });
