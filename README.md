@@ -26,6 +26,8 @@ script.sharpen(1); // Direct plugin and built-in calls
 script.renderFrame('foo.png', function(err) { // Time offset optional.
     console.log(err || 'foo.png saved!'); // Easy frame rendering.
 });
+script.run(function(err) {}); // Runs the script (with no output).
+script.lint(function(err) {}); // Validates the Avisynth code.
 // Still thinking of how the rest of the API will be.
 ```
 
