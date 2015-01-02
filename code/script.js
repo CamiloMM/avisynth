@@ -103,7 +103,13 @@ function Script(code) {
     this.run = function(callback) {
         var path = this.getPath();
         var args = ['-hide_banner', '-loglevel', 'error', '-i', path, '-f', 'null', '-'];
-        system.spawn(system.ffmpeg, args, '.', callback);
+        system.spawn(system.ffmpeg, args, 'scripts', callback);
+    };
+
+    // Lints the script. The callback will be called with an "error" argument
+    // where error is an AvisynthError, if any.
+    this.lint = function(callback) {
+        system.spawn(system.avslint, [this.getPath()], 'scripts', callback);
     };
 };
 

@@ -55,7 +55,8 @@ exports.buildPATH = function() {
 };
 
 // The path to binaries has to be specified due to PATH shenanigans.
-exports.ffmpeg = path.resolve(__dirname, '../bin/ffmpeg.exe');
+exports.ffmpeg  = path.resolve(__dirname, '../bin/ffmpeg.exe');
+exports.avslint = path.resolve(__dirname, '../bin/avslint.exe');
 
 // Generalized method of calling native executables.
 // We make the assumption that avisynth/bin must be in the path,
