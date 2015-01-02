@@ -345,5 +345,25 @@ describe('avisynth.Script', function() {
                 });
             });
         });
+
+        describe('.lint', function() {
+            it('should raise an error for faulty scripts', function(done) {
+                this.timeout(10000); // Take your time.
+                var script = new avisynth.Script('FilterThatDoesNotExist()');
+                script.lint(function(err) {
+                    expect(err).to.be.an.instanceof(AvisynthError);
+                    done();
+                });
+            });
+
+            it('should not raise an error for valid scripts', function(done) {
+                this.timeout(10000); // Take your time.
+                var script = new avisynth.Script('Version()');
+                script.lint(function(err) {
+                    expect(err).to.not.be.an.instanceof(AvisynthError);
+                    done();
+                });
+            });
+        });
     });
 });
