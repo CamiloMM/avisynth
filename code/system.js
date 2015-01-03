@@ -57,11 +57,15 @@ exports.buildPATH = function() {
 // The path to binaries has to be specified due to PATH shenanigans.
 exports.ffmpeg  = path.resolve(__dirname, '../bin/ffmpeg.exe');
 exports.avslint = path.resolve(__dirname, '../bin/avslint.exe');
+exports.avsinfo = path.resolve(__dirname, '../bin/avsinfo.exe');
 
 // Generalized method of calling native executables.
 // We make the assumption that avisynth/bin must be in the path,
 // and that cwd can be relative to the temp directory.
-exports.spawn = function(cmd, args, cwd, callback) {
+exports.spawn = function(cmd, args, cwd, internal, callback) {
+    // Internal calls can make the callback recieve extra info.
+    if (!callback) callback = internal;
+
     // Current Working Directory where the command will be ran.
     var cwd = exports.temp(cwd);
 
@@ -82,10 +86,18 @@ exports.spawn = function(cmd, args, cwd, callback) {
     function call(err) {
         /* istanbul ignore if: should never happen */ if (called) return;
         called = true; // Putting it before the actual callback because event loop.
-        if (callback) callback(err);
+        if (callback) {
+            if (internal) {
+                callback(err, stdout, stderr)
+            } else {
+                callback(err);
+            }
+        }
     }
 
-    // We collect stderr data so errors can be gathered from it.
+    // We collect stdout/stderr stream data.
+    var stdout = '';
+    child.stdout.on('data', function (data) { stdout += data.toString(); });
     var stderr = '';
     child.stderr.on('data', function (data) { stderr += data.toString(); });
 
