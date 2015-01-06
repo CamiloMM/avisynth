@@ -74,3 +74,19 @@ var removeDirectory = exports.removeDirectory = function(dir) {
     }
     fs.rmdirSync(dir);
 };
+
+// Creates an object from an array of keys and an array of values.
+exports.zipObject = function (keys, values) {
+    var result = {};
+
+    for (var i = 0; i < keys.length; i++) {
+        result[keys[i]] = notEmptyString(values[i]);
+    }
+
+    return result;
+};
+
+// Converts empty strings to undefined.
+function notEmptyString(value) {
+    return value === '' ? undefined : value;
+}
