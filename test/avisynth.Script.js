@@ -406,6 +406,45 @@ describe('avisynth.Script', function() {
                     done(err);
                 });
             });
+
+            it('should contain expected info (1080p production example)', function(done) {
+                this.timeout(10000);
+
+                // Let's cook up a 1080p "production-grade" example.
+                var script = new avisynth.Script();
+                script.colorBarsHD(1920, 1080);
+                script.assumeFPS(60);
+                script.trim(1, 3600);
+                script.code('AudioDub(Tone(60, 528, 48000, 6))');
+                script.convertAudioToFloat();
+                script.convertToYUY2();
+                script.assumeFrameBased();
+
+                script.info(function(err, info) {
+                    expect(err).to.be.undefined();
+                    expect(info).to.be.an('object');
+                    // Check that all values are set.
+                    expect(info.width        ).to.equal(1920);
+                    expect(info.height       ).to.equal(1080);
+                    expect(info.ratio        ).to.equal('16:9');
+                    expect(info.fps          ).to.equal(60);
+                    expect(info.fpsFraction  ).to.equal('60/1');
+                    expect(info.videoTime    ).to.equal(60);
+                    expect(info.frameCount   ).to.equal(3600);
+                    expect(info.colorspace   ).to.equal('YUY2');
+                    expect(info.bitsPerPixel ).to.equal(16);
+                    expect(info.interlaceType).to.equal('frame-based');
+                    expect(info.fieldOrder   ).to.equal('BFF');
+                    expect(info.channels     ).to.equal(6);
+                    expect(info.bitsPerSample).to.equal(32);
+                    expect(info.sampleType   ).to.equal('float');
+                    expect(info.audioTime    ).to.equal(60);
+                    expect(info.samplingRate ).to.equal(48000);
+                    expect(info.sampleCount  ).to.equal(2880000);
+                    expect(info.blockSize    ).to.equal(24);
+                    done(err);
+                });
+            });
         });
     });
 });
