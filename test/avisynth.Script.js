@@ -365,5 +365,47 @@ describe('avisynth.Script', function() {
                 });
             });
         });
+
+        describe('.info', function() {
+            it('should contain expected info (NTSC broadcast example)', function(done) {
+                this.timeout(10000);
+
+                // Let's cook up a NTSC broadcast example.
+                var script = new avisynth.Script();
+                script.colorBarsHD(640, 480);
+                script.assumeFPS('ntsc_film');
+                script.trim(1, 1438);
+                script.code('AudioDub(Tone(54.321, 432, 44056, 1))');
+                script.convertAudioTo16bit();
+                script.convertToYV12();
+                script.assumeFieldBased();
+                script.assumeTFF();
+
+                script.info(function(err, info) {
+                    expect(err).to.be.undefined();
+                    expect(info).to.be.an('object');
+                    // Check that all values are set.
+                    expect(info.width        ).to.equal(640);
+                    expect(info.height       ).to.equal(480);
+                    expect(info.ratio        ).to.equal('4:3');
+                    expect(info.fps          ).to.equal(23.976);
+                    expect(info.fpsFraction  ).to.equal('24000/1001');
+                    expect(info.videoTime    ).to.equal(59.9766);
+                    expect(info.frameCount   ).to.equal(1438);
+                    expect(info.colorspace   ).to.equal('YV12');
+                    expect(info.bitsPerPixel ).to.equal(12);
+                    expect(info.interlaceType).to.equal('field-based');
+                    expect(info.fieldOrder   ).to.equal('TFF');
+                    expect(info.channels     ).to.equal(1);
+                    expect(info.bitsPerSample).to.equal(16);
+                    expect(info.sampleType   ).to.equal('int');
+                    expect(info.audioTime    ).to.equal(54.321);
+                    expect(info.samplingRate ).to.equal(44056);
+                    expect(info.sampleCount  ).to.equal(2393166);
+                    expect(info.blockSize    ).to.equal(2);
+                    done(err);
+                });
+            });
+        });
     });
 });
