@@ -64,7 +64,10 @@ exports.avsinfo = path.resolve(__dirname, '../bin/avsinfo.exe');
 // and that cwd can be relative to the temp directory.
 exports.spawn = function(cmd, args, cwd, internal, callback) {
     // Internal calls can make the callback recieve extra info.
-    if (!callback) callback = internal;
+    if (!callback) {
+        callback = internal;
+        internal = false;
+    }
 
     // Current Working Directory where the command will be ran.
     var cwd = exports.temp(cwd);
@@ -88,7 +91,7 @@ exports.spawn = function(cmd, args, cwd, internal, callback) {
         called = true; // Putting it before the actual callback because event loop.
         if (callback) {
             if (internal) {
-                callback(err, stdout, stderr)
+                callback(returnCode, stdout, stderr)
             } else {
                 callback(err);
             }
@@ -103,9 +106,10 @@ exports.spawn = function(cmd, args, cwd, internal, callback) {
 
     child.on('error', call);
 
+    var returnCode = 0xB00B5;
     child.on('close', function (code) {
         var err;
-        if (code) err = new AvisynthError(stderr);
+        if (returnCode = code) err = new AvisynthError(stderr);
 
         // A callback, if passed, will be called with or without error.
         call(err);
