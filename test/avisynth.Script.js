@@ -493,6 +493,20 @@ describe('avisynth.Script', function() {
                     done(err);
                 });
             });
+
+            it('should contain no info at all on an audio-only clip', function(done) {
+                this.timeout(10000);
+
+                var script = new avisynth.Script();
+                script.tone();
+
+                script.info(function(err, info) {
+                    expect(err).to.be.undefined();
+                    expect(info).to.be.null();
+                    // Check that all values are set.
+                    done(err);
+                });
+            });
         });
     });
 });
