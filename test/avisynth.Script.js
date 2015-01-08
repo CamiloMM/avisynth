@@ -445,6 +445,16 @@ describe('avisynth.Script', function() {
                     done(err);
                 });
             });
+
+            it('should return an error on an empty script', function(done) {
+                this.timeout(10000);
+
+                avisynth.Script().info(function(err, info) {
+                    expect(err).to.be.an.instanceof(AvisynthError);
+                    expect(info).to.be.undefined();
+                    done()
+                });
+            });
         });
     });
 });
