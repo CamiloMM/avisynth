@@ -455,6 +455,44 @@ describe('avisynth.Script', function() {
                     done()
                 });
             });
+
+            it('should contain no audio info on a video-only clip', function(done) {
+                this.timeout(10000);
+
+                var script = new avisynth.Script();
+                script.colorBarsHD(512, 512);
+                script.assumeFPS(1);
+                script.trim(1, 1);
+                script.convertToRGB24();
+                script.assumeFieldBased();
+                script.assumeBFF();
+                script.killAudio()
+
+                script.info(function(err, info) {
+                    expect(err).to.be.undefined();
+                    expect(info).to.be.an('object');
+                    // Check that all values are set.
+                    expect(info.width        ).to.equal(512);
+                    expect(info.height       ).to.equal(512);
+                    expect(info.ratio        ).to.equal('1:1');
+                    expect(info.fps          ).to.equal(1);
+                    expect(info.fpsFraction  ).to.equal('1/1');
+                    expect(info.videoTime    ).to.equal(1);
+                    expect(info.frameCount   ).to.equal(1);
+                    expect(info.colorspace   ).to.equal('RGB');
+                    expect(info.bitsPerPixel ).to.equal(24);
+                    expect(info.interlaceType).to.equal('field-based');
+                    expect(info.fieldOrder   ).to.equal('BFF');
+                    expect(info.channels     ).to.be.undefined();
+                    expect(info.bitsPerSample).to.be.undefined();
+                    expect(info.sampleType   ).to.be.undefined();
+                    expect(info.audioTime    ).to.be.undefined();
+                    expect(info.samplingRate ).to.be.undefined();
+                    expect(info.sampleCount  ).to.be.undefined();
+                    expect(info.blockSize    ).to.be.undefined();
+                    done(err);
+                });
+            });
         });
     });
 });

@@ -156,22 +156,17 @@ function Script(code) {
             var values = stdout.split(/\r?\n/); // Windows works in CRLF, remember.
             var info = utils.zipObject(properties, values);
 
-            // Cast some properties to numbers. Without having to type keys twice, hehe.
-            info.width         *= 1;
-            info.height        *= 1;
-            info.fps           *= 1;
-            info.videoTime     *= 1;
-            info.frameCount    *= 1;
-            info.bitsPerPixel  *= 1;
-            info.interlaceType *= 1;
-            info.fieldOrder    *= 1;
-            info.channels      *= 1;
-            info.bitsPerSample *= 1;
-            info.sampleType    *= 1;
-            info.audioTime     *= 1;
-            info.samplingRate  *= 1;
-            info.sampleCount   *= 1;
-            info.blockSize     *= 1;
+            // Cast some properties to numbers.
+            var numberProps = ['width', 'height', 'fps', 'videoTime', 'frameCount',
+                               'bitsPerPixel', 'interlaceType', 'fieldOrder',
+                               'channels', 'bitsPerSample', 'sampleType', 'audioTime',
+                               'samplingRate', 'sampleCount', 'blockSize'];
+
+            numberProps.forEach(function(prop) {
+                if (info[prop] !== '' && info[prop] !== undefined) {
+                    info[prop] *= 1;
+                }
+            });
 
             // Convert some bools to more identifiable strings.
             var enums = {
