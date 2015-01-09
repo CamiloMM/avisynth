@@ -28,16 +28,19 @@ switch (command) {
         showHelp(command);
 }
 
-// Shows a help message.
+// Shows a help message and exits.
 function showHelp(badArgument) {
     showBanner();
+    var exitCode = 0;
     if (badArgument !== undefined) {
-        console.log('Bad argument: "' + badArgument + '"');
+        console.log('Bad argument: "' + badArgument + '"\n');
+        exitCode = 1;
     }
     console.log('Usage: ' + name + ' <command> [path]\n');
     console.log('commands:');
     console.log('    help    : show this help and exit.');
     console.log('    version : show the version number and exit.');
+    process.exit(exitCode);
 }
 
 // Shows the module's version.
