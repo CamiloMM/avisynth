@@ -29,6 +29,6 @@ avisynth.autoload = require('./code/autoload');
 avisynth.autoload(path.resolve(__dirname, 'bin/plugins'));
 
 // Script constructor, note you can safely forget "new".
-avisynth.Script = function(code) { return new Script(code); };
+avisynth.Script = Script.wrappedConstructor;
 
 module.exports = avisynth;

@@ -136,7 +136,7 @@ process.stdin.resume(); //so the program will not close instantly
 /* istanbul ignore next: this only gets called when the process exits. */
 function exitHandler(options, err) {
     if (options.cleanup) cleanUp();
-    if (err) console.log(err.stack);
+    if (err && err.stack) console.log(err.stack);
     if (options.exit) process.exit();
 }
 

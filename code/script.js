@@ -115,74 +115,90 @@ function Script(code) {
     // Returns raw info on the running script, in machine-readable form.
     // The callback is called with (error, info).
     this.info = function(callback) {
-        var arg = ['-m', this.getPath()];
-        system.spawn(system.avsinfo, arg, 'scripts', true, function(code, stdout, stderr) {
-            if (code && code !== 2) {
-                // This probably means status code 5, which happens on crashes,
-                // or a status code I'm not aware of. Either way, it's unexpected.
-                // Note that it happens when code does not produce output.
-                var message = 'Unexpected condition (' + code + ').\n'
-                            + 'This may be cause by a blank script';
-                return callback(new AvisynthError(message));
-            }
-
-            // This means no output could be analyzed.
-            // Unfortunately, audio-only clips will not be analyzed by avsinfo.
-            if (!stdout) return callback(undefined, null);
-
-            // If it does not contain audio, the last 7 properties will be undefined.
-            var properties = [
-                'width',         // Video width in pixels.
-                'height',        // Video height in pixels.
-                'ratio',         // Aspect ratio, such as '16:9'.
-                'fps',           // Frames per second as a number, like 29.97.
-                'fpsFraction',   // Frames per second as a fraction, like '30000/1001'.
-                'videoTime',     // Video length in seconds, like 123.456.
-                'frameCount',    // Frame count.
-                'colorspace',    // Colorspace, such as 'RGB' or 'YV12'.
-                'bitsPerPixel',  // Number of bits per pixel.
-                'interlaceType', // Can be 'field-based' or 'frame-based'.
-                'fieldOrder',    // 'TFF' (Top Field First) or 'BFF' (Bottom Field First).
-                'channels',      // Number of channels.                   May be undefined.
-                'bitsPerSample', // Number of bits per audio sample.      May be undefined.
-                'sampleType',    // Sample type can be 'int' or 'float'.  May be undefined.
-                'audioTime',     // Audio length in seconds.              May be undefined.
-                'samplingRate',  // Sampling rate in Hertz (e.g., 44100). May be undefined.
-                'sampleCount',   // Number of samples (time * rate).      May be undefined.
-                'blockSize',     // Block size of audio samples in Bytes. May be undefined.
-            ];
-
-            // Each of the properties above should correspond to a line in the stdout.
-            var values = stdout.split(/\r?\n/); // Windows works in CRLF, remember.
-            var info = utils.zipObject(properties, values);
-
-            // Cast some properties to numbers.
-            var numberProps = ['width', 'height', 'fps', 'videoTime', 'frameCount',
-                               'bitsPerPixel', 'interlaceType', 'fieldOrder',
-                               'channels', 'bitsPerSample', 'sampleType', 'audioTime',
-                               'samplingRate', 'sampleCount', 'blockSize'];
-
-            numberProps.forEach(function(prop) {
-                if (info[prop] !== '' && info[prop] !== undefined) {
-                    info[prop] *= 1;
-                }
-            });
-
-            // Convert some bools to more identifiable strings.
-            var enums = {
-                interlaceType: ['frame-based', 'field-based'],
-                fieldOrder:    ['BFF'        , 'TFF'        ],
-                sampleType:    ['float'      , 'int'        ],
-            };
-
-            // If you're confused: info[prop] will either be 0, 1 or undefined.
-            for (var prop in enums) info[prop] = enums[prop][info[prop]];
-
-            callback(undefined, info); // No error, and there's your info.
-        });
+        Script.info(this.getPath(), 'scripts', callback);
     };
 }
 
+// Static method for the info instance method, used by the cli script too. 
+// The callback is called with (error, info).
+Script.info = function(scriptPath, cwd, callback) {
+    var arg = ['-m', scriptPath];
+    system.spawn(system.avsinfo, arg, cwd, true, function(code, stdout, stderr) {
+        if (code && code !== 2) {
+            // This probably means status code 5, which happens on crashes,
+            // or a status code I'm not aware of. Either way, it's unexpected.
+            // Note that it happens when code does not produce output.
+            var message = 'Unexpected condition (' + code + ').\n'
+                        + 'This may be cause by a blank script';
+            return callback(new AvisynthError(message));
+        }
+
+        // This means no output could be analyzed.
+        // Unfortunately, audio-only clips will not be analyzed by avsinfo.
+        if (!stdout) return callback(undefined, null);
+
+        // If it does not contain audio, the last 7 properties will be undefined.
+        var properties = [
+            'width',         // Video width in pixels.
+            'height',        // Video height in pixels.
+            'ratio',         // Aspect ratio, such as '16:9'.
+            'fps',           // Frames per second as a number, like 29.97.
+            'fpsFraction',   // Frames per second as a fraction, like '30000/1001'.
+            'videoTime',     // Video length in seconds, like 123.456.
+            'frameCount',    // Frame count.
+            'colorspace',    // Colorspace, such as 'RGB' or 'YV12'.
+            'bitsPerPixel',  // Number of bits per pixel.
+            'interlaceType', // Can be 'field-based' or 'frame-based'.
+            'fieldOrder',    // 'TFF' (Top Field First) or 'BFF' (Bottom Field First).
+            'channels',      // Number of channels.                   May be undefined.
+            'bitsPerSample', // Number of bits per audio sample.      May be undefined.
+            'sampleType',    // Sample type can be 'int' or 'float'.  May be undefined.
+            'audioTime',     // Audio length in seconds.              May be undefined.
+            'samplingRate',  // Sampling rate in Hertz (e.g., 44100). May be undefined.
+            'sampleCount',   // Number of samples (time * rate).      May be undefined.
+            'blockSize',     // Block size of audio samples in Bytes. May be undefined.
+        ];
+
+        // Each of the properties above should correspond to a line in the stdout.
+        var values = stdout.split(/\r?\n/); // Windows works in CRLF, remember.
+        var info = utils.zipObject(properties, values);
+
+        // Cast some properties to numbers.
+        var numberProps = ['width', 'height', 'fps', 'videoTime', 'frameCount',
+                           'bitsPerPixel', 'interlaceType', 'fieldOrder',
+                           'channels', 'bitsPerSample', 'sampleType', 'audioTime',
+                           'samplingRate', 'sampleCount', 'blockSize'];
+
+        numberProps.forEach(function(prop) {
+            if (info[prop] !== '' && info[prop] !== undefined) {
+                info[prop] *= 1;
+            }
+        });
+
+        // Convert some bools to more identifiable strings.
+        var enums = {
+            interlaceType: ['frame-based', 'field-based'],
+            fieldOrder:    ['BFF'        , 'TFF'        ],
+            sampleType:    ['float'      , 'int'        ],
+        };
+
+        // If you're confused: info[prop] will either be 0, 1 or undefined.
+        for (var prop in enums) info[prop] = enums[prop][info[prop]];
+
+        callback(undefined, info); // No error, and there's your info.
+    });
+};
+
+// Constructor that's ok with forgetting "new".
+Script.wrappedConstructor = function(code) { return new Script(code); };
+
+// Static API.
+var props = ['info']; // I may add more.
+props.forEach(function(prop) {
+    Script.wrappedConstructor[prop] = Script[prop];
+});
+
+// Add the plugins via prototype inheritance.
 Script.prototype = pluginSystem.pluginPrototype;
 
 module.exports = Script;
