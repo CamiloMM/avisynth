@@ -71,5 +71,42 @@ describe('Command-line interface', function() {
             var infoJson = JSON.stringify(info, undefined, 4);
             testCli(done, args, null, 0, infoJson + '\n', '');
         });
+
+        it('should return expected info (1080p production example)', function(done) {
+            // Let's cook up a 1080p "production-grade" example.
+            var script = new avisynth.Script();
+            script.colorBarsHD(1920, 1080);
+            script.assumeFPS(60);
+            script.trim(1, 3600);
+            script.code('AudioDub(Tone(60, 528, 48000, 6))');
+            script.convertAudioToFloat();
+            script.convertToYUY2();
+            script.assumeFrameBased();
+
+            var info = {
+                width         : 1920,
+                height        : 1080,
+                ratio         : '16:9',
+                fps           : 60,
+                fpsFraction   : '60/1',
+                videoTime     : 60,
+                frameCount    : 3600,
+                colorspace    : 'YUY2',
+                bitsPerPixel  : 16,
+                interlaceType : 'frame-based',
+                fieldOrder    : 'BFF',
+                channels      : 6,
+                bitsPerSample : 32,
+                sampleType    : 'float',
+                audioTime     : 60,
+                samplingRate  : 48000,
+                sampleCount   : 2880000,
+                blockSize     : 24
+            };
+
+            var args = ['info', script.getPath()];
+            var infoJson = JSON.stringify(info, undefined, 4);
+            testCli(done, args, null, 0, infoJson + '\n', '');
+        });
     });
 });
