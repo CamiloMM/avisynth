@@ -140,7 +140,7 @@ Script.info = function(scriptPath, cwd, callback) {
             // exit code (rather unhelpfully). So anything that does not look
             // just right will be thrown as an error for safety. This is detected
             // from the stderr looking like "<inputfile> has no video: C:\foo.avs".
-            if (stderr[0] === '<') {
+            if (stderr.substr(0, 19) !== '<inputfile> has no ') {
                 // Btw, yes, this is damn ugly, I'm aware.
                 // Still not as ugly as getting anywhere near VC++ to fix avsinfo.
                 var message = stderr.replace(/\r?\n$/, '');

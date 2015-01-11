@@ -456,6 +456,16 @@ describe('avisynth.Script', function() {
                 });
             });
 
+            it('should return an error on a faulty script', function(done) {
+                this.timeout(10000);
+
+                avisynth.Script('FaithInHumanity()').info(function(err, info) {
+                    expect(err).to.be.an.instanceof(AvisynthError);
+                    expect(info).to.be.undefined();
+                    done()
+                });
+            });
+
             it('should contain no audio info on a video-only clip', function(done) {
                 this.timeout(10000);
 
