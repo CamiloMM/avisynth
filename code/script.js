@@ -129,13 +129,26 @@ Script.info = function(scriptPath, cwd, callback) {
             // or a status code I'm not aware of. Either way, it's unexpected.
             // Note that it happens when code does not produce output.
             var message = 'Unexpected condition (' + code + ').\n'
-                        + 'This may be cause by a blank script';
+                        + 'This may be caused by a blank script.';
             return callback(new AvisynthError(message));
         }
 
         // This means no output could be analyzed.
         // Unfortunately, audio-only clips will not be analyzed by avsinfo.
-        if (!stdout) return callback(undefined, null);
+        if (!stdout) {
+            // Note that "no info" and "everything is wrong" return the same
+            // exit code (rather unhelpfully). So anything that does not look
+            // just right will be thrown as an error for safety. This is detected
+            // from the stderr looking like "<inputfile> has no video: C:\foo.avs".
+            if (stderr[0] === '<') {
+                // Btw, yes, this is damn ugly, I'm aware.
+                // Still not as ugly as getting anywhere near VC++ to fix avsinfo.
+                var message = stderr.replace(/\r?\n$/, '');
+                return callback(new AvisynthError(message));
+            } else {
+                return callback(undefined, null);
+            }
+        }
 
         // If it does not contain audio, the last 7 properties will be undefined.
         var properties = [
