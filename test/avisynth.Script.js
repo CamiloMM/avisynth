@@ -452,7 +452,7 @@ describe('avisynth.Script', function() {
                 avisynth.Script().info(function(err, info) {
                     expect(err).to.be.an.instanceof(AvisynthError);
                     expect(info).to.be.undefined();
-                    done()
+                    done();
                 });
             });
 
@@ -462,7 +462,7 @@ describe('avisynth.Script', function() {
                 avisynth.Script('FaithInHumanity()').info(function(err, info) {
                     expect(err).to.be.an.instanceof(AvisynthError);
                     expect(info).to.be.undefined();
-                    done()
+                    done();
                 });
             });
 
@@ -476,7 +476,7 @@ describe('avisynth.Script', function() {
                 script.convertToRGB24();
                 script.assumeFieldBased();
                 script.assumeBFF();
-                script.killAudio()
+                script.killAudio();
 
                 script.info(function(err, info) {
                     expect(err).to.be.undefined();
