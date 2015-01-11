@@ -3,6 +3,7 @@ var should   = require('chai').should();
 var expect   = require('chai').expect;
 var avisynth = require('../main');
 var system   = require('../code/system');
+var my       = require('../package.json');
 
 // Since testing a command line script is a bunch of boilerplate, I'll abstract it.
 function testCli(doneCallback, args, stdin, expectedCode, expectedOut, expectedErr) {
@@ -32,6 +33,12 @@ function testCli(doneCallback, args, stdin, expectedCode, expectedOut, expectedE
 
 describe('Command-line interface', function() {
     this.timeout(10000); // All tests here shouldn't fail because of timeouts.
+
+    describe('avisynth-js version', function() {
+        it('should print the version number', function(done) {
+            testCli(done, ['version'], null, 0, my.version + '\n', '');
+        });
+    });
 
     describe('avisynth-js info', function() {
         it('should return expected info (NTSC broadcast example)', function(done) {

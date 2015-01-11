@@ -49,9 +49,10 @@ function showHelp(badArgument) {
     process.exit(exitCode);
 }
 
-// Shows the module's version.
+// Shows the module's version and exits.
 function showVersion() {
     console.log(my.version);
+    process.exit(0);
 }
 
 // Shows the "banner".
@@ -61,6 +62,7 @@ function showBanner() {
     console.log(my.homepage + '\n');
 }
 
+// Shows script info and exits.
 function showInfo(script) {
     if (!script) {
         console.log('An Avisynth script path must be provided.');
