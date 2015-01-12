@@ -40,6 +40,20 @@ describe('Command-line interface', function() {
         });
     });
 
+    describe('avisynth-js help', function() {
+        it('should print the help without warnings', function(done) {
+            testCli(done, ['help'], null, 0, function(text) {
+                var lines = text.split(/\r?\n/);
+                var ok = true;
+                lines.forEach(function(line) {
+                    if (/^Bad argument: /.test(line)) ok = false;
+                });
+                if (!/^Usage: /.test(lines[4])) console.log(text), ok = false;
+                return ok;
+            }, '');
+        });
+    });
+
     describe('avisynth-js info', function() {
         it('should return expected info (NTSC broadcast example)', function(done) {
             // Let's cook up a NTSC broadcast example.
