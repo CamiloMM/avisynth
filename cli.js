@@ -46,13 +46,13 @@ function showHelp(badArgument) {
     console.log('    help    : Show this help and exit.');
     console.log('    version : Show the version number and exit.');
     console.log('    info    : Return info from a script in json format.');
-    process.exit(exitCode);
+    exit(exitCode);
 }
 
 // Shows the module's version and exits.
 function showVersion() {
     console.log(my.version);
-    process.exit(0);
+    exit(0);
 }
 
 // Shows the "banner".
@@ -66,21 +66,57 @@ function showBanner() {
 function showInfo(script) {
     if (!script) {
         console.log('An Avisynth script path must be provided.');
-        return process.exit(2);
+        return exit(2);
     }
 
     if (!fs.existsSync(script)) {
         console.log('Script not found: "' + script + '"');
-        return process.exit(3);
+        return exit(3);
     }
 
     var pwd = path.dirname(script);
     avisynth.Script.info(script, pwd, function(error, info) {
         if (error) {
             console.log('Avisynth script could not be processed:\n' + error.message);
-            return process.exit(4);
+            return exit(4);
         }
         console.log(JSON.stringify(info, undefined, 4));
-        process.exit();
+        exit();
     });
 }
+
+// Taken from https://github.com/cowboy/node-exit
+// I'm still having trouble to accept that this horrible dirty hack is an
+// acceptable solution to the underlying problem of node's STDOUT as a pipe
+// on Windows being async while it's not async with files and consoles/TTYs.
+function exit(exitCode, streams) {
+    if (!streams) { streams = [process.stdout, process.stderr]; }
+    var drainCount = 0;
+    // Actually exit if all streams are drained.
+    function tryToExit() {
+        if (drainCount === streams.length) {
+            process.exit(exitCode);
+        }
+    }
+    streams.forEach(function(stream) {
+        // Count drained streams now, but monitor non-drained streams.
+        if (stream.bufferSize === 0) {
+            drainCount++;
+        } else {
+            stream.write('', 'utf-8', function() {
+                drainCount++;
+                tryToExit();
+            });
+        }
+        // Prevent further writing.
+        stream.write = function() {};
+    });
+    // If all streams were already drained, exit now.
+    tryToExit();
+    // In Windows, when run as a Node.js child process, a script utilizing
+    // this library might just exit with a 0 exit code, regardless. This code,
+    // despite the fact that it looks a bit crazy, appears to fix that.
+    process.on('exit', function() {
+        process.exit(exitCode);
+    });
+};
