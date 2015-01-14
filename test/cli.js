@@ -62,6 +62,18 @@ describe('Command-line interface', function() {
                 return ok;
             }, '');
         });
+
+        it('should print help without warnings when no command is used', function(done) {
+            testCli(done, [], null, 0, function(text) {
+                var lines = text.split(/\r?\n/);
+                var ok = true;
+                lines.forEach(function(line) {
+                    if (/^Bad argument: /.test(line)) ok = false;
+                });
+                if (!/^Usage: /.test(lines[4])) ok = false;
+                return ok;
+            }, '');
+        });
     });
 
     describe('avisynth-js info', function() {
