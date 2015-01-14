@@ -48,7 +48,17 @@ describe('Command-line interface', function() {
                 lines.forEach(function(line) {
                     if (/^Bad argument: /.test(line)) ok = false;
                 });
-                if (!/^Usage: /.test(lines[4])) console.log(text), ok = false;
+                if (!/^Usage: /.test(lines[4])) ok = false;
+                return ok;
+            }, '');
+        });
+
+        it('should print help with warnings when a bad command is used', function(done) {
+            testCli(done, ['feminism'], null, 1, function(text) {
+                var lines = text.split(/\r?\n/);
+                var ok = true;
+                if (lines[4] !== 'Bad argument: "feminism"') ok = false;
+                if (!/^Usage: /.test(lines[6])) ok = false;
                 return ok;
             }, '');
         });
