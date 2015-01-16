@@ -157,5 +157,11 @@ describe('Command-line interface', function() {
             var msg = 'An Avisynth script path must be provided.\n';
             testCli(done, args, null, 2, msg, '');
         });
+
+        it('should return an error when script does not exist', function(done) {
+            var args = ['info', 'C:/miss1ng5cript.avs'];
+            var msg = 'Script not found: "C:/miss1ng5cript.avs"\n';
+            testCli(done, args, null, 3, msg, '');
+        });
     });
 });
