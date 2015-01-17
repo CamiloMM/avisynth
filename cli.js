@@ -104,7 +104,7 @@ function showLint(script) {
     avisynth.Script.lint(script, pwd, function(error) {
         var lint = {
             valid: !error,
-            message: error ? error.message.replace(/\r\n/g, '\n') : ''
+            message: error ? error.message.replace(/\r\n/g, '\n') : null
         };
         console.log(JSON.stringify(lint, undefined, 4));
         exit(error ? 5 : 0);
