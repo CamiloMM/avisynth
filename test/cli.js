@@ -1,3 +1,4 @@
+var fs       = require('fs');
 var path     = require('path');
 var should   = require('chai').should();
 var expect   = require('chai').expect;
@@ -162,6 +163,7 @@ describe('Command-line interface', function() {
         });
 
         it('should return an error when script does not exist', function(done) {
+            (!fs.existsSync('C:/miss1ng5cript.avs')).should.be.ok();
             var args = ['info', 'C:/miss1ng5cript.avs'];
             var msg = 'Script not found: "C:/miss1ng5cript.avs"\n';
             testCli(done, args, null, 3, msg, '');
@@ -205,6 +207,7 @@ describe('Command-line interface', function() {
         });
 
         it('should return an error when script does not exist', function(done) {
+            (!fs.existsSync('C:/miss1ng5cript.avs')).should.be.ok();
             var args = ['lint', 'C:/miss1ng5cript.avs'];
             var msg = 'Script not found: "C:/miss1ng5cript.avs"\n';
             testCli(done, args, null, 3, msg, '');
