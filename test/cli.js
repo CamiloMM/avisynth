@@ -77,6 +77,9 @@ describe('Command-line interface', function() {
     });
 
     describe('avisynth-js info', function() {
+    });
+
+    describe('avisynth-js info', function() {
         it('should return expected info (NTSC broadcast example)', function(done) {
             // Let's cook up a NTSC broadcast example.
             var script = new avisynth.Script();
@@ -174,6 +177,25 @@ describe('Command-line interface', function() {
                 if (lines[1] !== "I don't know what 'Egalitarianism' means.") ok = false;
                 return ok;
             }, '');
+        });
+    });
+
+    describe('avisynth-js lint', function() {
+        it('should return valid status for a valid script', function(done) {
+            // Same NTSC broadcast example from before.
+            var script = new avisynth.Script();
+            script.colorBarsHD(640, 480);
+            script.assumeFPS('ntsc_film');
+            script.trim(1, 1438);
+            script.code('AudioDub(Tone(54.321, 432, 44056, 1))');
+            script.convertAudioTo16bit();
+            script.convertToYV12();
+            script.assumeFieldBased();
+            script.assumeTFF();
+
+            var args = ['lint', script.getPath()];
+            var json = JSON.stringify({valid: true, message: null}, undefined, 4);
+            testCli(done, args, null, 0, json + '\n', '');
         });
     });
 });
