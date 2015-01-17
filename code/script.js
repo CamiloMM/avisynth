@@ -109,7 +109,7 @@ function Script(code) {
     // Lints the script. The callback will be called with an "error" argument
     // where error is an AvisynthError, if any.
     this.lint = function(callback) {
-        system.spawn(system.avslint, [this.getPath()], 'scripts', callback);
+        Script.lint(this.getPath(), 'scripts', callback);
     };
 
     // Returns raw info on the running script, in machine-readable form.
@@ -119,7 +119,13 @@ function Script(code) {
     };
 }
 
-// Static method for the info instance method, used by the cli script too. 
+// Static method for the lint instance method, used by the cli script too.
+// The callback is called with an error argument, if any.
+Script.lint = function(scriptPath, cwd, callback) {
+    system.spawn(system.avslint, [scriptPath], cwd, callback);
+};
+
+// Static method for the info instance method, used by the cli script too.
 // The callback is called with (error, info).
 Script.info = function(scriptPath, cwd, callback) {
     var arg = ['-m', scriptPath];
@@ -206,7 +212,7 @@ Script.info = function(scriptPath, cwd, callback) {
 Script.wrappedConstructor = function(code) { return new Script(code); };
 
 // Static API.
-var props = ['info']; // I may add more.
+var props = ['lint', 'info'];
 props.forEach(function(prop) {
     Script.wrappedConstructor[prop] = Script[prop];
 });

@@ -29,6 +29,9 @@ switch (command) {
     case 'info':
         showInfo(script);
         break;
+    case 'lint':
+        showLint(script);
+        break;
     default:
         showHelp(command);
 }
@@ -82,6 +85,29 @@ function showInfo(script) {
         }
         console.log(JSON.stringify(info, undefined, 4));
         exit();
+    });
+}
+
+// Shows script's lint result and exits.
+function showLint(script) {
+    if (!script) {
+        console.log('An Avisynth script path must be provided.');
+        return exit(2);
+    }
+
+    if (!fs.existsSync(script)) {
+        console.log('Script not found: "' + script + '"');
+        return exit(3);
+    }
+
+    var pwd = path.dirname(script);
+    avisynth.Script.lint(script, pwd, function(error) {
+        var lint = {
+            valid: !error,
+            message: error ? error.message.replace(/\r\n/g, '\n') : ''
+        };
+        console.log(JSON.stringify(lint, undefined, 4));
+        exit(error ? 5 : 0);
     });
 }
 
