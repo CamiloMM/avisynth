@@ -197,5 +197,11 @@ describe('Command-line interface', function() {
             var json = JSON.stringify({valid: true, message: null}, undefined, 4);
             testCli(done, args, null, 0, json + '\n', '');
         });
+
+        it('should return an error when no script is provided', function(done) {
+            var args = ['lint'];
+            var msg = 'An Avisynth script path must be provided.\n';
+            testCli(done, args, null, 2, msg, '');
+        });
     });
 });
