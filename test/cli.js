@@ -212,5 +212,17 @@ describe('Command-line interface', function() {
             var msg = 'Script not found: "C:/miss1ng5cript.avs"\n';
             testCli(done, args, null, 3, msg, '');
         });
+
+        it('should return not valid and a message when script has errors', function(done) {
+            var script = new avisynth.Script('Egalitarianism');
+            var args = ['lint', script.getPath()];
+            testCli(done, args, null, 5, function(text) {
+                var json = JSON.parse(text);
+                var lines = json.message.split(/\r?\n/);
+                var ok = !json.valid;
+                if (lines[0] !== "I don't know what 'Egalitarianism' means.") ok = false;
+                return ok;
+            }, '');
+        });
     });
 });
