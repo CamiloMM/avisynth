@@ -1,22 +1,33 @@
-avisynth [![AppVeyor badge][appveyor-badge]][appveyor-link] [![CodeClimate badge][codeclimate-badge]][codeclimate-link] [![coverage badge][coverage-badge]][codeclimate-link] [![dependencies badge][dependencies-badge]][dependencies-link]
+avisynth
 ========
 
 <img align="right" width="160" height="256" src="logo.png">
 
 *[Avisynth] bindings for [NodeJS] with a strong focus on ease-of-use.*
 
-The idea is to have a node package that you can use to process videos, images and sound with Avisynth, in a self-contained package.
+[![AppVeyor badge][appveyor-badge]][appveyor-link] [![CodeClimate badge][codeclimate-badge]][codeclimate-link] [![coverage badge][coverage-badge]][codeclimate-link] [![dependencies badge][dependencies-badge]][dependencies-link]
+
+A node module that you can use to process videos, images and sound with Avisynth, in a self-contained package.
 
 * *No dependencies*
 * *Top code quality*
 * *100% code coverage for all files down to branches and statements*
 
-Let's discover how feasible this is :)
+It currently only works in Windows (like Avisynth itself), but it may be possible, in theory, to add Linux support via Wine.
+
+install
+=======
+
+```sh
+npm install -g avisynth
+```
 
 usage
 =====
 
-This is very much work-in-progress, but here's an idea of how it could work:
+It can be used both by scripts as well as from command line (also not requiring Avisynth to be installed, and possibly helpful for shell scripts in other languages).
+
+#### Node usage:
 
 ```js
 var avisynth = require('avisynth');
@@ -28,7 +39,39 @@ script.renderFrame('foo.png', function(err) { // Time offset optional.
 });
 script.run(function(err) {}); // Runs the script (with no output).
 script.lint(function(err) {}); // Validates the Avisynth code.
-// Still thinking of how the rest of the API will be.
+// Still planning on adding more API, specifically video encoding.
+```
+
+#### Command-line usage:
+
+```sh
+avisynth-js info path/to/script.avs # Returns video info as JSON
+avisynth-js lint path/to/script.avs # Validates a script, also JSON
+```
+
+Sample output for `info`:
+
+```json
+{
+    "width": 1280,
+    "height": 720,
+    "ratio": "16:9",
+    "fps": 29.97,
+    "fpsFraction": "30000/1001",
+    "videoTime": 3600,
+    "frameCount": 107892,
+    "colorspace": "YV12",
+    "bitsPerPixel": 12,
+    "interlaceType": "field-based",
+    "fieldOrder": "TFF",
+    "channels": 2,
+    "bitsPerSample": 32,
+    "sampleType": "float",
+    "audioTime": 3600,
+    "samplingRate": 48000,
+    "sampleCount": 172799827,
+    "blockSize": 8
+}
 ```
 
 docs
