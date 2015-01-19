@@ -77,6 +77,7 @@ function showInfo(script) {
         return exit(3);
     }
 
+    script = path.resolve(script);
     var pwd = path.dirname(script);
     avisynth.Script.info(script, pwd, function(error, info) {
         if (error) {
@@ -100,6 +101,7 @@ function showLint(script) {
         return exit(3);
     }
 
+    script = path.resolve(script);
     var pwd = path.dirname(script);
     avisynth.Script.lint(script, pwd, function(error) {
         var lint = {
