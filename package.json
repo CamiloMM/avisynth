@@ -1,6 +1,6 @@
 {
   "name": "avisynth",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Avisynth non-linear audio/video scripting facilities for Node",
   "author": {
     "name": "Camilo Martin",
